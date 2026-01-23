@@ -1,8 +1,14 @@
 #contenedor-registro {
     display: flex;
     justify-content: center;
+    width: 50%;
     
+}
+form {
+  width: 100%; 
+  box-sizing: border-box;  
 }
 #titulo{
     font-size: 30px;
+    margin: 5%;
 }
