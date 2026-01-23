@@ -1,0 +1,12 @@
+#contenedor-login{
+    display: flex;
+    justify-content: center;
+    width: 50%;
+}
+
+.formulario{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 3%;
+}
