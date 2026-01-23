@@ -60,6 +60,52 @@
             </table>
         </div>
     </div>
+
+    <div id="modal-transaccion" class="modal is-active">
+        <div class="modal-background"></div>
+
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title">Agregar Nueva Transacción</p>
+            <button class="delete" aria-label="close" id="cerrar-modal"></button>
+          </header>
+      
+          <section class="modal-card-body">
+            <form id="form-transaccion">
+              <div class="field">
+                <label class="label">Motivo</label>
+                <div class="control">
+                  <input class="input" id="motivo" type="text" required>
+                </div>
+              </div>
+      
+              <div class="field">
+                <label class="label">Monto</label>
+                <div class="control">
+                  <input class="input" id="monto" type="number" required>
+                </div>
+              </div>
+      
+              <div class="field">
+                <label class="label">Tipo</label>
+                <div class="control">
+                  <div class="select is-fullwidth">
+                    <select id="tipo">
+                      <option value="ingreso">Ingreso</option>
+                      <option value="gasto">Gasto</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </section>      
+          <footer class="modal-card-foot">
+            <button class="button is-success" id="guardar-form">Guardar</button>
+            <button class="button" id="cancelar-form">Cancelar</button>
+          </footer>
+        </div>
+</div>
+
     </main>
 </body>
 </html>
