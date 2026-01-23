@@ -1,4 +1,23 @@
 .navbar {
     background-color: #0C3B5D;
     height: 70px;
+    margin-bottom: 15px;
+}
+
+.navbar-item {
+    color: white;
+    font-size: 18px;
+}
+
+.card {
+    margin: auto;
+    width: 900px;
+}
+
+.card-header {
+    background-color: #0C3B5D;
+}
+
+.card-header-title {
+    color:white;
 }
