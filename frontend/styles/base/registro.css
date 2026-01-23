@@ -4,9 +4,10 @@
     width: 50%;
     
 }
-form {
+#formulario {
   width: 100%; 
-  box-sizing: border-box;  
+  display: flex;
+  flex-direction: column;  
 }
 #titulo{
     font-size: 30px;
