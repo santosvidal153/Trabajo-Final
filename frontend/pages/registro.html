@@ -4,46 +4,56 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Registro</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         <link rel="stylesheet" href="../styles/main.css">
     </head>
     <body>        
         <div class="container" id="contenedor-registro">   
-            <form id="formulario">
+            <form class="box" id="formulario">
                 <h1 id="titulo">Crea tu cuenta</h1>
                 <div class="field">
                     <label class="label">Nombre Completo</label>
                         <div class="control">
-                            <input class="input" type="text" placeholder="TuNombre">
+                            <input class="input" type="text" placeholder="Ingresa tu nombre completo" required>
                         </div>
                 </div>
                 <div class="field">
                     <label class="label">Email</label>
                         <div class="control">
-                            <input class="input" type="email" placeholder="mail@ejemplo.com">
+                            <input class="input" type="email" placeholder="Ingresa tu email" required>
                         </div>
                 </div>
                 <div class="field">
                     <label class="label">Contraseña</label>
-                        <div class="control">
-                            <input class="input" type="password" placeholder="********">
+                        <div class="control has-icons-right">
+                            <input class="input" type="password" placeholder="Ingresa tu contrasena" required>
+                            <span class="icon is-small is-right is-clickable" id="toggle-password">
+                                <i class="fas fa-eye" id="eye-icon"></i>
+                            </span>
                         </div>
                 </div>
                 <div class="field">
                     <label class="label">Usuario</label>
                         <div class="control">
-                            <input class="input" type="text" placeholder="Usuario1">
+                            <input class="input" type="text" placeholder="Ingresa tu nombre de usuario" required>
                         </div>
                 </div>
                 <div class="field">
                     <label class="label">Pais</label>
                         <div class="control">
-                            <input class="input" type="text" placeholder="TuPais">
+                            <input class="input" type="text" placeholder="Ingresa tu pais" required>
                         </div>
                 </div>
                 <div class="field is-grouped is-grouped-centered">
-                    <button class="button is-primary">Registrarse</button>
+                    <a>
+                        <button class="button">Registrarse</button>
+                    </a>
                 </div>
             </form>
+            <div class="notification is-danger">
+                <p class="error" id="errorLogin" >Error al crear la cuenta</p>
+            </div>
+            
         </div>
         
         <footer></footer>
