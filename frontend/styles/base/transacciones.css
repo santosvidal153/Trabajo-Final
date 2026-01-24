@@ -1,17 +1,6 @@
 @import url("../components/navbar.css");
 
-.card {
-    margin: auto;
-    width: 900px;
-}
-
-.card-header {
-    background-color: #0C3B5D;
-}
-
-.card-header-title {
-    color:white;
-}
+@import url("../components/cards.css");
 
 .modal-card-head {
     background-color: #0C3B5D;
