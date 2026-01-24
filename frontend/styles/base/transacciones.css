@@ -1,13 +1,4 @@
-.navbar {
-    background-color: #0C3B5D;
-    height: 70px;
-    margin-bottom: 15px;
-}
-
-.navbar-item {
-    color: white;
-    font-size: 18px;
-}
+@import url("../components/navbar.css");
 
 .card {
     margin: auto;
