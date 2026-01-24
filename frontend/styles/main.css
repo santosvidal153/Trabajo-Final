@@ -1,2 +1,13 @@
 @import "https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css";
 @import url(./base/inicio-basico.css);
+:root {
+  --bulma-primary-h: 0deg;
+  --bulma-primary-s: 0%;
+  --bulma-primary-l: 100%;
+  --bulma-link-h: 205deg;
+  --bulma-link-s: 77%;
+  --bulma-link-l: 21%;
+  --bulma-info-h: 45deg;
+  --bulma-info-s: 100%;
+  --bulma-info-l: 45%;
+}
