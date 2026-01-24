@@ -2,8 +2,13 @@
 
 @import url("../components/cards.css");
 
+
 .message-resumen {
     width: 900px;
     margin:auto;
     text-align: center;
+}
+
+.gastos-categoria {
+    margin: 50px;
 }
