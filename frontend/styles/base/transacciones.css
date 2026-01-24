@@ -26,3 +26,11 @@
     background-color: #0C3B5D;
 }
 
+.modal-card-title {
+    color: white;
+}
+
+.button.is-success{
+    background-color: #0C3B5D;
+    color: white;
+}
