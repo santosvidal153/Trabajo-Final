@@ -18,6 +18,73 @@
             <button class="boton-primario" id="btnObjetivo">+ Nuevo Objetivo</button>
         </div>
 
+        <!-- Contenido de los objetivos va aca -->
+        <div class="cuadricula-objetivos">
+            
+            <!-- OBJETIVOS EN PROGRESO -->
+            <div class="tarjeta-objetivo" id="objetivo-2">
+                <img src="https://media.licdn.com/dms/image/v2/C4E12AQGB_rY2ynhcdw/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1644968169650?e=2147483647&v=beta&t=0t-O2yfXHlnqhXnufRdTbLOpo6W6cRL5ZC7V2i5CO7w" alt="Cocina renovación">
+                <div class="p-4">
+                    <div class="is-flex is-justify-content-space-between is-align-items-center mb-4">
+                        <span class="etiqueta-categoria">Hogar Esencial</span>
+                        <div class="is-flex is-gap-0-5">
+                            <button class="boton-editar px-2 py-1" id="editar-2">Editar</button>
+                            <button class="boton-eliminar px-2 py-1" id="eliminar-2">Eliminar</button>
+                        </div>
+                    </div>
+                    <h3 class="titulo-objetivo mb-2">Renovación de cocina</h3>
+                    <p class="descripcion-objetivo mb-4">Modernizar la cocina con pintura de color gris y nuevo electrodoméstico</p>
+                    <div class="mb-4">
+                        <div class="is-flex is-justify-content-space-between is-align-items-center mb-4">
+                            <span class="etiqueta-monto">Objetivo</span>
+                            <span class="valor-monto">$5000000.00</span>
+                        </div>
+                        <div class="is-flex is-justify-content-space-between is-align-items-center mb-4">
+                            <span class="etiqueta-monto">Ahorrado</span>
+                            <span class="valor-monto primario">$3200000.00</span>
+                        </div>
+                    </div>
+                    <progress class="progress is-warning" value="64" max="100">64%</progress>
+                    <p class="is-flex is-justify-content-space-between is-align-items-center">
+                        <span>64%</span>
+                        <span class="falta">Faltan $1,800,000.00</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="tarjeta-objetivo" id="objetivo-3">
+                <img src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=500" alt="Membresía gimnasio">
+                <div class="p-4">
+                    <div class="is-flex is-justify-content-space-between is-align-items-center mb-4">
+                        <span class="etiqueta-categoria deporte">Deporte</span>
+                        <div class="is-flex is-gap-0-5">
+                            <button class="boton-editar px-2 py-1" id="editar-3">Editar</button>
+                            <button class="boton-eliminar px-2 py-1" id="eliminar-3">Eliminar</button>
+                        </div>
+                    </div>
+                    <h3 class="titulo-objetivo mb-2">Membresía Premium Gimnasio</h3>
+                    <p class="descripcion-objetivo mb-4">Membresía anual de gimnasio con acceso a todas las clases y entrenador personal</p>
+                    <div class="mb-4">
+                        <div class="is-flex is-justify-content-space-between is-align-items-center mb-4">
+                            <span class="etiqueta-monto">Objetivo</span>
+                            <span class="valor-monto">$1200000.00</span>
+                        </div>
+                        <div class="is-flex is-justify-content-space-between is-align-items-center mb-4">
+                            <span class="etiqueta-monto">Ahorrado</span>
+                            <span class="valor-monto primario">$720000.00</span>
+                        </div>
+                    </div>
+                    <progress class="progress is-warning" value="60" max="100">60%</progress>
+                    <p class="is-flex is-justify-content-space-between is-align-items-center">
+                        <span>60%</span>
+                        <span class="falta">Faltan $480,000.00</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
     <div w3-include-html="componentes/footer.html"></div>
 
     <script src="../js/navbar.js"></script>
