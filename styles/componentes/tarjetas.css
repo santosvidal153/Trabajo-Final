@@ -29,3 +29,37 @@
     font-weight: 700;
     color: #1F2937;
 }
+
+.descripcion-objetivo {
+    font-size: 0.9rem;
+    color: #6B7280;
+    line-height: 1.4;
+}
+
+/* MONTOS */
+.etiqueta-monto {
+    font-size: 0.85rem;
+    color: #6B7280;
+}
+
+.valor-monto {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #1F2937;
+}
+
+/* BOTONES DE TARJETA */
+
+.boton-editar {
+    color: black;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.boton-eliminar {
+    color: red;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+}
