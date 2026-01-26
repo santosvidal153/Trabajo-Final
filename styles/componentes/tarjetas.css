@@ -89,3 +89,23 @@
     cursor: pointer;
     margin-top: 0.75rem;
 }
+
+.superposicion-bloqueado {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    z-index: 5;
+}
+
+.superposicion-bloqueado .icon {
+    font-size: 2rem;
+}
+
+.mensaje-bloqueado {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
