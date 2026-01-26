@@ -1,0 +1,31 @@
+.cuadricula-objetivos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+}
+
+.tarjeta-objetivo {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.tarjeta-objetivo img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.etiqueta-categoria {
+    color: #6B7280;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.titulo-objetivo {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #1F2937;
+}
