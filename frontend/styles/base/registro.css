@@ -1,21 +1,24 @@
 #contenedor-registro {
     display: flex;
     justify-content: center;
-    flex-direction: column;
     align-items: center;
+    flex-direction: column;
     width: 35%;
-    padding-top: 3%;
-    padding-bottom: 3%;
+    padding-top: 2%;
+    padding-bottom: 2%;
 }
-form {
+.box {
     width: 100%; 
     display: flex;
     flex-direction: column;
+}
+form {
+    padding-bottom: 2%;
 }
 .field{
     padding-bottom: 1%;
 }
 #titulo{
     font-size: 30px;
-    margin: 5%;
+    padding-bottom: 3%;
 }
