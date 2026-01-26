@@ -9,36 +9,36 @@
     </head>
     <body>
         <div class="container" id="contenedor-login">
-            <form class="box" id="formulario">
-                <div class="field">
-                    <label class="label">Email o Usuario</label>
-                    <div class="control">
-                        <input class="input" type="text" placeholder="Ingresa tu email o usuario" required>
+            <div class="box">
+                <form id="formulario">
+                    <div class="field">
+                        <label class="label">Email o Usuario</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="Ingresa tu email o usuario" required>
+                        </div>
                     </div>
-                </div>
-                <div class="field">
-                    <label class="label">Username</label>
-                    <div class="control has-icons-right">
-                        <input class="input" type="password" placeholder="Ingresa tu contrasena" required>
-                        <span class="icon is-small is-right is-clickable" id="toggle-password">
-                            <i class="fas fa-eye" id="eye-icon"></i>
-                        </span>
+                    <div class="field">
+                        <label class="label">Contrasena</label>
+                        <div class="control has-icons-right">
+                            <input class="input" type="password" placeholder="Ingresa tu contrasena" required>
+                            <span class="icon is-small is-right is-clickable" id="toggle-password">
+                                <i class="fas fa-eye" id="eye-icon"></i>
+                            </span>
+                        </div>
                     </div>
-                </div>
-                <div class="field is-grouped is-grouped-centered">
-                    <a href="./inicio.html">
-                    <button class="button">Iniciar Sesion</button>
-                </a>
-                </div>
-                <div class="notification is-danger">
+                    <div class="field is-grouped is-grouped-centered">
+                        <a href="./inicio.html">
+                            <button class="button">Iniciar Sesion</button>
+                        </a>                 
+                    </div>
+                    <p>
+                        <a href="./registro.html">No tenes cuenta? Registrate</a>
+                    </p>
+                </form>
+                <div class="notification is-danger is-hidden">
                     <p class="error" id="errorLogin" >Error al iniciar sesion</p>
                 </div>
-            </form>
-            <div class="field is-grouped is-grouped-centered">
-                <a href="./registro.html">
-                    <button class="button">No tengo cuenta</button>
-                </a>                 
-            </div>  
+            </div>
         </div>
 
         <footer></footer>

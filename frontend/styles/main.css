@@ -1,2 +1,14 @@
 @import "https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css";
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Poppins:wght@400;600&display=swap');
 @import url(./base/login.css);
+
+:root {
+  --bulma-primary-h: 205deg;
+  --bulma-primary-s: 77%;
+  --bulma-primary-l: 21%;
+  --bulma-link-h: 205deg;
+  --bulma-link-s: 77%;
+  --bulma-link-l: 21%;
+  --bulma-info-h: 45deg;
+  --bulma-info-l: 45%;
+}

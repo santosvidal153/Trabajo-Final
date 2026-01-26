@@ -1,14 +1,19 @@
-#contenedor-login{
+#contenedor-login {
     display: flex;
     justify-content: center;
     flex-direction: column;
     width: 40%;
     padding-top: 5%;
 }
-
-#formulario{
+#formulario {
     width: 100%;
     display: flex;
     flex-direction: column;
     padding: 3%;
+}
+.label {
+    font-family: 'Inter', sans-serif;
+}
+p {
+    font-family: 'Inter', sans-serif;
 }
