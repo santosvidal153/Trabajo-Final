@@ -1,3 +1,10 @@
+body {
+    background-image: url(../../assets/imagen-fondo.png);
+    background-size: cover;
+    background-attachment: fixed;
+    background-color: #0c3b5d;
+    height: 130vh;
+}
 #contenedor-registro {
     display: flex;
     justify-content: center;
@@ -19,6 +26,6 @@ form {
     padding-bottom: 1%;
 }
 #titulo{
-    font-size: 30px;
+    font-size: 33px;
     padding-bottom: 3%;
 }
