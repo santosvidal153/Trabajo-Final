@@ -12,22 +12,11 @@ body {
     width: 40%;
     padding-top: 5%;
 }
-.box {
-    background-color: white;
-}
-.input {
-    background-color: white;
-    color: black;
-}
 #formulario {
     width: 100%;
     display: flex;
     flex-direction: column;
     padding: 3%;
-}
-.button {
-    background-color: white;
-    color: black;
 }
 .label {
     font-family: 'Inter', sans-serif;
