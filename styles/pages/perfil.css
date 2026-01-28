@@ -24,3 +24,23 @@
     font-weight: 600;
     margin: 0;
 }
+
+.perfil-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 4rem;
+    border-bottom: 1px solid #E5E7EB;
+}
+
+.perfil-info-usuario {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.perfil-datos {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
