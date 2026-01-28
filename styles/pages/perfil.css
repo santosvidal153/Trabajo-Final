@@ -88,3 +88,28 @@
     color: #374151;
     font-weight: 500;
 }
+
+.botones-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+    gap: 2rem;
+}
+
+.boton-eliminar {
+    color: red;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.boton-cerrar-sesion {
+    color: #383737;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
