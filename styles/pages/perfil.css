@@ -1,0 +1,26 @@
+.circulo-usuario {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    font-size: 2rem;
+}
+
+.box {
+    max-width: 1200px;
+    margin: 2rem auto;
+    color: #1F2937;
+}
+
+.etiqueta-categoria {
+    font-size: 0.75rem;
+    color: #6B7280;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+    margin: 0;
+}
