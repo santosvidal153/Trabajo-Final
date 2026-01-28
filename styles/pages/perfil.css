@@ -44,3 +44,47 @@
     flex-direction: column;
     gap: 0.25rem;
 }
+
+.boton-editar-perfil {
+    color: white;
+    background-color: #3D5A73;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.info-simple {
+    margin: 2rem 0;
+}
+
+.info-fila {
+    display: flex;
+    gap: 8rem;
+    margin-bottom: 1.5rem;
+}
+
+.info-columna {
+    flex: 1;
+}
+
+.info-columna .etiqueta-categoria {
+    margin-bottom: 0.5rem;
+}
+
+.info-item {
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.info-item p {
+    margin: 0;
+}
+
+.valor-monto {
+    font-size: 0.95rem;
+    color: #374151;
+    font-weight: 500;
+}
