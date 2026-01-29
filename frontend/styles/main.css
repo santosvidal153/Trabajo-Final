@@ -7,3 +7,8 @@
 @import url("../styles/base/transacciones.css");
 @import url("../styles/componentes/navbar.css");
 @import url("../styles/componentes/cards.css");
+@import url("./componentes/navbar2.css");
+@import url("./componentes/footer.css");
+@import url("./componentes/tarjetas.css");
+@import url("./base/objetivos.css");
+@import url("./base/perfil.css");
