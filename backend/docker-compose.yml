@@ -1,0 +1,12 @@
+services:
+  db:
+    image: postgres:17
+    container_name: upfinance-db
+    environment:
+      POSTGRES_USER: user-uf
+      POSTGRES_PASSWORD: password-uf
+      POSTGRES_DB: upfinance
+    volumes:
+      - ./.volumes/postgres/data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
