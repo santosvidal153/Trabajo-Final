@@ -3,10 +3,10 @@
 @import url(./base/inicio-basico.css);  
 @import url(./base/login.css);
 @import url("./base/registro.css");
-@import url("../styles/base/inicio.css");
-@import url("../styles/base/transacciones.css");
-@import url("../styles/componentes/navbar.css");
-@import url("../styles/componentes/cards.css");
+@import url("./base/inicio.css");
+@import url("./base/transacciones.css");
+@import url("./componentes/navbar.css");
+@import url("./componentes/cards.css");
 @import url("./componentes/navbar2.css");
 @import url("./componentes/footer.css");
 @import url("./componentes/tarjetas.css");
