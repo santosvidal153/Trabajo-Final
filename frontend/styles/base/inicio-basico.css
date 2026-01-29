@@ -46,3 +46,7 @@ h3 {
     justify-content: center;
     padding-top: 4%;
 }
+.button {
+    border-color: white !important;
+    color: white !important;
+}
