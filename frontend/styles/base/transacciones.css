@@ -10,3 +10,8 @@
     background-color: #0C3B5D;
     color: white;
 }
+
+.button.is-warning {
+    background-color: #E3AC00;
+    color: #1f2937 !important;
+}
