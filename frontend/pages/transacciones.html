@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="icon" href="../assets/favicon.ico">
+    <title>Transacciones</title>
+</head>
+<body>
+    <header>
+       <nav class="navbar" role="navigation" aria-label="main navigation">
+          <div class="navbar-brand">
+            <a class="navbar-item logo">
+              <img src="../assets/logov2.png" alt="Logo finanzas">
+            </a>
+          </div>
+          
+          <div id="navbarBasicExample" class="navbar-menu">
+            <div class="navbar-start">
+
+              <a class="navbar-item" href="inicio.html">Inicio</a>
+              <a class="navbar-item">Objetivos</a>
+              <a class="navbar-item" href="transacciones.html">Transacciones</a>
+
+            </div>
+
+            <div class="navbar-end">
+                <a class="navbar-item">Mi Perfil</a>
+            </div>
+          </div>
+           
+        </nav>
+    </header>
+
+    <main>
+    <div class="card">
+        <header class="card-header">
+            <p class="card-header-title">Mis Transacciones</p>
+            <div class="card-header-icon">
+                <button id="nueva-transaccion" class="button is-warning">+ Nueva Transacción</button>
+            </div>
+        </header>
+
+        <div class="card-content">
+            <table class="table is-fullwidth">
+                <thead>
+                    <tr>
+                      <th class="fecha">Fecha</th>
+                      <th class="motivo">Motivo</th>
+                      <th class="tipo">Tipo</th>
+                      <th class="monto">Monto</th>
+                      <th class="modificar"></th>
+                    </tr>
+                </thead>
+                <tbody id="info-transacciones">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modal" id="modal-transaccion">
+        <div class="modal-background"></div>
+
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title">Agregar Nueva Transacción</p>
+            <button class="delete" aria-label="close" id="cerrar-modal"></button>
+          </header>
+      
+          <section class="modal-card-body">
+            <form id="form-transaccion">
+              <div class="field">
+                <label class="label">Motivo</label>
+                <div class="control">
+                  <input class="input" id="motivo" type="text" required>
+                </div>
+              </div>
+      
+              <div class="field">
+                <label class="label">Monto</label>
+                <div class="control">
+                  <input class="input" id="monto" type="number" required>
+                </div>
+              </div>
+      
+              <div class="field">
+                <label class="label">Tipo</label>
+                <div class="control">
+                  <div class="select is-fullwidth">
+                    <select id="tipo">
+                      <option value="ingreso">Ingreso</option>
+                      <option value="gasto">Gasto</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="label">Categoría</label> 
+                <div class="control">
+                <div class="select is-fullwidth">
+                  <select id="categoria">
+                    <option>Sueldo</option>
+                    <option>Objetivo</option>
+                    <option>Alimento</option>
+                    <option>Transporte</option>
+                    <option>Salud</option>
+                    <option>Entretenimiento</option>
+                    <option>Otros</option>
+                  </select>
+                </div>
+              </div>
+              </div>
+            </form>
+          </section>      
+          <footer class="modal-card-foot is-justify-content-space-between">
+              <button class="button" id="cancelar-form">Cancelar</button>
+              <button class="button is-success" id="guardar-form">Guardar</button>
+          </footer>
+        </div>
+</div>
+
+    </main>
+</body>
+</html>
