@@ -1,0 +1,43 @@
+.button.is-success {
+    background-color: #dab750;
+    color: #fff;
+}
+
+.button.is-link {
+    background-color: #3d5a73;
+    color: #fff;
+}
+
+.field {
+    margin-bottom: 1.5rem;
+} 
+
+.field label {  
+    color: #374151;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.field input,
+.field select,
+.field textarea {
+    width: 100%;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    background: white;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: none;
+}
+
+.field textarea {
+    resize: vertical;
+    min-height: 150px;
+} 
