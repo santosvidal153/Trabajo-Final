@@ -1,0 +1,46 @@
+.pag-iniciar-sesion {
+    background-image: url(../../assets/imagen-fondo.png);
+    background-size: cover;
+    background-attachment: fixed;
+    background-color: #0c3b5d;
+    height: 100vh;
+
+    --bulma-primary-h: 205deg;
+    --bulma-primary-s: 77%;
+    --bulma-primary-l: 21%;
+    --bulma-link-h: 205deg;
+    --bulma-link-s: 77%;
+    --bulma-link-l: 21%;
+    --bulma-info-h: 45deg;
+    --bulma-info-l: 45%;
+}
+#contenedor-login {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 40%;
+    padding-top: 5%;
+}
+#formulario {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 3%;
+}
+.label {
+    font-family: 'Inter', sans-serif;
+    color: black;
+}
+p {
+    font-family: 'Inter', sans-serif;
+}
+
+#titulo{
+    font-size: 33px;
+    padding-bottom: 3%;
+}
+
+.button {
+    background-color: #0c3b5d;
+    color: white;
+}
