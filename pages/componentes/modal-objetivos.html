@@ -8,7 +8,75 @@
     </header>
 
     <section class="modal-card-body">
-      <!-- Contenido ... -->
+      
+      <form id="form-nuevo-objetivo">
+        <div class="field">
+          <label class="label">Nombre del Objetivo</label>
+          <div class="control">
+            <input class="input" type="text" id="obj-nombre" placeholder="Ej: Viaje a Europa" required>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Descripción</label>
+          <div class="control">
+            <textarea class="textarea" id="obj-descripcion" placeholder="Describe tu objetivo..."></textarea>
+          </div>
+        </div>
+
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label">Monto Objetivo ($)</label>
+              <div class="control">
+                <input class="input" type="number" id="obj-monto" placeholder="0.00" min="1" step="0.01" required>
+              </div>
+            </div>
+          </div>
+          
+          <div class="column">
+            <div class="field">
+              <label class="label">Monto Inicial ($)</label>
+              <div class="control">
+                <input class="input" type="number" id="obj-actual" placeholder="0.00" min="0" step="0.01" value="0">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label">Fecha Límite</label>
+              <div class="control">
+                <input class="input" type="date" id="obj-fecha" required>
+              </div>
+            </div>
+          </div>
+          
+          <div class="column">
+            <div class="field">
+              <label class="label">Categoría</label>
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select id="obj-categoria">
+                    <option value="deporte">Deporte</option>
+                    <option value="educacion">Educación</option>
+                    <option value="hogar">Hogar</option>
+                    <option value="tecnologia">Tecnología</option>
+                    <option value="salud">Bienestar & Relax</option>
+                    <option value="viaje">Viajes</option>
+                    <option value="vehiculo">Vehiculos</option>
+                    <option value="inversion">Inversiones</option>
+                    <option value="lujos">Lujos</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+
     </section>
 
     <footer class="modal-card-foot">
