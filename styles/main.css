@@ -1,3 +1,4 @@
 /* Importar archivos CSS */
 @import url("componentes/navbar.css");
+@import url("componentes/modal-editarperfil.css");
 @import url("pages/perfil.css");
