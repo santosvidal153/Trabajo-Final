@@ -1,0 +1,80 @@
+<div id="modal-js-example" class="modal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Editar Perfil</p>
+      <button class="delete" aria-label="close"></button>
+    </header>
+    <section class="modal-card-body">
+      <form id="form-editar-perfil">
+        <div class="field">
+          <label class="label">Nombre Completo</label>
+          <div class="control">
+            <input class="input" type="text" id="perfil-nombre" placeholder="Tu nombre completo" required>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Trabajo</label>
+          <div class="control">
+            <input class="input" type="text" id="perfil-trabajo" placeholder="Tu puesto o profesión">
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Género</label>
+          <div class="control">
+            <div class="select is-fullwidth">
+              <select id="perfil-genero">
+                <option value="">Seleccionar...</option>
+                <option value="masculino">Masculino</option>
+                <option value="femenino">Femenino</option>
+                <option value="prefiero_no_decir">Prefiero no decir</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label">País</label>
+              <div class="control">
+                <input class="input" type="text" id="perfil-pais" placeholder="Argentina, Uruguay, Brasil, etc.">
+              </div>
+            </div>
+          </div>
+          
+          <div class="column">
+            <div class="field">
+              <label class="label">Ciudad</label>
+              <div class="control">
+                <input class="input" type="text" id="perfil-ciudad" placeholder="Buenos Aires, Montevideo, São Paulo, etc.">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Teléfono</label>
+          <div class="control">
+            <input class="input" type="tel" id="perfil-telefono" placeholder="+54 9 11 1234-5678">
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Email</label>
+          <div class="control">
+            <input class="input" type="email" id="perfil-email" placeholder="tu@email.com" required>
+          </div>
+        </div>
+      </form>
+    </section>
+    <footer class="modal-card-foot">
+      <div class="buttons">
+        <button class="button is-success" id="btn-guardar-perfil">Guardar Cambios</button>
+        <button class="button is-link">Cancelar</button>
+      </div>
+    </footer>
+  </div>
+</div>
