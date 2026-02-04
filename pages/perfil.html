@@ -24,7 +24,7 @@
                     <p class="etiqueta-categoria">maria.perez@email.com</p>
                 </div>
             </div>
-            <button class="boton-editar-perfil">
+            <button class="boton-editar-perfil js-modal-trigger" data-target="modal-js-example">
                 Editar
             </button>
         </div>
@@ -92,8 +92,12 @@
                 Cerrar Sesión <i class="fas fa-sign-out-alt"></i>
             </button>
         </div>
+
+        <!-- MODAL EDITAR PERFIL -->
+        <div w3-include-html="componentes/modal-editarperfil.html"></div>
     </main>
 
+    
     <script src="../js/navbar.js"></script>
 </body>
 </html>
