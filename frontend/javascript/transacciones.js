@@ -25,19 +25,28 @@ botonGuardar.addEventListener("click", (e)=> {
 //control formulario
 
 const AceptacionForm = async (motivo,monto,tipo,categoria) => {
-    const url = "http://localhost:3000/transacciones"
-    const response = await fetch(url, {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json"
-        },  
-    body: JSON.stringify({
-        motivo: motivo,
-        monto: monto,
-        tipo: tipo,
-        categoria: categoria,
+    try {
+        const url = "http://localhost:3000/transacciones"
+        const response = await fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+            },  
+        body: JSON.stringify({
+            motivo: motivo,
+            monto: monto,
+            tipo: tipo,
+            categoria: categoria,
+            })
         })
-    })
-    const data = await response.json();
-    console.log(data);
+        if (!response.ok) {
+        throw new Error("Error en la base de datos");
+        }
+        //agregar funcion acá
+        console.log(await response.json());
+    }
+    catch (err) {
+        console.error(err);
+        alert("Error al guardar nuevos datos");
+    }
 }
