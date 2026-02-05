@@ -2,7 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 
 //agregar routes desde acá
-
+import transacciones from "./routes/transacciones-back"
 
 dotenv.config();
 const app = express();
@@ -13,7 +13,7 @@ app.get("/",(req, res) => {
 });
 
 //agregar endpoints desde acá
-
+app.use("/transacciones", transacciones);
 
 app.listen(process.env.PORT, () => {
   console.log("backend ok, puerto:", process.env.PORT);
