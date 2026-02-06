@@ -61,7 +61,7 @@ const datosNuevos = (transaccion) => {
     const nuevoDato = document.createElement("tr");
 
     let tipoClase = ""
-    if (transaccion.tipo === "ingreso") {
+    if (transaccion.tipo === "Ingreso") {
         tipoClase = "tag is-succes";
     }
     else {

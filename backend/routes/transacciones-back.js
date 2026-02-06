@@ -7,7 +7,11 @@ router.post("/", async (req,res) => {
     try {
         const {motivo, monto, tipo, categoria} = req.body;
         if ( !motivo || !monto ) {
-            return res.status(400).json({ error: 'Completar todos los datos' });
+            return res.status(400).json({ error: "Completar todos los datos" });
+        }
+
+        if (monto < 0) {
+            return res.status(400).json({ error: "El monto debe ser mayor a cero"});
         }
     
         const datosForm = await pool.query("INSERT INTO transacciones (motivo, monto, tipo, categoria) VALUES ($1,$2,$3,$4) RETURNING *",
