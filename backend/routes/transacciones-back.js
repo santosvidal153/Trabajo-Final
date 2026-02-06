@@ -10,7 +10,7 @@ router.post("/", async (req,res) => {
             return res.status(400).json({ error: 'Completar todos los datos' });
         }
     
-        const datosForm = await pool.query("INSERT INTO transacciones (motivo, monto, tipo, categoria) VALUES ($1,$2,$3,$4)"
+        const datosForm = await pool.query("INSERT INTO transacciones (motivo, monto, tipo, categoria) VALUES ($1,$2,$3,$4) RETURNING *",
             [motivo, monto, tipo, categoria]);
         res.status(201).json(datosForm.rows);
     }
