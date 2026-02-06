@@ -20,8 +20,20 @@ router.post("/", async (req,res) => {
     }
 
     catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Error al guardar la transacción' });
+        console.error(err);
+        res.status(500).json({ error: 'Error al guardar la transacción' });
+    }
+});
+
+router.get("/", async (req,res) => {
+    try {
+        const transaccionTotal = await pool.query("SELECT * FROM transacciones ODER BY fecha DESC");
+        res.status(200).json(Result.rows);
+    }
+
+    catch (err) {
+        console.error(err);
+        res.status(500).json({error: "Error al buscar transacciones"});
     }
 });
 
