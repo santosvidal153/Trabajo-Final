@@ -46,6 +46,7 @@ botonGuardar.addEventListener("click", async (e) => {
         const datosGuardados = await response.json();
 
         //falta agregar funcion 
+        datosNuevos(datosGuardados);
         modal.classList.remove("is-active");
         formTransaccion.reset(); 
     }
@@ -62,10 +63,36 @@ const datosNuevos = (transaccion) => {
 
     let tipoClase = ""
     if (transaccion.tipo === "Ingreso") {
-        tipoClase = "tag is-succes";
+        tipoClase = "tag is-success";
     }
     else {
         tipoClase = "tag is-danger";
     }
+
+    datoFecha = nuevoDato.insertCell();
+    datoMotivo = nuevoDato.insertCell();
+    datoTipo = nuevoDato.insertCell();
+    datoMonto = nuevoDato.insertCell();
+    datoOpciones = nuevoDato.insertCell();
+
+    datoFecha.textContent = new Date(transaccion.fecha).toLocaleDateString();
+    datoMotivo.textContent = transaccion.motivo;
+    datoTipo.textContent = transaccion.tipo;
+    datoTipo.classList.add(tipoClase);
+    datoMonto.textContent = transaccion.monto;
+
+    //agrego botones
+    const btnEditar = document.createElement("button");
+    btnEditar.className = "button is-small";
+    btnEditar.textContent = "Editar";
+
+    const btnEliminar = document.createElement("button");
+    btnEliminar.className = "button is-small";
+    btnEliminar.textContent = "Eliminar";
+
+    datoOpciones.appendChild(btnEditar);
+    datoOpciones.appendChild(btnEliminar);
+
+    espDatos.appendChild(nuevoDato);
 }
 
