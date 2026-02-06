@@ -57,6 +57,7 @@ botonGuardar.addEventListener("click", async (e) => {
     }
 });
 
+//funcion de agregar nueva transaccion 
 const datosNuevos = (transaccion) => {
     const espDatos = document.querySelector("#info-transacciones");
     const nuevoDato = document.createElement("tr");
@@ -85,10 +86,12 @@ const datosNuevos = (transaccion) => {
     const btnEditar = document.createElement("button");
     btnEditar.className = "button is-small";
     btnEditar.textContent = "Editar";
+    btnEditar.dataset.id = transaccion.id;
 
     const btnEliminar = document.createElement("button");
     btnEliminar.className = "button is-small";
     btnEliminar.textContent = "Eliminar";
+    btnEliminar.dataset.id = transaccion.id;
 
     datoOpciones.appendChild(btnEditar);
     datoOpciones.appendChild(btnEliminar);
