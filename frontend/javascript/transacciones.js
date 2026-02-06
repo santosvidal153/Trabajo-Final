@@ -56,3 +56,16 @@ botonGuardar.addEventListener("click", async (e) => {
     }
 });
 
+const datosNuevos = (transaccion) => {
+    const espDatos = document.querySelector("#info-transacciones");
+    const nuevoDato = document.createElement("tr");
+
+    let tipoClase = ""
+    if (transaccion.tipo === "ingreso") {
+        tipoClase = "tag is-succes";
+    }
+    else {
+        tipoClase = "tag is-danger";
+    }
+}
+
