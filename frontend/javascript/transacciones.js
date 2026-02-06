@@ -1,7 +1,8 @@
 const botonCrearTransaccion = document.querySelector("#nueva-transaccion");
 const modal = document.querySelector("#modal-transaccion");
-const botonCerrar = document.querySelector("#cerrar-modal");
 const botonCancelar = document.querySelector("#cancelar-form");
+const formTransaccion = document.querySelector("#form-transaccion");
+const botonGuardar = document.querySelector("#guardar-form");
 
 //control de botones
 
@@ -9,18 +10,12 @@ botonCrearTransaccion.addEventListener("click", (e)=> {
     modal.classList.add("is-active");
 })
 
-botonCerrar.addEventListener("click", (e)=> {
-    modal.classList.remove("is-active");
-})
-
 botonCancelar.addEventListener("click", (e)=> {
     modal.classList.remove("is-active");
+    formTransaccion.reset();
 })
 
-
 //control de boton guardar
-const formTransaccion = document.querySelector("#form-transaccion");
-const botonGuardar = document.querySelector("#guardar-form");
 
 formTransaccion.addEventListener("click", async (e) => {
     e.preventDefault();
@@ -60,3 +55,4 @@ formTransaccion.addEventListener("click", async (e) => {
     alert("Error al guardar nuevos datos");
     }
 });
+
