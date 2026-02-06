@@ -17,7 +17,7 @@ botonCancelar.addEventListener("click", (e)=> {
 
 //control de boton guardar
 
-formTransaccion.addEventListener("click", async (e) => {
+botonGuardar.addEventListener("click", async (e) => {
     e.preventDefault();
 
     const motivo = document.querySelector("#motivo").value;
