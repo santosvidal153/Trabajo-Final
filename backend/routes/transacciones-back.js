@@ -11,7 +11,12 @@ router.post("/", async (req,res) => {
             return res.status(400).json({ error: "Completar todos los datos" });
         }
 
-        if (monto < 0) {
+        const regexNumeros = /^[0-9]+(\.\d{1,2})?$/
+        if (! regexNumeros.test(monto)){
+            return res.status(400).json({ error: "El monto debe contener solo numeros positivos y hasta dos decimales"});
+        }
+
+        if (monto <= 0) {
             return res.status(400).json({ error: "El monto debe ser mayor a cero"});
         }
     

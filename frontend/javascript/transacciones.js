@@ -21,7 +21,7 @@ formTransaccion.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const motivo = document.querySelector("#motivo").value;
-    const monto = Number(document.querySelector("#monto").value);
+    const monto = document.querySelector("#monto").value;
     const tipo = document.querySelector("#tipo").value;
     const categoria = document.querySelector("#categoria").value;
 
@@ -39,8 +39,10 @@ formTransaccion.addEventListener("submit", async (e) => {
             categoria: categoria,
             })
         })
+
         if (!response.ok) {
-        throw new Error("Error en la base de datos");
+            const errorData = await response.json();
+            alert(errorData.error || "Error en la base de datos");
         }
 
         const datosGuardados = await response.json();
@@ -53,7 +55,7 @@ formTransaccion.addEventListener("submit", async (e) => {
 
     catch (err) {
     console.error(err);
-    alert("Error al guardar nuevos datos");
+    alert("Error al guardar nuevos datos"); 
     }
 });
 
@@ -95,4 +97,6 @@ const datosNuevos = (transaccion) => {
 
     espDatos.appendChild(nuevoDato);
 }
+
+//funcion para mostrar todos los datos
 
