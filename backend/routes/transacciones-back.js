@@ -17,12 +17,12 @@ router.post("/", async (req,res) => {
     
         const datosForm = await pool.query("INSERT INTO transacciones (motivo, monto, tipo, categoria) VALUES ($1,$2,$3,$4) RETURNING *",
             [motivo, monto, tipo, categoria]);
-        res.status(201).json(datosForm.rows);
+        res.status(201).json(datosForm.rows[0]);
     }
 
     catch (err) {
         console.error(err);
-        res.status(500).json({ error: 'Error al guardar la transacción' });
+        res.status(500).json({ error: "Error al guardar la transacción" });
     }
 });
 

@@ -17,11 +17,11 @@ botonCancelar.addEventListener("click", (e)=> {
 
 //control de boton guardar
 
-botonGuardar.addEventListener("click", async (e) => {
+formTransaccion.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const motivo = document.querySelector("#motivo").value;
-    const monto = document.querySelector("#monto").value;
+    const monto = Number(document.querySelector("#monto").value);
     const tipo = document.querySelector("#tipo").value;
     const categoria = document.querySelector("#categoria").value;
 
@@ -62,24 +62,22 @@ const datosNuevos = (transaccion) => {
     const espDatos = document.querySelector("#info-transacciones");
     const nuevoDato = document.createElement("tr");
 
-    let tipoClase = ""
-    if (transaccion.tipo === "Ingreso") {
-        tipoClase = "tag is-success";
-    }
-    else {
-        tipoClase = "tag is-danger";
-    }
-
-    datoFecha = nuevoDato.insertCell();
-    datoMotivo = nuevoDato.insertCell();
-    datoTipo = nuevoDato.insertCell();
-    datoMonto = nuevoDato.insertCell();
-    datoOpciones = nuevoDato.insertCell();
+    const datoFecha = nuevoDato.insertCell();
+    const datoMotivo = nuevoDato.insertCell();
+    const datoTipo = nuevoDato.insertCell();
+    const datoMonto = nuevoDato.insertCell();
+    const datoOpciones = nuevoDato.insertCell();
 
     datoFecha.textContent = new Date(transaccion.fecha).toLocaleDateString();
     datoMotivo.textContent = transaccion.motivo;
     datoTipo.textContent = transaccion.tipo;
-    datoTipo.classList.add(tipoClase);
+    if (transaccion.tipo === "ingreso") {
+        datoTipo.classList.add("tag", "is-success");
+    }
+    else {
+      datoTipo.classList.add("tag", "is-danger");
+    }
+
     datoMonto.textContent = transaccion.monto;
 
     //agrego botones
@@ -87,13 +85,12 @@ const datosNuevos = (transaccion) => {
     btnEditar.className = "button is-small";
     btnEditar.textContent = "Editar";
     btnEditar.dataset.id = transaccion.id;
+    datoOpciones.appendChild(btnEditar);
 
     const btnEliminar = document.createElement("button");
     btnEliminar.className = "button is-small";
     btnEliminar.textContent = "Eliminar";
     btnEliminar.dataset.id = transaccion.id;
-
-    datoOpciones.appendChild(btnEditar);
     datoOpciones.appendChild(btnEliminar);
 
     espDatos.appendChild(nuevoDato);
