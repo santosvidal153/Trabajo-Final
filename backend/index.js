@@ -2,7 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 
 //agregar routes desde acá
-import transacciones from "./routes/transacciones-back"
+import transacciones from "./routes/transacciones-back.js"
 
 dotenv.config();
 const app = express();

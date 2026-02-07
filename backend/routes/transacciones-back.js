@@ -3,6 +3,7 @@ import { pool } from "./db.js";
 
 const router = express.Router();
 
+//guardar nueva transaccion en db
 router.post("/", async (req,res) => {
     try {
         const {motivo, monto, tipo, categoria} = req.body;
@@ -25,10 +26,11 @@ router.post("/", async (req,res) => {
     }
 });
 
+//obtener todas las transacciones (falta identificar usuario)
 router.get("/", async (req,res) => {
     try {
-        const transaccionTotal = await pool.query("SELECT * FROM transacciones ODER BY fecha DESC");
-        res.status(200).json(Result.rows);
+        const transaccionTotal = await pool.query("SELECT * FROM transacciones ORDER BY fecha DESC");
+        res.status(200).json(transaccionTotal.rows);
     }
 
     catch (err) {
