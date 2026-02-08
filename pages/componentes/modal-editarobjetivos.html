@@ -1,0 +1,42 @@
+<div id="modal-editar-objetivo" class="modal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+
+    <header class="modal-card-head">
+      <p class="modal-card-title">Editar Objetivo</p>
+      <button class="delete" aria-label="close"></button>
+    </header>
+
+    <section class="modal-card-body">
+      <form id="form-editar-objetivo">
+        <div class="field">
+          <label class="label">Nombre del Objetivo</label>
+          <div class="control">
+            <input class="input" type="text" id="objetivo-nombre" placeholder="Nombre del objetivo" required>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Descripción</label>
+          <div class="control">
+            <input class="input" type="text" id="objetivo-descripcion" placeholder="Descripción del objetivo">
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Monto Objetivo ($)</label>
+          <div class="control">
+            <input class="input" type="number" id="objetivo-monto" placeholder="Monto objetivo">
+          </div>
+        </div>
+
+      </form>
+    </section>
+    <footer class="modal-card-foot">
+      <div class="buttons">
+        <button class="button is-success" id="btn-guardar-objetivo">Guardar Cambios</button>
+        <button class="button is-link">Cancelar</button>
+      </div>
+    </footer>
+  </div>
+</div>
