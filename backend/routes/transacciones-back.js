@@ -34,6 +34,7 @@ router.post("/", async (req,res) => {
 //obtener todas las transacciones (falta identificar usuario)
 router.get("/", async (req,res) => {
     try {
+        //falta agregar id de usuario !!!
         const transaccionTotal = await pool.query("SELECT * FROM transacciones ORDER BY fecha DESC");
         res.status(200).json(transaccionTotal.rows);
     }
@@ -41,6 +42,19 @@ router.get("/", async (req,res) => {
     catch (err) {
         console.error(err);
         res.status(500).json({error: "Error al buscar transacciones"});
+    }
+});
+
+//eliminar transacciones
+router.delete("/:id", async (req,res) => {
+    const id = req.params.id;
+    try {
+        await pool.query("DELETE FROM transacciones WHERE id = $1", [id]);
+        res.status(204).end();
+    }
+    catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Error al eliminar transaccion" });
     }
 });
 

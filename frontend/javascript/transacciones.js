@@ -80,6 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
 })
 
 //funcion de agregar nueva transaccion 
+
 const datosNuevos = (transaccion) => {
     const espDatos = document.querySelector("#info-transacciones");
     const nuevoDato = document.createElement("tr");
@@ -117,4 +118,6 @@ const datosNuevos = (transaccion) => {
 
     espDatos.appendChild(nuevoDato);
 }
+
+//botones de editar y eliminar 
 
