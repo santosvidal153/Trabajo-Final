@@ -106,6 +106,7 @@ const eliminarTransferencia = async (id, fila) => {
 const datosNuevos = (transaccion) => {
     const espDatos = document.querySelector("#info-transacciones");
     const nuevoDato = document.createElement("tr");
+    nuevoDato.dataset.id = transaccion.id;
 
     const datoFecha = nuevoDato.insertCell();
     const datoMotivo = nuevoDato.insertCell();
@@ -153,6 +154,7 @@ const datosNuevos = (transaccion) => {
 //abrir modal de modificar transacciones 
 const abrirFormEditar = (transaccion) => {
     const modal = document.querySelector("#modal-transaccion");
+    modal.dataset.id = transaccion.id;
     const contenidoTitulo = modal.querySelector(".modal-card-head");
     const contenidoModal = modal.querySelector(".modal-card-body");
     contenidoTitulo.innerHTML = `<p class="modal-card-title">Editar Transacción</p>`
@@ -214,7 +216,8 @@ const abrirFormEditar = (transaccion) => {
     })
     document.querySelector("#form-editar-transaccion").addEventListener("submit", (e)=> {
         e.preventDefault();
-        guardarCambios(transaccion.id);
+        const id = modal.dataset.id;
+        guardarCambios(id);
     })
 } 
 
