@@ -55,7 +55,7 @@ formTransaccion.addEventListener("submit", async (e) => {
 
     catch (err) {
     console.error(err);
-    alert("Error al guardar nuevos datos"); 
+    alert(err.mesage); 
     }
 });
 
@@ -78,6 +78,28 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     mostrarTransacciones();
 })
+
+//botones de editar y eliminar 
+const eliminarTransferencia = async (id, fila) => {
+    try {
+        const url = `http://localhost:3000/transacciones/${id}`
+        const response = await fetch(url, {
+            method: "DELETE",});
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            alert(errorData.error || "Error en la base de datos");
+        }
+
+        fila.remove();
+    
+    }
+    catch (err) {
+        console.error(err);
+        alert(err.mesage); 
+    }
+}
+
 
 //funcion de agregar nueva transaccion 
 
@@ -115,9 +137,11 @@ const datosNuevos = (transaccion) => {
     btnEliminar.textContent = "Eliminar";
     btnEliminar.dataset.id = transaccion.id;
     datoOpciones.appendChild(btnEliminar);
+    
+    btnEliminar.addEventListener("click", () => {
+        console.log("id a eliminar", transaccion.id);
+        eliminarTransferencia(transaccion.id,nuevoDato); 
+    })
 
     espDatos.appendChild(nuevoDato);
 }
-
-//botones de editar y eliminar 
-
