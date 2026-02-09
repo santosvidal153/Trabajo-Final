@@ -145,3 +145,71 @@ const datosNuevos = (transaccion) => {
 
     espDatos.appendChild(nuevoDato);
 }
+
+//abrir modal de modificar transacciones 
+const abrirFormEditar = (transaccion) => {
+    const modal = document.querySelector("#modal-transaccion");
+    const contenidoModal = modal.querySelector(".modal-card-body");
+    contenidoModal.innerHTML = `
+            <form id="form-editar-transaccion">
+              <div class="field">
+                <label class="label">Motivo</label>
+                <div class="control">
+                  <input class="input" id="new-motivo" type="text" value="${transaccion.motivo}" required>
+                </div>
+              </div>
+      
+              <div class="field">
+                <label class="label">Monto</label>
+                <div class="control">
+                  <input class="input" id="new-monto" type="text" inputmode="decimal" value="${transaccion.monto}" required>
+                </div>
+              </div>
+      
+              <div class="field">
+                <label class="label">Tipo</label>
+                <div class="control">
+                  <div class="select is-fullwidth">
+                    <select id="new-tipo">
+                      <option value="ingreso">Ingreso</option>
+                      <option value="gasto">Gasto</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="label">Categoría</label> 
+                <div class="control">
+                  <div class="select is-fullwidth">
+                    <select id="new-categoria">
+                      <option value="sueldo">Sueldo</option>
+                      <option value="objetivo">Objetivo</option>
+                      <option value="alimento">Alimento</option>
+                      <option value="transporte">Transporte</option>
+                      <option value="salud">Salud</option>
+                      <option value="entretenimiento">Entretenimiento</option>
+                      <option value="otros">Otros</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <footer class="modal-card-foot is-justify-content-space-between">
+              <button class="button" id="cancelar-cambios">Cancelar</button>
+              <button class="button is-success" id="guardar-cambios" type="submit">Guardar</button>
+              </footer>
+            </form>`
+    document.querySelector("#new-tipo").value = transaccion.tipo;
+    document.querySelector("#new-categoria").value = transaccion.categoria;
+    document.querySelector("#form-editar-transaccion").addEventListener("submit", (e)=> {
+        e.preventDefault();
+        guardarCambios(transaccion.id);
+    })
+} 
+
+const guardarCambios = async (id) => {
+    const motivo = document.querySelector("#edit-motivo").value;
+    const monto = document.querySelector("#edit-monto").value;
+    const tipo = document.querySelector("#edit-tipo").value;
+    const categoria = document.querySelector("#edit-categoria").value;
+}

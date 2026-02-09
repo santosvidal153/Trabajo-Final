@@ -66,6 +66,10 @@ router.put("/:id", async (req, res) => {
         if ( !motivo || !monto ) {
             res.status(400). json({ error: "No pueden haber campos vacios"});
         }
+        const regexNumeros = /^[0-9]+(\.\d{1,2})?$/
+        if (! regexNumeros.test(monto)){
+            return res.status(400).json({ error: "Monto no permitido"});
+        }
         const result = await pool.query("UPDATE transacciones SET motivo = $1, monto = $2, tipo = $3, categoria = $4 WHERE id = $5 RETURNING *", 
             [motivo, monto, tipo, categoria, id]);
         res.status(200).json(result.rows[0]);
