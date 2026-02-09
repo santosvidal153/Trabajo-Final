@@ -219,10 +219,10 @@ const abrirFormEditar = (transaccion) => {
 } 
 
 const guardarCambios = async (id) => {
-    const motivo = document.querySelector("#edit-motivo").value;
-    const monto = document.querySelector("#edit-monto").value;
-    const tipo = document.querySelector("#edit-tipo").value;
-    const categoria = document.querySelector("#edit-categoria").value;
+    const motivo = document.querySelector("#new-motivo").value;
+    const monto = document.querySelector("#new-monto").value;
+    const tipo = document.querySelector("#new-tipo").value;
+    const categoria = document.querySelector("#new-categoria").value;
 
     try {
         const response = await fetch(`http://localhost:3000/transacciones/${id}`, {
