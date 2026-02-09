@@ -243,7 +243,7 @@ const guardarCambios = async (id) => {
                 alert(errorData.error || "Error en la base de datos");
             }
         const datosEditados = await response.json(); 
-        //falta funcion para actualizar datos en la pagina
+        actualizarDatos(datosEditados);
         const modal = document.querySelector("#modal-transaccion")
         modal.classList.remove("is-active");
     }
@@ -251,4 +251,19 @@ const guardarCambios = async (id) => {
     console.error(err);
     alert(err.message); 
     }
+}
+
+const actualizarDatos = (transaccion) => {
+    const fila = document.querySelector(`tr[data-id="${transaccion.id}"]`);
+    const columna = fila.querySelectorAll("td");
+    columna[1].textContent = transaccion.motivo;
+    columna[2].textContent = transaccion.tipo;
+    columna[2].className = "";
+    if (transaccion.tipo === "ingreso") {
+        columna[2].classList.add("tag", "is-success");
+    }
+    else {
+        columna[2].classList.add("tag", "is-danger");
+    }
+    columna[3].textContent = transaccion.monto;
 }
