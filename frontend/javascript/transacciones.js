@@ -192,6 +192,7 @@ const abrirFormEditar = (transaccion) => {
                   <div class="select is-fullwidth">
                     <select id="new-categoria">
                       <option value="sueldo">Sueldo</option>
+                      <option value="ahorro">Ahorro</option>
                       <option value="objetivo">Objetivo</option>
                       <option value="alimento">Alimento</option>
                       <option value="transporte">Transporte</option>
