@@ -58,4 +58,22 @@ router.delete("/:id", async (req,res) => {
     }
 });
 
+//modificar transacciones
+router.put("/:id", async (req, res) => {
+    const id = req.params.id;
+    const { motivo, monto, tipo, categoria } = req.body;
+    try {
+        if ( !motivo || !monto ) {
+            res.status(400). json({ error: "No pueden haber campos vacios"});
+        }
+        const result = await pool.query("UPDATE transacciones SET motivo = $1, monto = $2, tipo = $3, categoria = $4 WHERE id = $5 RETURNING *", 
+            [motivo, monto, tipo, categoria, id]);
+        res.status(200).json(result.rows[0]);
+    }
+    catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Error al modificar transaccion" });
+    }
+})
+
 export default router;

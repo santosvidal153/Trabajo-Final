@@ -55,7 +55,7 @@ formTransaccion.addEventListener("submit", async (e) => {
 
     catch (err) {
     console.error(err);
-    alert(err.mesage); 
+    alert(err.message); 
     }
 });
 
@@ -90,13 +90,13 @@ const eliminarTransferencia = async (id, fila) => {
             const errorData = await response.json();
             alert(errorData.error || "Error en la base de datos");
         }
-
+        
         fila.remove();
     
     }
     catch (err) {
         console.error(err);
-        alert(err.mesage); 
+        alert(err.message); 
     }
 }
 
