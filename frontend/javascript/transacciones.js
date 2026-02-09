@@ -132,6 +132,10 @@ const datosNuevos = (transaccion) => {
     btnEditar.dataset.id = transaccion.id;
     datoOpciones.appendChild(btnEditar);
 
+    btnEditar.addEventListener("click", ()=> {
+        abrirFormEditar(transaccion);
+    })
+
     const btnEliminar = document.createElement("button");
     btnEliminar.className = "button is-small";
     btnEliminar.textContent = "Eliminar";
@@ -149,7 +153,9 @@ const datosNuevos = (transaccion) => {
 //abrir modal de modificar transacciones 
 const abrirFormEditar = (transaccion) => {
     const modal = document.querySelector("#modal-transaccion");
+    const contenidoTitulo = modal.querySelector(".modal-card-head");
     const contenidoModal = modal.querySelector(".modal-card-body");
+    contenidoTitulo.innerHTML = `<p class="modal-card-title">Editar Transacción</p>`
     contenidoModal.innerHTML = `
             <form id="form-editar-transaccion">
               <div class="field">
@@ -195,12 +201,17 @@ const abrirFormEditar = (transaccion) => {
                 </div>
               </div>
               <footer class="modal-card-foot is-justify-content-space-between">
-              <button class="button" id="cancelar-cambios">Cancelar</button>
+              <button class="button" id="cancelar-cambios" type="button">Cancelar</button>
               <button class="button is-success" id="guardar-cambios" type="submit">Guardar</button>
               </footer>
             </form>`
+
+    modal.classList.add("is-active");
     document.querySelector("#new-tipo").value = transaccion.tipo;
     document.querySelector("#new-categoria").value = transaccion.categoria;
+    document.querySelector("#cancelar-cambios").addEventListener("click", ()=> {
+        modal.classList.remove("is-active)");
+    })
     document.querySelector("#form-editar-transaccion").addEventListener("submit", (e)=> {
         e.preventDefault();
         guardarCambios(transaccion.id);
@@ -212,4 +223,29 @@ const guardarCambios = async (id) => {
     const monto = document.querySelector("#edit-monto").value;
     const tipo = document.querySelector("#edit-tipo").value;
     const categoria = document.querySelector("#edit-categoria").value;
+
+    try {
+        const response = await fetch(`http://localhost:3000/transacciones/${id}`, {
+            method: "PUT",
+            headers: {"Content-Type": "application/json" },
+            body: JSON.stringify({
+            motivo: motivo,
+            monto: monto,
+            tipo: tipo,
+            categoria: categoria,
+            })
+        })
+        if (!response.ok) {
+                const errorData = await response.json();
+                alert(errorData.error || "Error en la base de datos");
+            }
+        const datosEditados = await response.json(); 
+        //falta funcion para actualizar datos en la pagina
+        const modal = document.querySelector("#modal-transaccion")
+        modal.classList.remove("is-active");
+    }
+    catch (err) {
+    console.error(err);
+    alert(err.message); 
+    }
 }
