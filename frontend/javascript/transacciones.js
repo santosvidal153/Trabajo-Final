@@ -59,6 +59,26 @@ formTransaccion.addEventListener("submit", async (e) => {
     }
 });
 
+//funcion para que no se borren los datos al cambiar de pagina
+
+document.addEventListener("DOMContentLoaded", () => {
+    const mostrarTransacciones = async () => {
+        try {
+            const url = "http://localhost:3000/transacciones"
+            const response = await fetch(url);
+            const transacciones = await response.json();
+            transacciones.forEach(element => {
+                datosNuevos(element);
+            });
+        }
+        catch (err) {
+        console.error(err);
+        alert("Error al traer datos"); 
+    }
+    }
+    mostrarTransacciones();
+})
+
 //funcion de agregar nueva transaccion 
 const datosNuevos = (transaccion) => {
     const espDatos = document.querySelector("#info-transacciones");
@@ -97,6 +117,4 @@ const datosNuevos = (transaccion) => {
 
     espDatos.appendChild(nuevoDato);
 }
-
-//funcion para mostrar todos los datos
 
