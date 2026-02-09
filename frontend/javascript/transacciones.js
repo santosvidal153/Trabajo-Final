@@ -210,7 +210,7 @@ const abrirFormEditar = (transaccion) => {
     document.querySelector("#new-tipo").value = transaccion.tipo;
     document.querySelector("#new-categoria").value = transaccion.categoria;
     document.querySelector("#cancelar-cambios").addEventListener("click", ()=> {
-        modal.classList.remove("is-active)");
+        modal.classList.remove("is-active");
     })
     document.querySelector("#form-editar-transaccion").addEventListener("submit", (e)=> {
         e.preventDefault();
