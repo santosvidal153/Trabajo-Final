@@ -60,4 +60,17 @@ router.delete("/:id/transacciones/:transaccionId", async (req,res) => {
     }
 });
 
+//obtener nombre de usuario
+router.get("/:id", async(req,res) => {
+    try {
+        const id = req.params.id;
+        const nombre = await pool.query("SELECT nombre FROM usuarios WHERE id = $1", [id]);
+        res.status(200).json(nombre.rows[0]);
+    }
+    catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Error al conseguir nombre de usuario." });
+    }
+})
+
 export default router;
