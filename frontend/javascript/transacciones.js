@@ -1,3 +1,6 @@
+//const usuarioId = localStorage.getItem("usuario_id");
+const usuarioId = 1;
+
 const botonCrearTransaccion = document.querySelector("#nueva-transaccion");
 const modal = document.querySelector("#modal-transaccion");
 const botonCancelar = document.querySelector("#cancelar-form");
@@ -26,7 +29,7 @@ formTransaccion.addEventListener("submit", async (e) => {
     const categoria = document.querySelector("#categoria").value;
 
     try {
-        const url = "http://localhost:3000/transacciones"
+        const url = `http://localhost:3000/usuario/${usuarioId}/transacciones`
         const response = await fetch(url, {
         method: "POST",
         headers: {
@@ -37,6 +40,7 @@ formTransaccion.addEventListener("submit", async (e) => {
             monto: monto,
             tipo: tipo,
             categoria: categoria,
+            usuarioId: usuarioId,
             })
         })
 
@@ -46,8 +50,6 @@ formTransaccion.addEventListener("submit", async (e) => {
         }
 
         const datosGuardados = await response.json();
-
-        //falta agregar funcion 
         datosNuevos(datosGuardados);
         modal.classList.remove("is-active");
         formTransaccion.reset(); 
@@ -64,7 +66,7 @@ formTransaccion.addEventListener("submit", async (e) => {
 document.addEventListener("DOMContentLoaded", () => {
     const mostrarTransacciones = async () => {
         try {
-            const url = "http://localhost:3000/transacciones"
+            const url = `http://localhost:3000/usuario/${usuarioId}/transacciones`
             const response = await fetch(url);
             const transacciones = await response.json();
             transacciones.forEach(element => {
@@ -80,12 +82,11 @@ document.addEventListener("DOMContentLoaded", () => {
 })
 
 //botones de editar y eliminar 
-const eliminarTransferencia = async (id, fila) => {
+const eliminarTransferencia = async (transaccionId, fila) => {
     try {
-        const url = `http://localhost:3000/transacciones/${id}`
+        const url = `http://localhost:3000/usuario/${usuarioId}/transacciones/${transaccionId}`
         const response = await fetch(url, {
             method: "DELETE",});
-
         if (!response.ok) {
             const errorData = await response.json();
             alert(errorData.error || "Error en la base de datos");
@@ -144,7 +145,6 @@ const datosNuevos = (transaccion) => {
     datoOpciones.appendChild(btnEliminar);
     
     btnEliminar.addEventListener("click", () => {
-        console.log("id a eliminar", transaccion.id);
         eliminarTransferencia(transaccion.id,nuevoDato); 
     })
 
@@ -237,6 +237,7 @@ const guardarCambios = async (id) => {
             monto: monto,
             tipo: tipo,
             categoria: categoria,
+            usuarioId: usuarioId,
             })
         })
         if (!response.ok) {
