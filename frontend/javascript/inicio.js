@@ -22,3 +22,5 @@ const mostrarBienvenida = async () => {
 document.addEventListener("DOMContentLoaded", ()=> {
     mostrarBienvenida();
 })
+
+

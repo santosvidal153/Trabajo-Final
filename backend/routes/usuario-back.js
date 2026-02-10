@@ -73,4 +73,19 @@ router.get("/:id", async(req,res) => {
     }
 })
 
+//obtener transacciones mensuales
+router.get("/:id/inicio", async (req,res) => {
+    try {
+        const id = req.params.id;
+        const result = await pool.query(
+            `SELECT monto, tipo, categoria FROM transacciones WHERE usuario_id = $1 AND fecha >= date_trunc('month', CURRENT_DATE) AND fecha <  date_trunc('month', CURRENT_DATE) + INTERVAL '1 month'`,
+            [id])
+        res.status(200).json(result.rows);
+        }
+    catch (err) {
+        console.error(err);
+        return res.status(500).json({error: "Error al conseguir datos"});
+    }
+})
+
 export default router;
