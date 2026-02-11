@@ -14,16 +14,34 @@ const mostrarBienvenida = async () => {
           <p class="subtitle">Tus gastos por categoría:</p>`
     }
     catch (err) {
-        console.error;
+        console.error(err);
         alert(err.message);
     }
 }
 
-const resumenMensual = async () => {
+const obtenerSaldo = async() => {
+    try{const response = await fetch(`http://localhost:3000/usuario/${usuarioId}/saldo`)
+        const data = await response.json();
+        if (!response.ok) {
+            const errorData = await response.json();
+            alert(errorData.error || "Error en la base de datos");
+        }
+        const saldo = Number(data.saldo);
+        return saldo;
+    }
+    catch (err) {
+        console.error(err);
+        alert(err.message);
+        return 0;
+    }
+}
+
+const resumenInicio = async () => {
     try {
         const url =  `http://localhost:3000/usuario/${usuarioId}/inicio`
         const response = await fetch(url);
         const data = await response.json();
+        const saldoUsuario = await obtenerSaldo();
 
         const ingresos = data.filter( item => item.tipo === "ingreso");
         const gastos = data.filter(item => item.tipo === "gasto");
@@ -43,11 +61,17 @@ const resumenMensual = async () => {
         const filaAhorro = document.querySelector("#ahorro-mensual");
         filaAhorro.textContent = `$${ahorroMensual}`
 
-        const saldoMensual = ingresoMensual - gastoMensual - ahorroMensual;
+        //obtener saldo de usuario y calcular lo demas
+        const saldoMensual = saldoUsuario + ingresoMensual - gastoMensual - ahorroMensual;
         const filaSaldo = document.querySelector("#saldo-mensual")
         filaSaldo.textContent = `$${saldoMensual}`
 
-        const porcDisp = Number((saldoMensual * 100 / ingresoMensual).toFixed(2));
+        //falta agregar funcion para guardar saldo mensual en saldo de usuario
+
+        let porcDisp = 0;
+        if (ingresoMensual > 0){
+            porcDisp = Number((saldoMensual * 100 / ingresoMensual).toFixed(2));
+        }
         const porcentaje = document.querySelector("#nota-porcentaje");
 
         //notificacion de abajo
@@ -75,6 +99,9 @@ const resumenMensual = async () => {
             </div>
             </article>`
         }
+
+        //gastos por categoria
+
         
     }
     catch (err) {
@@ -86,7 +113,7 @@ const resumenMensual = async () => {
 
 document.addEventListener("DOMContentLoaded", ()=> {
     mostrarBienvenida();
-    resumenMensual();
+    resumenInicio();
 })
 
 

@@ -88,4 +88,17 @@ router.get("/:id/inicio", async (req,res) => {
     }
 })
 
+//obtener saldo de usuarios
+router.get("/:id/saldo", async(req,res) => {
+    try {
+        const id = req.params.id;
+        const result = await pool.query("SELECT saldo FROM usuarios WHERE id = $1", [id]);
+        res.status(200).json(result.rows[0]);
+    }
+    catch(err) {
+        console.error(err);
+        return res.status(500).json({error: "Error al conseguir datos"});
+    }
+})
+
 export default router;
