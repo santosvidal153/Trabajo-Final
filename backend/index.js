@@ -3,8 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 
 
-//agregar routes desde acá
-import transacciones from "./routes/transacciones-back.js"
+//agregar import desde aca
 import usuario from "./routes/usuario-back.js"
 
 dotenv.config();
@@ -19,8 +18,7 @@ app.get("/",(req, res) => {
 });
 
 
-//agregar endpoints desde acá
-app.use("/transacciones", transacciones);
+//agregar rutas desde aca
 app.use("/usuario", usuario);
 
 app.listen(process.env.PORT, () => {

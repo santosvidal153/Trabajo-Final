@@ -153,14 +153,14 @@ const datosNuevos = (transaccion) => {
 }
 
 
-const guardarCambios = async (id) => {
+const guardarCambios = async (transaccionId) => {
     const motivo = document.querySelector("#new-motivo").value;
     const monto = document.querySelector("#new-monto").value;
     const tipo = document.querySelector("#new-tipo").value;
     const categoria = document.querySelector("#new-categoria").value;
 
     try {
-        const response = await fetch(`http://localhost:3000/transacciones/${id}`, {
+        const response = await fetch(`http://localhost:3000/usuario/${usuarioId}/transacciones/${transaccionId}`, {
             method: "PUT",
             headers: {"Content-Type": "application/json" },
             body: JSON.stringify({
@@ -168,7 +168,6 @@ const guardarCambios = async (id) => {
             monto: monto,
             tipo: tipo,
             categoria: categoria,
-            usuarioId: usuarioId,
             })
         })
 
