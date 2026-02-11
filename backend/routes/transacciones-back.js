@@ -32,7 +32,7 @@ router.put("/:id", async (req, res) => {
 
         //no cuento ahorro como saldo disponible, falta ver como queda
         const saldoDisponible = Number(saldoActual.rows[0].saldo) + Number(ingresos.rows[0].ingresos) - Number(gastos.rows[0].gastos) - Number(ahorros.rows[0].ahorros);
-        console.log(saldoDisponible);
+        
         if ( tipo === stringGasto && Number(monto) > saldoDisponible) {
             return res.status(400).json({ error: "No se puede realizar un gasto mayor al saldo disponible"});
         }

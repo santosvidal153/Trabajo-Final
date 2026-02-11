@@ -14,7 +14,6 @@ const mostrarBienvenida = async () => {
           <p class="subtitle">Tus gastos por categoría:</p>`
     }
     catch (err) {
-        console.error(err);
         alert(err.message);
     }
 }
@@ -23,16 +22,15 @@ const obtenerSaldo = async() => {
     try{const response = await fetch(`http://localhost:3000/usuario/${usuarioId}/saldo`)
         const data = await response.json();
         if (!response.ok) {
-            const errorData = await response.json();
-            alert(errorData.error || "Error en la base de datos");
+            alert(data.error || "Error en la base de datos");
+            return;
         }
         const saldo = Number(data.saldo);
         return saldo;
     }
     catch (err) {
-        console.error(err);
         alert(err.message);
-        return 0;
+        return;
     }
 }
 

@@ -45,8 +45,9 @@ formTransaccion.addEventListener("submit", async (e) => {
         })
 
         if (!response.ok) {
-            const errorData = await response.json();
-            alert(errorData.error || "Error en la base de datos");
+            const data = await response.json()
+            alert(data.error || "Error en la base de datos");
+            return;
         }
 
         const datosGuardados = await response.json();
@@ -81,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
     mostrarTransacciones();
 })
 
-//botones de editar y eliminar 
+//boton de eliminar 
 const eliminarTransferencia = async (transaccionId, fila) => {
     try {
         const url = `http://localhost:3000/usuario/${usuarioId}/transacciones/${transaccionId}`
@@ -240,14 +241,18 @@ const guardarCambios = async (id) => {
             usuarioId: usuarioId,
             })
         })
+
         if (!response.ok) {
-                const errorData = await response.json();
-                alert(errorData.error || "Error en la base de datos");
+                const data = await response.json();
+                alert(data.error || "Error en la base de datos");
+                return;
             }
+
         const datosEditados = await response.json(); 
         actualizarDatos(datosEditados);
         const modal = document.querySelector("#modal-transaccion")
         modal.classList.remove("is-active");
+        delete modal.dataset.id; //pruebo
     }
     catch (err) {
     console.error(err);
