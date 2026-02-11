@@ -73,14 +73,14 @@
               <div class="field">
                 <label class="label">Motivo</label>
                 <div class="control">
-                  <input class="input" id="motivo" type="text" required>
+                  <input class="input" id="motivo" type="text" placeholder="Ingrese el motivo" required>
                 </div>
               </div>
       
               <div class="field">
                 <label class="label">Monto</label>
                 <div class="control">
-                  <input class="input" id="monto" type="text" inputmode="decimal" required>
+                  <input class="input" id="monto" type="text" inputmode="decimal" placeholder="Ingrese solo el numero" required>
                 </div>
               </div>
       
@@ -95,7 +95,6 @@
                   </div>
                 </div>
               </div>
-
               <div class="field">
                 <label class="label">Categoría</label> 
                 <div class="control">
@@ -117,10 +116,72 @@
               <button class="button" id="cancelar-form">Cancelar</button>
               <button class="button is-success" id="guardar-form" type="submit">Guardar</button>
               </footer>
+              </form>
+              </section>      
+              </div>
+            </div>
+
+          <div class="modal" id="modal-editar-transaccion">
+          <div class="modal-background"></div>
+  
+          <div class="modal-card">
+            <header class="modal-card-head">
+              <p class="modal-card-title">Editar Transacción</p>
+            </header>
+      
+          <section class="modal-card-body">
+              <form id="form-editar-transaccion">
+              <div class="field">
+                <label class="label">Motivo</label>
+                <div class="control">
+                  <input class="input" id="new-motivo" type="text" required>
+                </div>
+              </div>
+      
+              <div class="field">
+                <label class="label">Monto</label>
+                <div class="control">
+                  <input class="input" id="new-monto" type="text" inputmode="decimal" required>
+                </div>
+              </div>
+      
+              <div class="field">
+                <label class="label">Tipo</label>
+                <div class="control">
+                  <div class="select is-fullwidth">
+                    <select id="new-tipo">
+                      <option value="ingreso">Ingreso</option>
+                      <option value="gasto">Gasto</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="label">Categoría</label> 
+                <div class="control">
+                  <div class="select is-fullwidth">
+                    <select id="new-categoria">
+                      <option value="sueldo">Sueldo</option>
+                      <option value="ahorro">Ahorro</option>
+                      <option value="objetivo">Objetivo</option>
+                      <option value="alimento">Alimento</option>
+                      <option value="transporte">Transporte</option>
+                      <option value="salud">Salud</option>
+                      <option value="entretenimiento">Entretenimiento</option>
+                      <option value="otros">Otros</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <footer class="modal-card-foot is-justify-content-space-between">
+              <button class="button" id="cancelar-cambios" type="button">Cancelar</button>
+              <button class="button is-success" id="guardar-cambios" type="submit">Guardar</button>
+              </footer>
             </form>
-          </section>      
-        </div>
-</div>
+          </section>
+          </div>
+          </div>
 
     </main>
 

@@ -28,6 +28,10 @@ router.post("/:id/transacciones", async (req,res) => {
             return res.status(400).json({ error: "Completar todos los datos" });
         }
 
+        if ( motivo.length > 60 ) {
+            return res.status(400).json({ error: "No puede ingresar mas de 60 caracteres"})
+        }
+
         const regexNumeros = /^[0-9]+(\.\d{1,2})?$/
         if (! regexNumeros.test(monto)){
             return res.status(400).json({ error: "El monto debe contener solo numeros positivos y hasta dos decimales"});
@@ -48,7 +52,7 @@ router.post("/:id/transacciones", async (req,res) => {
 
         //no cuento ahorro como saldo disponible, falta ver como queda
         const saldoDisponible = Number(saldoActual.rows[0].saldo) + Number(ingresos.rows[0].ingresos) - Number(gastos.rows[0].gastos) - Number(ahorros.rows[0].ahorros);
-        
+
         if ( tipo === stringGasto && Number(monto) > saldoDisponible) {
             return res.status(400).json({ error: "No se puede realizar un gasto mayor al saldo disponible"});
         }
