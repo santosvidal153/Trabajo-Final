@@ -61,6 +61,9 @@ const resumenInicio = async () => {
         const filaAhorro = document.querySelector("#ahorro-mensual");
         filaAhorro.textContent = `$${ahorroMensual}`
 
+        const filaSaldoFijo = document.querySelector("#saldo-fijo");
+        filaSaldoFijo.textContent = `$${saldoUsuario}`
+
         //obtener saldo de usuario y calcular lo demas
         const saldoMensual = saldoUsuario + ingresoMensual - gastoMensual - ahorroMensual;
         const filaSaldo = document.querySelector("#saldo-mensual")
