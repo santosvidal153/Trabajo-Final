@@ -1,6 +1,7 @@
 import express from "express";
 import pg from "pg";
 import dotenv from "dotenv";
+import cors from "cors";
 
 //agregar archivos desde acá
 
@@ -18,6 +19,10 @@ const pool = new Pool({
 });
 
 const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.use(express.json());
+app.use(cors());
 
 app.get("/",(req, res) => {
     res.send("backend ok");
