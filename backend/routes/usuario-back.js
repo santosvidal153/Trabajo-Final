@@ -23,6 +23,7 @@ router.post("/:id/transacciones", async (req,res) => {
     try {
         const id = req.params.id;
         const {motivo, monto, tipo, categoria} = req.body;
+
         if ( !motivo || !monto ) {
             return res.status(400).json({ error: "Completar todos los datos" });
         }
@@ -32,8 +33,27 @@ router.post("/:id/transacciones", async (req,res) => {
             return res.status(400).json({ error: "El monto debe contener solo numeros positivos y hasta dos decimales"});
         }
 
-        if (monto <= 0) {
+        if ( Number(monto) <= 0) {
             return res.status(400).json({ error: "El monto debe ser mayor a cero"});
+        }
+
+        const stringIngresos = "ingreso"
+        const stringGasto = "gasto"
+        const stringAhorro = "ahorro"
+        const saldoActual = await pool.query("SELECT saldo FROM usuarios WHERE id = $1", [id]);
+
+        const ingresos = await pool.query("SELECT COALESCE(SUM(monto),0) AS ingresos FROM transacciones WHERE usuario_id = $1 AND tipo = $2", [id, stringIngresos]);
+        const gastos = await pool.query("SELECT COALESCE(SUM(monto),0) AS gastos FROM transacciones WHERE usuario_id = $1 AND tipo = $2", [id,stringGasto]);
+        const ahorros = await pool.query("SELECT COALESCE(SUM(monto),0) AS ahorros FROM transacciones WHERE usuario_id = $1 AND tipo = $2 AND categoria = $3", [id,stringIngresos,stringAhorro]);
+
+        //no cuento ahorro como saldo disponible, falta ver como queda
+        const saldoDisponible = Number(saldoActual.rows[0].saldo) + Number(ingresos.rows[0].ingresos) - Number(gastos.rows[0].gastos) - Number(ahorros.rows[0].ahorros);
+        console.log(saldoDisponible);
+        if ( tipo === stringGasto && Number(monto) > saldoDisponible) {
+            return res.status(400).json({ error: "No se puede realizar un gasto mayor al saldo disponible"});
+        }
+        if ( tipo === stringGasto && categoria === stringAhorro) {
+            return res.status(400).json({ error: "Ahorro no puede ser ingresado como gasto"})
         }
     
         const datosForm = await pool.query("INSERT INTO transacciones (motivo, monto, tipo, categoria, usuario_id) VALUES ($1,$2,$3,$4,$5) RETURNING *",
