@@ -70,7 +70,7 @@ const resumenInicio = async () => {
 
         let porcDisp = 0;
         if (ingresoMensual > 0){
-            porcDisp = Number((saldoMensual * 100 / ingresoMensual).toFixed(2));
+            porcDisp = Number((saldoMensual * 100 / (ingresoMensual + saldoUsuario)).toFixed(2));
         }
         const porcentaje = document.querySelector("#nota-porcentaje");
 
@@ -101,11 +101,36 @@ const resumenInicio = async () => {
         }
 
         //gastos por categoria
-
+        const objetivo = gastos.filter(item => item.categoria === "objetivo");
+        const alimento = gastos.filter(item => item.categoria === "alimento");
+        const transporte = gastos.filter(item => item.categoria === "transporte");
+        const salud = gastos.filter(item => item.categoria === "salud");
+        const entretenimiento = gastos.filter(item => item.categoria === "entretenimiento");
+        const otros = gastos.filter(item => item.categoria === "otros");
         
+        const gastoObj = objetivo.reduce((a,b) => a + Number(b.monto), 0);
+        const gastoAli = alimento.reduce((a,b) => a + Number(b.monto), 0);
+        const gastoTrans = transporte.reduce((a,b) => a + Number(b.monto), 0);
+        const gastoSalud = salud.reduce((a,b) => a + Number(b.monto), 0);
+        const gastoEntret = entretenimiento.reduce((a,b) => a + Number(b.monto), 0);
+        const gastoOtros = otros.reduce((a,b) => a + Number(b.monto), 0);
+
+        const espObj = document.querySelector("#gasto-objetivo");
+        const espAli = document.querySelector("#gasto-alimento");
+        const espTrans = document.querySelector("#gasto-transporte");
+        const espSalud = document.querySelector("#gasto-salud");
+        const espEntret = document.querySelector("#gasto-entretenimiento");
+        const espOtros = document.querySelector("#gasto-otros");
+
+        espObj.textContent = `$${gastoObj}`
+        espAli.textContent = `$${gastoAli}`
+        espTrans.textContent = `$${gastoTrans}`
+        espSalud.textContent = `$${gastoSalud}`
+        espEntret.textContent = `$${gastoEntret}`
+        espOtros.textContent = `$${gastoOtros}`
     }
     catch (err) {
-        console.error;
+        console.error(err);
         alert(err.message);
     }
 }
