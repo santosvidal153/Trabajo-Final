@@ -120,3 +120,13 @@ async function cargarObjetivos() {
         alert('Error de conexión');
     }
 }
+
+function renderizarObjetivos(objetivos) {
+    const contenedor = document.querySelector('.cuadricula-objetivos');
+    contenedor.innerHTML = '';
+    
+    objetivos.forEach(objetivo => {
+        const tarjeta = crearTarjetaObjetivo(objetivo);
+        contenedor.appendChild(tarjeta);
+    });
+}
