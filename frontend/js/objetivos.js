@@ -36,3 +36,32 @@ async function crearObjetivo(objetivo) {
         alert('Error de conexión al crear objetivo');
     }
 }
+
+//funcion para editar objetivo
+async function actualizarObjetivo(id, objetivo) {
+    try {
+        const response = await fetch(`http://localhost:3000/api/objetivos/${id}`, {
+            method: 'PUT',
+            headers: {
+                'x-token': localStorage.getItem('token') || 'user-1',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(objetivo)
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Error HTTP: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        if (data.message) {
+            await cargarObjetivos();
+        } else {
+            console.error(error);
+            alert('Error actualizando objetivo: ' + data.message);
+        }
+    } catch (error) {
+        alert('Error de conexión al actualizar objetivo');
+    }
+}
