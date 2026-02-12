@@ -344,3 +344,51 @@ objetivosRouter.put("/:id", async (req, res) => {
     res.sendStatus(500);
   }
 });
+
+// DELETE /api/objetivos/:id
+objetivosRouter.delete("/:id", async (req, res) => {
+  const usuarioId = req.usuario_id;
+  const objetivoId = getObjetivoId(req);
+
+  if (!objetivoId) {
+    return res.status(404).json({ message: "Objetivo no encontrado" });
+  }
+
+  try {
+    const objetivo = await getObjetivoPorId(usuarioId, objetivoId);
+    if (!objetivo) {
+      return res.status(404).json({ message: "Objetivo no encontrado" });
+    }
+
+    const montoReembolsar = Number.parseFloat(objetivo.actual) || 0;
+
+    await pool.query(
+      "DELETE FROM objetivos WHERE id = $1 AND usuario_id = $2",
+      [objetivoId, usuarioId]
+    );
+
+    if (montoReembolsar > 0) {
+      await pool.query(
+        "UPDATE usuarios SET saldo = saldo + $1 WHERE id = $2",
+        [montoReembolsar, usuarioId]
+      );
+    }
+
+    let mensaje = "Objetivo eliminado exitosamente";
+    if (montoReembolsar > 0) {
+      mensaje = `Objetivo eliminado. Se reembolsaron $${montoReembolsar} a tu saldo`;
+    }
+
+    res.status(200).json({
+      message: mensaje,
+      data: { monto_reembolsado: montoReembolsar },
+    });
+  } catch (error) {
+    console.error("Error eliminando objetivo:", error);
+    res.status(500).json({ 
+      message: "Error al eliminar el objetivo" 
+    });
+  }
+});
+
+export default objetivosRouter;
