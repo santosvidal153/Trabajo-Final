@@ -273,3 +273,74 @@ objetivosRouter.patch("/:id/completar", async (req, res) => {
   }
 });
 
+// PUT /api/objetivos/:id
+objetivosRouter.put("/:id", async (req, res) => {
+  const usuarioId = req.usuario_id;
+  const objetivoId = getObjetivoId(req);
+  const { nombre, descripcion, monto, imagen } = req.body;
+
+  if (!objetivoId) {
+    return res.status(404).json({ 
+      message: "Objetivo no encontrado" 
+    });
+  }
+
+  if (monto && monto <= 0) {
+    return res
+      .status(400)
+      .json({ message: "El monto debe ser mayor a 0" });
+  }
+
+  try {
+    const objetivoActual = await getObjetivoPorId(usuarioId, objetivoId);
+    if (!objetivoActual) {
+      return res.status(404).json({ message: "Objetivo no encontrado" });
+    }
+
+    if (monto && monto < Number.parseFloat(objetivoActual.actual)) {
+      return res.status(400).json({
+        message: `El monto no puede ser menor a lo ya ahorrado ($${objetivoActual.actual})`,
+      });
+    }
+
+    let nuevoNombre = objetivoActual.nombre;
+    if (nombre) {
+      nuevoNombre = nombre;
+    }
+
+    let nuevaDescripcion = objetivoActual.descripcion;
+    if (descripcion !== undefined) {
+      nuevaDescripcion = descripcion;
+    }
+
+    let nuevoMonto = objetivoActual.monto;
+    if (monto) {
+      nuevoMonto = monto;
+    }
+
+    let nuevaImagen = objetivoActual.imagen;
+    if (imagen) {
+      nuevaImagen = imagen;
+    }
+
+    const { rows } = await pool.query(
+      `
+      UPDATE objetivos 
+      SET 
+        nombre = $1,
+        descripcion = $2,
+        monto = $3,
+        imagen = $4,
+        updated_at = CURRENT_TIMESTAMP
+      WHERE id = $5 AND usuario_id = $6
+      RETURNING *
+      `,
+      [nuevoNombre, nuevaDescripcion, nuevoMonto, nuevaImagen, objetivoId, usuarioId]
+    );
+
+    res.json({ message: "Objetivo actualizado", data: rows[0] });
+  } catch (error) {
+    console.error("Error actualizando objetivo:", error);
+    res.sendStatus(500);
+  }
+});
