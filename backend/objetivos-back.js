@@ -232,3 +232,44 @@ objetivosRouter.patch("/:id/progresar", async (req, res) => {
   }
 });
 
+// PATCH /api/objetivos/:id/completar
+objetivosRouter.patch("/:id/completar", async (req, res) => {
+  const usuarioId = req.usuario_id;
+  const objetivoId = getObjetivoId(req);
+
+  if (!objetivoId) {
+    return res.status(404).json({ message: "Objetivo no encontrado" });
+  }
+
+  try {
+    const objetivo = await getObjetivoPorId(usuarioId, objetivoId);
+    if (!objetivo) {
+      return res.status(404).json({ message: "Objetivo no encontrado" });
+    }
+
+    if (objetivo.estado !== "listo") {
+      return res.status(400).json({
+        message: "Solo se pueden completar objetivos que tengan el monto completo ahorrado",
+      });
+    }
+
+    const { rows } = await pool.query(
+      `
+      UPDATE objetivos 
+      SET estado = 'completado', updated_at = CURRENT_TIMESTAMP 
+      WHERE id = $1 AND usuario_id = $2 
+      RETURNING *
+      `,
+      [objetivoId, usuarioId]
+    );
+
+    res.json({
+      message: "Objetivo marcado como comprado",
+      data: rows[0],
+    });
+  } catch (error) {
+    console.error("Error al marcar objetivo como comprado:", error);
+    res.status(500).json({ message: "Error al marcar objetivo como comprado" });
+  }
+});
+
