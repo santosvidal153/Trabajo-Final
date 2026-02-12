@@ -84,3 +84,24 @@ objetivosRouter.get("/", async (req, res) => {
     res.sendStatus(500);
   }
 });
+
+// GET /api/objetivos/:id 
+objetivosRouter.get("/:id", async (req, res) => {
+  const usuarioId = req.usuario_id;
+  const objetivoId = getObjetivoId(req);
+
+  if (!objetivoId) {
+    return res.status(400).json({ message: "ID de objetivo inválido" });
+  }
+
+  try {
+    const objetivo = await getObjetivoPorId(usuarioId, objetivoId);
+    if (!objetivo) {
+      return res.status(404).json({ message: "Objetivo no encontrado" });
+    }
+    res.json({ data: objetivo });
+  } catch (error) {
+    console.error("Error obteniendo objetivo:", error);
+    res.sendStatus(500);
+  }
+});
