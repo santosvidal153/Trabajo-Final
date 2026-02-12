@@ -105,3 +105,65 @@ objetivosRouter.get("/:id", async (req, res) => {
     res.sendStatus(500);
   }
 });
+
+// POST /api/objetivos
+objetivosRouter.post("/", async (req, res) => {
+  const usuarioId = req.usuario_id;
+  const {
+    nombre,
+    monto,
+    actual = 0,
+    categoria,
+    descripcion,
+    fecha_limite,
+    requeridos = 0,
+  } = req.body;
+
+  // Validaciones
+  if (!nombre || !monto || !categoria) {
+    return res.status(400).json({
+      message: "Nombre, monto y categoría son obligatorios",
+    });
+  }
+
+  if (Number(monto) <= 0) {
+    return res.status(400).json({
+      message: "El monto debe ser mayor a 0",
+    });
+  }
+
+  try {
+    let estadoInicial = "bloqueado";
+    if (requeridos === 0) {
+      estadoInicial = "progreso";
+    }
+    const imagenAsignada = asignarImagen(categoria);
+
+    const { rows } = await pool.query(
+      `INSERT INTO objetivos (
+        usuario_id, nombre, monto, actual, estado, categoria, 
+        descripcion, imagen, requeridos
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+      RETURNING *`,
+      [
+        usuarioId,
+        nombre,
+        monto,
+        actual,
+        estadoInicial,
+        categoria,
+        descripcion,
+        imagenAsignada,
+        requeridos,
+      ]
+    );
+
+    res.status(201).json({
+      message: "Objetivo creado exitosamente",
+      data: rows[0],
+    });
+  } catch (error) {
+    console.error("Error creando objetivo:", error);
+    res.status(500).json({ message: "Error al crear objetivo" });
+  }
+});

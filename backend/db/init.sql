@@ -20,7 +20,6 @@ CREATE TABLE objetivos (
     categoria VARCHAR(100) NOT NULL,
     descripcion TEXT,
     imagen VARCHAR(500),
-    fecha_limite DATE,
     requeridos INTEGER DEFAULT 0 CHECK (requeridos >= 0),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
