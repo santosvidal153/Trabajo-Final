@@ -167,3 +167,68 @@ objetivosRouter.post("/", async (req, res) => {
     res.status(500).json({ message: "Error al crear objetivo" });
   }
 });
+
+// PATCH /api/objetivos/:id/progresar
+objetivosRouter.patch("/:id/progresar", async (req, res) => {
+  const usuarioId = req.usuario_id;
+  const objetivoId = getObjetivoId(req);
+  const { monto } = req.body;
+
+  if (!objetivoId) {
+    return res.status(404).json({ message: "Objetivo no encontrado" });
+  }
+
+  // Validar monto
+  const montoNumero = parseFloat(monto);
+
+  if (!monto || isNaN(montoNumero) || montoNumero <= 0) {
+    return res.status(400).json({ 
+      message: "El monto debe ser un número mayor a 0",
+      recibido: monto,
+    });
+  }
+
+  try {
+    // Buscar el objetivo
+    const objetivo = await getObjetivoPorId(usuarioId, objetivoId);
+    if (!objetivo) {
+      return res.status(404).json({ message: "Objetivo no encontrado" });
+    }
+
+    // Verificar que no esté completado
+    if (objetivo.estado === "completado") {
+      return res.status(400).json({
+        message: "No se puede agregar dinero a un objetivo completado",
+      });
+    }
+
+    // Calcular nuevos valores
+    const actualActual = parseFloat(objetivo.actual);
+    const montoTotal = parseFloat(objetivo.monto);
+    const nuevoActual = actualActual + montoNumero;
+    let nuevoEstado = 'progreso';
+    if (nuevoActual >= montoTotal) {
+      nuevoEstado = 'listo';
+    }
+
+    // Actualizar objetivo
+    const { rows } = await pool.query(
+      `UPDATE objetivos 
+       SET actual = actual + $1, estado = $2, updated_at = CURRENT_TIMESTAMP
+       WHERE id = $3 AND usuario_id = $4
+       RETURNING *`,
+      [montoNumero, nuevoEstado, objetivoId, usuarioId]
+    );
+
+    res.json({
+      message: `Se agregaron $${montoNumero} al objetivo`,
+      data: rows[0],
+    });
+  } catch (error) {
+    console.error("Error al agregar dinero al objetivo:", error);
+    res.status(500).json({ 
+      message: "Error al agregar dinero al objetivo" 
+    });
+  }
+});
+
