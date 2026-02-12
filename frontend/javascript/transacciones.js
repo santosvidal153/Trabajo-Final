@@ -19,7 +19,7 @@ botonCancelar.addEventListener("click", (e)=> {
 })
 
 //control de boton guardar
-
+let transTemporal = ""
 formTransaccion.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -28,6 +28,32 @@ formTransaccion.addEventListener("submit", async (e) => {
     const tipo = document.querySelector("#tipo").value;
     const categoria = document.querySelector("#categoria").value;
 
+    transTemporal = {motivo,monto,tipo,categoria,usuarioId};
+
+    //pruebo
+    if (categoria === "ahorro" && tipo !== "gasto") {
+        const modalAhorro = document.querySelector("#modal-ahorro");
+        await abrirModalAhorro();
+        document.querySelector("#modal-transaccion").classList.remove("is-active")
+        modalAhorro.classList.add("is-active");
+        return;
+    }
+    //
+    await guardarTransaccion(transTemporal)
+});
+
+
+const formAhorro = document.querySelector("#form-ahorro");
+formAhorro.addEventListener("submit", async (e)=> {
+    e.preventDefault();
+    const objetivoId = document.querySelector("#objetivo-ahorro").value;
+    const transaccion = {...transTemporal, objetivoId}
+    await guardarTransaccion(transaccion);
+    document.querySelector("#modal-ahorro").classList.remove("is-active");
+})
+
+
+const guardarTransaccion = async(datos) => {
     try {
         const url = `http://localhost:3000/usuario/${usuarioId}/transacciones`
         const response = await fetch(url, {
@@ -35,13 +61,7 @@ formTransaccion.addEventListener("submit", async (e) => {
         headers: {
             "Content-Type": "application/json"
             },  
-        body: JSON.stringify({
-            motivo: motivo,
-            monto: monto,
-            tipo: tipo,
-            categoria: categoria,
-            usuarioId: usuarioId,
-            })
+        body: JSON.stringify(datos)
         })
 
         if (!response.ok) {
@@ -51,14 +71,6 @@ formTransaccion.addEventListener("submit", async (e) => {
         }
 
         const datosGuardados = await response.json();
-        //pruebo
-        if (datosGuardados.categoria === "ahorro") {
-            const modalAhorro = document.querySelector("#modal-ahorro");
-            abrirModalAhorro();
-            modalAhorro.classList.add("is-active");
-            return;
-        }
-        //
         datosNuevos(datosGuardados);
         modal.classList.remove("is-active");
         formTransaccion.reset(); 
@@ -68,7 +80,7 @@ formTransaccion.addEventListener("submit", async (e) => {
     console.error(err);
     alert(err.message); 
     }
-});
+}
 
 //funcion para que no se borren los datos al cambiar de pagina
 
@@ -99,6 +111,7 @@ const eliminarTransferencia = async (transaccionId, fila) => {
         if (!response.ok) {
             const errorData = await response.json();
             alert(errorData.error || "Error en la base de datos");
+            return;
         }
         
         fila.remove();

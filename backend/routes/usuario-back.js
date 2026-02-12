@@ -126,7 +126,10 @@ router.put("/:id/transacciones/:transaccionId", async (req, res) => {
         if ( tipo === stringGasto && categoria === stringAhorro) {
             return res.status(400).json({ error: "Ahorro no puede ser ingresado como gasto"})
         }
-        const transOriginal = await pool.query("SELECT categoria FROM transacciones WHERE ") //continuar acá
+        const transOriginal = await pool.query("SELECT categoria FROM transacciones WHERE id = $1 AND usuario_id = $2", [transaccionId,id]);
+        if ( transOriginal.rows[0].categoria === stringAhorro) {
+            return res.status(400).json({ error: "No se puede modificar un ahorro"})
+        } 
         if ( categoria === stringAhorro ){
             return res.status(400).json({error: "No se puede modificar una transaccion a ahorro"})
         }
@@ -146,6 +149,10 @@ router.put("/:id/transacciones/:transaccionId", async (req, res) => {
 router.delete("/:id/transacciones/:transaccionId", async (req,res) => {
     const { id, transaccionId} = req.params;
     try {
+        const transaccion = await pool.query("SELECT categoria FROM transacciones WHERE id = $1 AND usuario_id = $2", [transaccionId,id]);
+        if ( transaccion.rows[0].categoria === "ahorro"){
+            return res.status(400).json({ error: "No se puede eliminar un ingreso de ahorro"});
+        }
         await pool.query("DELETE FROM transacciones WHERE id = $1 AND usuario_id = $2", [transaccionId,id]);
         res.status(204).end();
     }
