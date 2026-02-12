@@ -16,6 +16,10 @@ function getId(req, paramName = 'id') {
   return id;
 }
 
+function getObjetivoId(req) {
+  return getId(req, 'id');
+}
+
 function asignarImagen(categoria) {
    return "https://images.unsplash.com/photo-1615733475255-e5427d8b0f2c?w=500&h=300&fit=crop";
 }
