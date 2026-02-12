@@ -40,7 +40,7 @@
     <main class="contenedor-principal">
         <div class="encabezado-pagina">
             <h1 class="titulo-objetivo">Mis Objetivos</h1>
-            <button class="boton-primario" id="btnObjetivo">+ Nuevo Objetivo</button>
+            <button class="boton-primario js-modal-trigger" id="btnObjetivo" data-target="modal-js-example">+ Nuevo Objetivo</button>
         </div>
 
         <!-- Contenido de los objetivos va aca -->
@@ -310,8 +310,92 @@
                 </div>
             </div>
         </div>
+
+        <div id="modal-js-example" class="modal">
+          <div class="modal-background"></div>
+
+          <div class="modal-card">
+            <header class="modal-card-head">
+              <p class="modal-card-title">Nuevo Objetivo</p>
+              <button class="delete" aria-label="close"></button>
+            </header>
+    
+            <section class="modal-card-body">
+
+              <form id="form-nuevo-objetivo">
+                <div class="field">
+                  <label class="label">Nombre del Objetivo</label>
+                  <div class="control">
+                    <input class="input" type="text" id="obj-nombre" name="nombre" placeholder="Ej: Viaje a Europa" required>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label class="label">Descripción</label>
+                  <div class="control">
+                    <textarea class="textarea" id="obj-descripcion" name="descripcion" placeholder="Describe tu objetivo..."></textarea>
+                  </div>
+                </div>
+
+                <div class="columns">
+                  <div class="column">
+                    <div class="field">
+                      <label class="label">Monto Objetivo ($)</label>
+                      <div class="control">
+                         <input class="input" type="number" id="obj-monto" name="monto" placeholder="0.00" min="1" step="0.01" required>
+                      </div>
+                    </div>
+                  </div>
+        
+                </div>
+
+                <div class="columns">
+                  <div class="column">
+                    <div class="field">
+                      <label class="label">Categoría</label>
+                      <div class="control">
+                         <div class="select is-fullwidth">
+                           <select id="obj-categoria" name="categoria">
+                              <option value="emergencia" data-requeridos="0">Emergencia</option>
+                              <option value="deporte" data-requeridos="0">Deporte</option>
+                              <option value="educacion" data-requeridos="1">Educación</option>
+                              <option value="hogar" data-requeridos="2">Hogar</option>
+                              <option value="pequeños gustos" data-requeridos="3">Pequeños gustos</option>
+                              <option value="entretenimiento" data-requeridos="4">Entretenimiento</option>
+                              <option value="escapadas" data-requeridos="5">Escapadas</option>
+                              <option value="transporte" data-requeridos="7">Transporte</option>
+                              <option value="tecnologia" data-requeridos="9">Tecnología</option>
+                              <option value="viajes" data-requeridos="13">Viajes</option>
+                            </select>
+                          </div>
+                       </div>
+                    </div>
+                  </div>
+          
+                  <div class="column" style="display: none;">
+                    <div class="field">
+                      <label class="label">Objetivos Requeridos</label>
+                      <div class="control">
+                        <input class="input" type="number" id="obj-requeridos" name="requeridos" placeholder="0" min="0" value="0" readonly>
+                      </div>
+                      <p class="help">Se asigna automáticamente según la categoría</p>
+                    </div>
+                  </div>
+                </div>
+              </form>
+
+            </section>
+    
+            <footer class="modal-card-foot">
+              <div class="buttons">
+                <button class="button is-success">Guardar Objetivo</button>
+                <button class="button is-link">Cancelar</button>
+              </div>
+            </footer>
+          </div>
+        </div>
     </main>
 
-    <script src="../js/navbar.js"></script>
+    <script src="../js/modal-objetivos.js"></script>
 </body>
 </html>
