@@ -324,3 +324,30 @@ async function agregarFondos(objetivoId) {
         alert('Error de conexión al agregar fondos: ' + error.message);
     }
 }
+
+//función para completar objetivo
+async function completarObjetivo(objetivoId) {
+    try {
+        if (!confirm('¿Estás seguro de que quieres marcar este objetivo como comprado?')) {
+            return;
+        }
+        
+        const response = await fetch(`http://localhost:3000/api/objetivos/${objetivoId}/completar`, {
+            method: 'PATCH',
+            headers: {
+                'x-token': localStorage.getItem('token') || 'user-1'
+            }
+        });
+        
+        const data = await response.json();
+        
+        if (data.message) {
+            alert(data.message);
+            await cargarObjetivos();
+        } else {
+            alert('Error completando objetivo');
+        }
+    } catch (error) {
+        alert('Error de conexión');
+    }
+}
