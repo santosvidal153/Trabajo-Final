@@ -56,6 +56,7 @@ formTransaccion.addEventListener("submit", async (e) => {
             const modalAhorro = document.querySelector("#modal-ahorro");
             abrirModalAhorro();
             modalAhorro.classList.add("is-active");
+            return;
         }
         //
         datosNuevos(datosGuardados);
@@ -265,5 +266,5 @@ const abrirModalAhorro = async() => {
 //botones de form ahorro 
 const cancelarAhorro = document.querySelector("#cancelar-ahorro");
 cancelarAhorro.addEventListener("click", ()=>{
-    document.querySelector("#modal-ahorro").classList.remove("is_active");
+    document.querySelector("#modal-ahorro").classList.remove("is-active");
 })

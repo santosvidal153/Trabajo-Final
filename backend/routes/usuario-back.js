@@ -22,7 +22,7 @@ router.get("/:id/transacciones", async (req,res) => {
 router.post("/:id/transacciones", async (req,res) => {
     try {
         const id = req.params.id;
-        const {motivo, monto, tipo, categoria} = req.body;
+        const {motivo, monto, tipo, categoria, objetivoId} = req.body;
 
         if ( !motivo || !monto ) {
             return res.status(400).json({ error: "Completar todos los datos" });
@@ -59,9 +59,19 @@ router.post("/:id/transacciones", async (req,res) => {
         if ( tipo === stringGasto && categoria === stringAhorro) {
             return res.status(400).json({ error: "Ahorro no puede ser ingresado como gasto"})
         }
+
+        //validaciones para relacion con objetivos
+        const objetivo = await pool.query("SELECT monto, actual FROM objetivos WHERE id = $1 AND usuario_id = $2", [objetivoId, id]);
+        const monto_obj = Number(objetivo.rows[0].monto);
+        const monto_act = Number(objetivo.rows[0].actual);
+        const transaccion = await pool.query("SELECT monto FROM transacciones WHERE objetivo_id = $1 AND usuario_id = $2", [objetivoId,usuarioId]);
+        const monto_entrante = Number(transaccion.rows[0].monto);
+        if ( (monto_act + monto_entrante) > monto_obj ) {
+            return res.status(400).json({ error: "El ingreso no puede ser mayor al monto total del objetivo"})
+        }
     
-        const datosForm = await pool.query("INSERT INTO transacciones (motivo, monto, tipo, categoria, usuario_id) VALUES ($1,$2,$3,$4,$5) RETURNING *",
-            [motivo, monto, tipo, categoria, id]);
+        const datosForm = await pool.query("INSERT INTO transacciones (motivo, monto, tipo, categoria, usuario_id, objetivo_id) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *",
+            [motivo, monto, tipo, categoria, id, objetivoId]);
         res.status(201).json(datosForm.rows[0]);
     }
 
