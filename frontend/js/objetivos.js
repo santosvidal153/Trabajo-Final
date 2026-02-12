@@ -235,3 +235,41 @@ function crearTarjetaObjetivo(objetivo) {
     }
     return tarjeta;
 }
+
+function getProgressClass(estado) {
+    const clases = {
+        'bloqueado': 'is-danger',
+        'progreso': 'is-warning',
+        'listo': 'is-success',
+        'completado': 'is-success'
+    };
+    return clases[estado];
+}
+
+//funcion para mostrar saldo
+function mostrarSaldo(saldo) {
+    let saldoElement = document.getElementById('saldo-usuario');
+    
+    if (!saldoElement) {
+        const encabezado = document.querySelector('.encabezado-pagina');
+        if (encabezado) {
+            const saldoDiv = document.createElement('div');
+            saldoDiv.className = 'saldo-usuario';
+            saldoDiv.innerHTML = `
+                <div class="saldo-info">
+                    <span class="saldo-label">Saldo disponible:</span>
+                    <span class="saldo-amount" id="saldo-usuario">$${parseFloat(saldo).toFixed(2)}</span>
+                </div>
+            `;
+            const titulo = encabezado.querySelector('.titulo-objetivo');
+            if (titulo) {
+                titulo.insertAdjacentElement('afterend', saldoDiv);
+            }
+            saldoElement = document.getElementById('saldo-usuario');
+        }
+    }
+    
+    if (saldoElement) {
+        saldoElement.textContent = `$${parseFloat(saldo).toFixed(2)}`;
+    }
+}
