@@ -19,17 +19,13 @@ async function crearObjetivo(objetivo) {
             body: JSON.stringify(objetivo)
         });
         
-        if (!response.ok) {
-            throw new Error(`Error HTTP: ${response.status}`);
-        }
-        
         const data = await response.json();
         
         if (data.message) {
             await cargarObjetivos();
         } else {
             console.error(error);
-            alert('Error creando objetivo: ' + data.message);
+            alert('Error creando objetivo:');
         }
     } catch (error) {
         console.error(error);
@@ -207,7 +203,7 @@ function crearTarjetaObjetivo(objetivo) {
                 <p class="is-flex is-justify-content-space-between is-align-items-center">
                     <span>${porcentaje}%</span>
                     ${estado === 'completado' ?
-                        `<span class="completado">¡Completado!</span>` :
+                        `<span class="completado">Completado</span>` :
                         `<span class="falta">Faltan $${(parseFloat(objetivo.monto) - parseFloat(objetivo.actual)).toFixed(2)}</span>`
                     }
                 </p>
