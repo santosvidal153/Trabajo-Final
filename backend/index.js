@@ -1,27 +1,25 @@
 import express from "express";
-import pg from "pg";
 import dotenv from "dotenv";
+import cors from "cors";
 
-//agregar archivos desde acá
 
+//agregar import desde aca
+import usuario from "./routes/usuario-back.js"
 
 dotenv.config();
-
-const { Pool } = pg;
-
-const pool = new Pool({
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-});
-
 const app = express();
+app.use(express.json());
+
+app.use(cors());
+app.use(express.json());
 
 app.get("/",(req, res) => {
     res.send("backend ok");
 });
+
+
+//agregar rutas desde aca
+app.use("/usuario", usuario);
 
 app.listen(process.env.PORT, () => {
   console.log("backend ok, puerto:", process.env.PORT);
