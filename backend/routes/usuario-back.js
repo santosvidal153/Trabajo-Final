@@ -174,4 +174,18 @@ router.get("/:id/saldo", async(req,res) => {
     }
 })
 
+//obtener objetivos para ahorro
+router.get("/:id/objetivoAhorro", async (req,res) => {
+    try {
+        const id = req.params.id;
+        const stringProgreso = "progreso";
+        const result = await pool.query("SELECT id, nombre, monto, actual FROM objetivos WHERE usuario_id = $1 AND estado = $2", [id, stringProgreso]);
+        res.status(200).json(result.rows);
+    }
+    catch(err) {
+        console.error(err);
+        return res.status(500).json({error: "Error al conseguir datos"});
+    }
+})
+
 export default router;
