@@ -273,3 +273,54 @@ function mostrarSaldo(saldo) {
         saldoElement.textContent = `$${parseFloat(saldo).toFixed(2)}`;
     }
 }
+
+function configurarEventListeners() {
+    const btnAniadir = document.querySelector('.btn-aniadir-objetivo');
+    if (btnAniadir) {
+        btnAniadir.addEventListener('click', mostrarFormularioObjetivo);
+    }
+}
+
+//función para agregar fondos
+async function agregarFondos(objetivoId) {
+    try {
+        const montoStr = prompt('¿Cuánto quieres ahorrar en este objetivo?');
+        
+        //validar con regex antes de convertir a número
+        if (!montoStr || !/^\d+(\.\d{1,2})?$/.test(montoStr)) {
+            alert('Por favor, ingresa un monto válido (ej: 100 o 150.50)');
+            return;
+        }
+        
+        const monto = parseFloat(montoStr);
+        
+        if (monto <= 0) {
+            alert('El monto debe ser mayor a 0');
+            return;
+        }
+        
+        const response = await fetch(`http://localhost:3000/api/objetivos/${objetivoId}/progresar`, {
+            method: 'PATCH',
+            headers: {
+                'x-token': localStorage.getItem('token') || 'user-1',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ monto })
+        });
+        
+        const data = await response.json();
+        
+        if (!response.ok) {
+            alert(data.message || `Error HTTP: ${response.status}`);
+            return;
+        }
+        
+        if (data.message) {
+            alert(data.message);
+            await cargarObjetivos();
+        }
+    } catch (error) {
+        console.error(error);
+        alert('Error de conexión al agregar fondos: ' + error.message);
+    }
+}
