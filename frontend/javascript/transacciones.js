@@ -51,6 +51,13 @@ formTransaccion.addEventListener("submit", async (e) => {
         }
 
         const datosGuardados = await response.json();
+        //pruebo
+        if (datosGuardados.categoria === "ahorro") {
+            const modalAhorro = document.querySelector("#modal-ahorro");
+            abrirModalAhorro();
+            modalAhorro.classList.add("is-active");
+        }
+        //
         datosNuevos(datosGuardados);
         modal.classList.remove("is-active");
         formTransaccion.reset(); 
@@ -228,3 +235,35 @@ const actualizarDatos = (transaccion) => {
     }
     columna[3].textContent = transaccion.monto;
 }
+
+//abrir modal de ahorro 
+const abrirModalAhorro = async() => {
+    try {
+        const response = await fetch(`http://localhost:3000/usuario/${usuarioId}/objetivoAhorro`)
+
+        if (!response.ok) {
+            const data = await response.json()
+            alert(data.error || "Error en la base de datos");
+            return;
+        }
+
+        const objetivos = await response.json();
+        const espOpciones = document.querySelector("#objetivo-ahorro");
+        objetivos.forEach( objetivo => {
+            const opcion = document.createElement("option");
+            opcion.value = objetivo.id;
+            opcion.textContent = objetivo.nombre;
+            espOpciones.appendChild(opcion);
+        })
+    }
+    catch (err) {
+    console.error(err);
+    alert(err.message); 
+    }
+}
+
+//botones de form ahorro 
+const cancelarAhorro = document.querySelector("#cancelar-ahorro");
+cancelarAhorro.addEventListener("click", ()=>{
+    document.querySelector("#modal-ahorro").classList.remove("is_active");
+})
