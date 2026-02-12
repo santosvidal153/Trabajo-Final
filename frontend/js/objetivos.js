@@ -351,3 +351,43 @@ async function completarObjetivo(objetivoId) {
         alert('Error de conexión');
     }
 }
+
+//función para editar objetivo
+function editarObjetivo(objetivoId) {
+    const modal = document.getElementById('modal-editar-objetivo');
+    if (!modal) {
+        alert('Modal para editar no encontrado');
+        return;
+    }
+    
+    if (typeof cargarObjetivoParaEdicion === 'function') {
+        cargarObjetivoParaEdicion(objetivoId).then(() => {
+            modal.classList.add('is-active');
+        });
+    } else {
+        alert('Error: función de carga no disponible');
+    }
+}
+
+//función para consultar saldo (Pensaba en sacarlo ya que esta en inicio)
+async function consultarSaldo() {
+    const response = await fetch('http://localhost:3000/api/objetivos/saldo', {
+        headers: {
+            'x-token': localStorage.getItem('token') || 'user-1'
+        }
+    });
+    
+    const data = await response.json();
+    alert(`Saldo disponible: $${data.data.saldo.toFixed(2)}`);
+    
+    return data.data.saldo;
+}
+
+//funciones disponibles globalmente
+window.consultarSaldo = consultarSaldo;
+window.agregarFondos = agregarFondos;
+window.completarObjetivo = completarObjetivo;
+window.editarObjetivo = editarObjetivo;
+window.eliminarObjetivo = eliminarObjetivo;
+window.crearObjetivo = crearObjetivo;
+window.actualizarObjetivo = actualizarObjetivo;
