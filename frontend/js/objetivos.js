@@ -98,3 +98,25 @@ async function eliminarObjetivo(id) {
         return { success: false, message: error.message };
     }
 }
+
+//funcion para cargar objetivos
+async function cargarObjetivos() {    
+    try {
+        const response = await fetch('http://localhost:3000/api/objetivos', {
+            headers: {
+                'x-token': localStorage.getItem('token') || 'user-1'
+            }
+        });
+        
+        const data = await response.json();
+        
+        if (data.data) {
+            mostrarSaldo(data.saldo);
+            renderizarObjetivos(data.data);
+        } else {
+            alert('Error cargando objetivos');
+        }
+    } catch (error) {
+        alert('Error de conexión');
+    }
+}
