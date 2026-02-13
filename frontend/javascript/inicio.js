@@ -34,6 +34,7 @@ const obtenerSaldo = async() => {
     }
 }
 
+
 const resumenInicio = async () => {
     try {
         const url =  `http://localhost:3000/usuario/${usuarioId}/inicio`
@@ -41,13 +42,17 @@ const resumenInicio = async () => {
         const data = await response.json();
         const saldoUsuario = await obtenerSaldo();
 
+        //filtro valores mensuales
         const ingresos = data.filter( item => item.tipo === "ingreso");
-        const gastos = data.filter(item => item.tipo === "gasto");
+        const gastos = data.filter(item => item.tipo === "gasto" && item.categoria !== "objetivo");
         const ahorros = ingresos.filter( item => item.categoria === "ahorro");
+        const gastosObj = data.filter(item => item.tipo === "gasto" && item.categoria === "objetivo");
 
+        //sumo valores mensuales
         const ingresoMensual = ingresos.reduce((a,b) => a + Number(b.monto), 0)
         const gastoMensual = gastos.reduce((a,b) => a + Number(b.monto), 0);
         const ahorroMensual = ahorros.reduce((a,b) => a + Number(b.monto), 0);
+        const gastoObjMensual = gastosObj.reduce((a,b) => a + Number(b.monto), 0);
 
         //resumen mensual
         const filaIngreso = document.querySelector("#ingreso-mensual");
@@ -61,6 +66,9 @@ const resumenInicio = async () => {
 
         const filaSaldoFijo = document.querySelector("#saldo-fijo");
         filaSaldoFijo.textContent = `$${saldoUsuario}`
+
+        const filaGastoAhorro = document.querySelector("#gasto-ahorro-mensual");
+        filaGastoAhorro.textContent = `$${gastoObjMensual}`
 
         //obtener saldo de usuario y calcular lo demas
         const saldoMensual = saldoUsuario + ingresoMensual - gastoMensual - ahorroMensual;
