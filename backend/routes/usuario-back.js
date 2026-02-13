@@ -50,7 +50,6 @@ router.post("/:id/transacciones", async (req,res) => {
         const gastos = await pool.query("SELECT COALESCE(SUM(monto),0) AS gastos FROM transacciones WHERE usuario_id = $1 AND tipo = $2", [id,stringGasto]);
         const ahorros = await pool.query("SELECT COALESCE(SUM(monto),0) AS ahorros FROM transacciones WHERE usuario_id = $1 AND tipo = $2 AND categoria = $3", [id,stringIngresos,stringAhorro]);
 
-        //no cuento ahorro como saldo disponible, falta ver como queda
         const saldoDisponible = Number(saldoActual.rows[0].saldo) + Number(ingresos.rows[0].ingresos) - Number(gastos.rows[0].gastos) - Number(ahorros.rows[0].ahorros);
 
         if ( tipo === stringGasto && Number(monto) > saldoDisponible) {
@@ -61,11 +60,10 @@ router.post("/:id/transacciones", async (req,res) => {
         }
 
         //validaciones para relacion con objetivos
-        console.log("BODY COMPLETO:", req.body);
-        console.log("objetivoId:", objetivoId, typeof objetivoId);
-
+        if (categoria === stringAhorro && objetivoId === "") {
+            return res.status(400).json({ error: "Necesitas un objetivo para guardar ahorro"})
+        }
         if (objetivoId) {
-            console.log("id objetivo:", objetivoId)
             const objetivo = await pool.query("SELECT monto, actual FROM objetivos WHERE id = $1 AND usuario_id = $2", [objetivoId, id]);
             if (objetivo.rows.length === 0) {
                 return res.status(400).json({ error: "Objetivo inválido" });

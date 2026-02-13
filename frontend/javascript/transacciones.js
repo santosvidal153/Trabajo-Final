@@ -46,7 +46,7 @@ formTransaccion.addEventListener("submit", async (e) => {
 const formAhorro = document.querySelector("#form-ahorro");
 formAhorro.addEventListener("submit", async (e)=> {
     e.preventDefault();
-    const objetivoId = document.querySelector("#objetivo-ahorro").value;
+    let objetivoId = document.querySelector("#objetivo-ahorro").value;
     const transaccion = {...transTemporal, objetivoId}
     await guardarTransaccion(transaccion);
     document.querySelector("#modal-ahorro").classList.remove("is-active");
@@ -263,6 +263,7 @@ const abrirModalAhorro = async() => {
 
         const objetivos = await response.json();
         const espOpciones = document.querySelector("#objetivo-ahorro");
+        espOpciones.innerHTML = `<option value="">Elija su objetivo</option>`
         objetivos.forEach( objetivo => {
             const opcion = document.createElement("option");
             opcion.value = objetivo.id;
