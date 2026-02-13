@@ -58,6 +58,25 @@ router.post("/:id/transacciones", async (req,res) => {
         if ( tipo === stringGasto && categoria === stringAhorro) {
             return res.status(400).json({ error: "Ahorro no puede ser ingresado como gasto"})
         }
+        if ( tipo === stringGasto && categoria === 'sueldo') {
+            return res.status(400).json({ error: "Sueldo no puede ser ingresado como gasto"})
+        }
+        if ( tipo === stringIngresos && categoria === 'objetivo') {
+            return res.status(400).json({ error: "Objetivo no puede ser ingresado como ingreso"})
+        }
+        if ( tipo === stringIngresos && categoria === 'alimento') {
+            return res.status(400).json({ error: "Alimento no puede ser ingresado como ingreso"})
+        }
+        if ( tipo === stringIngresos && categoria === 'transporte') {
+            return res.status(400).json({ error: "Transporte no puede ser ingresado como ingreso"})
+        }
+        if ( tipo === stringIngresos && categoria === 'salud') {
+            return res.status(400).json({ error: "Salud no puede ser ingresado como ingreso"})
+        }
+        if ( tipo === stringIngresos && categoria === 'entretenimiento') {
+            return res.status(400).json({ error: "Entretenimiento no puede ser ingresado como ingreso"})
+        }
+
 
         //validaciones para relacion con objetivos
         if (categoria === stringAhorro && objetivoId === "") {

@@ -135,7 +135,9 @@ const datosNuevos = (transaccion) => {
     const datoMotivo = nuevoDato.insertCell();
     const datoTipo = nuevoDato.insertCell();
     const datoMonto = nuevoDato.insertCell();
+    const datoCategoria = nuevoDato.insertCell();
     const datoOpciones = nuevoDato.insertCell();
+    
 
     datoFecha.textContent = new Date(transaccion.fecha).toLocaleDateString();
     datoMotivo.textContent = transaccion.motivo;
@@ -148,6 +150,7 @@ const datosNuevos = (transaccion) => {
     }
 
     datoMonto.textContent = transaccion.monto;
+    datoCategoria.textContent = transaccion.categoria;
 
     //agrego botones
     const btnEditar = document.createElement("button");
@@ -248,6 +251,7 @@ const actualizarDatos = (transaccion) => {
         columna[2].classList.add("tag", "is-danger");
     }
     columna[3].textContent = transaccion.monto;
+    columna[4].textContent = transaccion.categoria;
 }
 
 //abrir modal de ahorro 
