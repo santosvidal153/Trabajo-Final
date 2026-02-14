@@ -73,17 +73,6 @@
     margin-top: 0.75rem;
 }
 
-.boton-detalles {
-    width: 100%;
-    background-color: #3D5A73;
-    color: white;
-    padding: 0.75rem;
-    border-radius: 8px;
-    font-size: 0.95rem;
-    font-weight: 600;
-    margin-top: 0.75rem;
-}
-
 .superposicion-bloqueado {
     position: absolute;
     top: 0;
