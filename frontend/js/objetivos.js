@@ -196,6 +196,22 @@ async function cargarTransaccionesAhorro() {
     }
 }
 
+function procesarTransaccionesAhorro(transacciones) {
+    const transaccionesAhorro = transacciones.filter(trans => 
+        trans.categoria === 'ahorro' && trans.objetivo_id
+    );
+    
+    const ahorrosPorObjetivo = {};
+    transaccionesAhorro.forEach(trans => {
+        if (!ahorrosPorObjetivo[trans.objetivo_id]) {
+            ahorrosPorObjetivo[trans.objetivo_id] = 0;
+        }
+        ahorrosPorObjetivo[trans.objetivo_id] += parseFloat(trans.monto);
+    });
+    
+    window.ahorrosTransacciones = ahorrosPorObjetivo;
+}
+
 function renderizarObjetivos(objetivos) {
     const contenedor = document.querySelector('.cuadricula-objetivos');
     contenedor.innerHTML = '';
@@ -214,13 +230,40 @@ function crearTarjetaObjetivo(objetivo) {
     //obtener el estado del objetivo
     let estado;
     let porcentaje;
+
+    let montoActual = parseFloat(objetivo.actual) || 0;
     
-    if (objetivo.estado_dinamico) {
-        estado = objetivo.estado_dinamico.estado;
-        porcentaje = objetivo.estado_dinamico.porcentaje;
+    porcentaje = Math.round((montoActual / objetivo.monto) * 100);
+    
+    if (porcentaje >= 100) {
+        if (objetivo.estado_dinamico.estado === 'completado') {
+            estado = 'completado';  
+        } else {
+            estado = 'listo';       
+        }
+    } else if (porcentaje >= 80) {
+        estado = 'listo';
+    } else if (objetivo.estado_dinamico.estado === 'bloqueado') {
+        estado = 'bloqueado';
     } else {
-        estado = objetivo.estado;
-        porcentaje = Math.round((objetivo.actual / objetivo.monto) * 100);
+        estado = 'progreso';
+    }
+
+    function getContenidoSuperiorDerecho(estado, objetivo) {
+        if (estado === 'completado' || estado === 'listo') {
+            return '<span class="etiqueta-completado">Completado</span>';
+        } else {
+            return `<div class="is-flex is-gap-0-5"><button class="boton-editar px-2 py-1 js-modal-trigger" id="editar-${objetivo.id}" data-target="modal-editar-objetivo">Editar</button><button class="boton-eliminar px-2 py-1" id="eliminar-${objetivo.id}" onclick="eliminarObjetivo('${objetivo.id}')">Eliminar</button></div>`;
+        }
+    }
+
+    function getMensajeProgreso(estado, objetivo, montoActual) {
+        if (estado === 'completado') {
+            return '<span class="completado">Completado</span>';
+        } else {
+            const montoFaltante = parseFloat(objetivo.monto) - montoActual;
+            return `<span class="falta">Faltan $${montoFaltante.toFixed(2)}</span>`;
+        }
     }
     
     if (estado === 'bloqueado') {
@@ -237,10 +280,7 @@ function crearTarjetaObjetivo(objetivo) {
             <div class="p-4">
                 <div class="is-flex is-justify-content-space-between is-align-items-center mb-4">
                     <span class="etiqueta-categoria">${objetivo.categoria}</span>
-                    <div class="is-flex is-gap-0-5">
-                        <button class="boton-editar px-2 py-1" id="editar-${objetivo.id}">Editar</button>
-                        <button class="boton-eliminar px-2 py-1" id="eliminar-${objetivo.id}">Eliminar</button>
-                    </div>
+                    <span class="etiqueta-bloqueado">Bloqueado</span>
                 </div>
                 <h3 class="titulo-objetivo mb-2">${objetivo.nombre}</h3>
                 <p class="descripcion-objetivo mb-4">${objetivo.descripcion || 'Sin descripción'}</p>
@@ -258,12 +298,7 @@ function crearTarjetaObjetivo(objetivo) {
             <div class="p-4">
                 <div class="is-flex is-justify-content-space-between is-align-items-center mb-4">
                     <span class="etiqueta-categoria">${objetivo.categoria}</span>
-                    ${estado === 'completado' ? 
-                        `<span class="etiqueta-completado">Completado</span>` :
-                        `<div class="is-flex is-gap-0-5">
-                            <button class="boton-editar px-2 py-1" id="editar-${objetivo.id}" onclick="editarObjetivo(${objetivo.id})">Editar</button>
-                            <button class="boton-eliminar px-2 py-1" id="eliminar-${objetivo.id}" onclick="eliminarObjetivo(${objetivo.id})">Eliminar</button>
-                        </div>`
+                    ${getContenidoSuperiorDerecho(estado, objetivo)}
                     }
                 </div>
                 <h3 class="titulo-objetivo mb-2">${objetivo.nombre}</h3>
@@ -281,15 +316,11 @@ function crearTarjetaObjetivo(objetivo) {
                 <progress class="progress ${getProgressClass(estado)}" value="${porcentaje}" max="100">${porcentaje}%</progress>
                 <p class="is-flex is-justify-content-space-between is-align-items-center">
                     <span>${porcentaje}%</span>
-                    ${estado === 'completado' ?
-                        `<span class="completado">Completado</span>` :
-                        `<span class="falta">Faltan $${(parseFloat(objetivo.monto) - parseFloat(objetivo.actual)).toFixed(2)}</span>`
-                    }
+                    ${getMensajeProgreso(estado, objetivo, montoActual)}
                 </p>
             </div>
         `;
         
-        //agregar botones según estado
         if (estado === 'listo') {
             tarjeta.querySelector('.p-4').innerHTML += `
                 <button class="boton-comprar" onclick="completarObjetivo(${objetivo.id})">Comprar</button>
@@ -316,46 +347,44 @@ function configurarEventListeners() {
     }
 }
 
+function editarObjetivo(objetivoId) {
+    cargarObjetivoParaEdicion(objetivoId);
+}
+
 //función para completar objetivo
 async function completarObjetivo(objetivoId) {
     try {
         if (!confirm('¿Estás seguro de que quieres marcar este objetivo como comprado?')) {
             return;
         }
-        
+
+        const token = localStorage.getItem('token');
+        if (!token) {
+            alert('No autenticado. Por favor, inicia sesión nuevamente.');
+            return;
+        }
+
         const response = await fetch(`http://localhost:3000/api/objetivos/${objetivoId}/completar`, {
             method: 'PATCH',
             headers: {
-                'x-token': localStorage.getItem('token') || 'user-1'
+                'x-token': token
             }
         });
+
+        if (response.status === 401) {
+            localStorage.removeItem('token');
+            window.location.href = 'inicio.html';
+            return;
+        }
         
         const data = await response.json();
         
         if (data.message) {
-            alert(data.message);
             await cargarObjetivos();
         } else {
             alert('Error completando objetivo');
         }
     } catch (error) {
         alert('Error de conexión');
-    }
-}
-
-//función para editar objetivo
-function editarObjetivo(objetivoId) {
-    const modal = document.getElementById('modal-editar-objetivo');
-    if (!modal) {
-        alert('Modal para editar no encontrado');
-        return;
-    }
-    
-    if (typeof cargarObjetivoParaEdicion === 'function') {
-        cargarObjetivoParaEdicion(objetivoId).then(() => {
-            modal.classList.add('is-active');
-        });
-    } else {
-        alert('Error: función de carga no disponible');
     }
 }
