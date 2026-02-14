@@ -3,11 +3,6 @@ import { pool } from "./server.js";
 
 export const objetivosRouter = Router();
 
-// Esto despues lo cambio para que sea dinamico
-async function getSaldo(usuarioId) {
-  return 10000000.0;
-}
-
 function getId(req, paramName = 'id') {
   const id = Number.parseInt(req.params[paramName]);
   if (Number.isNaN(id)) {
@@ -20,16 +15,53 @@ function getObjetivoId(req) {
   return getId(req, 'id');
 }
 
-function asignarImagen(categoria) {
-   return "https://images.unsplash.com/photo-1615733475255-e5427d8b0f2c?w=500&h=300&fit=crop";
-}
-
 async function getObjetivoPorId(usuarioId, objetivoId) {
   const { rows } = await pool.query(
     "SELECT * FROM objetivos WHERE id = $1 AND usuario_id = $2",
     [objetivoId, usuarioId]
   );
   return rows[0] || null;
+}
+
+//función para actualizar estados (bloqueado, progreso, listo, completado) de objetivos
+async function actualizarEstadosDinamicos(usuarioId) {
+  try {
+    const { rows: completados } = await pool.query(
+      "SELECT COUNT(*) as count FROM objetivos WHERE usuario_id = $1 AND estado = 'completado'",
+      [usuarioId]
+    );
+    const cantidadCompletados = parseInt(completados[0].count);
+
+    const { rows: objetivos } = await pool.query(
+      "SELECT id, requeridos, estado, actual, monto FROM objetivos WHERE usuario_id = $1",
+      [usuarioId]
+    );
+
+    for (const obj of objetivos) {
+      let nuevoEstado;
+      
+      if (cantidadCompletados >= obj.requeridos) {
+        if (obj.estado === 'completado') {
+          nuevoEstado = 'completado';
+        } else if (obj.actual >= obj.monto) {
+          nuevoEstado = 'listo';
+        } else {
+          nuevoEstado = 'progreso';
+        }
+      } else {
+        nuevoEstado = 'bloqueado';
+      }
+
+      if (obj.estado !== nuevoEstado) {
+        await pool.query(
+          "UPDATE objetivos SET estado = $1 WHERE id = $2 AND usuario_id = $3",
+          [nuevoEstado, obj.id, usuarioId]
+        );
+      } 
+    }
+  } catch (error) {
+    console.error("Error actualizando estados dinámicos:", error);
+  }
 }
 
 // GET /api/objetivos
