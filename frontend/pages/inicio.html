@@ -35,7 +35,7 @@
     
     <main>
     
-    <div class="saludo-inicio">
+    <div class="saludo-inicio" id="saludo-inicio">
       <section class="hero">
         <div class="hero-body">
           <p class="title">Hola, Usuario!</p>
@@ -44,46 +44,46 @@
       </section>
     </div>
 
-  <div class="gastos-categoria">
-    <nav class="level is-mobile">
-  <div class="level-item has-text-centered">
-    <div>
-      <p class="heading">Objetivo</p>
-      <p class="title" id="gasto-objetivo">$0</p>
-    </div>
-  </div>
-  <div class="level-item has-text-centered">
-    <div>
-      <p class="heading">Alimento</p>
-      <p class="title" id="gasto-alimento">$0</p>
-    </div>
-  </div>
-  <div class="level-item has-text-centered">
-    <div>
-      <p class="heading">Transporte</p>
-      <p class="title" id="gasto-transporte">$0</p>
-    </div>
-  </div>
-    <div class="level-item has-text-centered">
-    <div>
-      <p class="heading">Salud</p>
-      <p class="title" id="gasto-salud">$0</p>
-    </div>
-  </div>
-  <div class="level-item has-text-centered">
-    <div>
-      <p class="heading">Entretenimiento</p>
-      <p class="title" id="gasto-entretenimiento">$0</p>
-    </div>
-  </div>
-    <div class="level-item has-text-centered">
-    <div>
-      <p class="heading">Otros</p>
-      <p class="title" id="gasto-otros">$0</p>
-    </div>
-  </div>
-  </nav>
-  </div>
+      <div class="gastos-categoria">
+        <nav class="level is-mobile">
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="heading">Objetivo</p>
+          <p class="title" id="gasto-objetivo">$0</p>
+        </div>
+      </div>
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="heading">Alimento</p>
+          <p class="title" id="gasto-alimento">$0</p>
+        </div>
+      </div>
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="heading">Transporte</p>
+          <p class="title" id="gasto-transporte">$0</p>
+        </div>
+      </div>
+        <div class="level-item has-text-centered">
+        <div>
+          <p class="heading">Salud</p>
+          <p class="title" id="gasto-salud">$0</p>
+        </div>
+      </div>
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="heading">Entretenimiento</p>
+          <p class="title" id="gasto-entretenimiento">$0</p>
+        </div>
+      </div>
+        <div class="level-item has-text-centered">
+        <div>
+          <p class="heading">Otros</p>
+          <p class="title" id="gasto-otros">$0</p>
+        </div>
+      </div>
+      </nav>
+      </div>
 
       <div class="card">
         <header class="card-header">
@@ -94,7 +94,17 @@
       <div class="columns is-multiline">
         
         <div class="column is-6">Ingresos</div>
-        <div class="column is-6 has-text-right has-text-success" id="ingreso-mesual">
+        <div class="column is-6 has-text-right has-text-success" id="ingreso-mensual">
+          $0
+        </div>
+
+        <div class="column is-6">Saldo fijo</div>
+        <div class="column is-6 has-text-right has-text-success" id="saldo-fijo">
+          $0
+        </div>
+
+        <div class="column is-6">Ahorros</div>
+        <div class="column is-6 has-text-right" id="ahorro-mensual">
           $0
         </div>
 
@@ -103,10 +113,11 @@
           $0
         </div>
 
-        <div class="column is-6">Ahorros</div>
-        <div class="column is-6 has-text-right" id="ahorro-mensual">
+        <div class="column is-6">Gasto de ahorros</div>
+        <div class="column is-6 has-text-right has-text-danger" id="gasto-ahorro-mensual">
           $0
         </div>
+
 
         <div class="column is-6"><strong>Saldo disponible</strong></div>
         <div class="column is-6 has-text-right" id="saldo-mensual">
@@ -117,7 +128,7 @@
     </div>
       </div>
      
-      <div class="message-resumen">
+      <div class="message-resumen" id="nota-porcentaje">
         <article class="message is-success">
             <div class="message-body">
               ¡Excelente! Te queda el 100% de tu ingreso disponible este mes. 
@@ -126,6 +137,7 @@
       </div>
 
     </main>
+    <script src="../javascript/inicio.js"></script>
     
 </body>
 </html>
