@@ -37,7 +37,6 @@ function configurarModalEventListeners() {
     });
 }
 
-//manejar el envío del formulario
 async function handleSubmitForm(e) {
     e.preventDefault();
     
@@ -73,7 +72,6 @@ async function handleSubmitForm(e) {
         await crearObjetivo(objetivo);
     }
     
-    // Cerrar modal después de crear/editar
     const modal = document.getElementById('modal-js-example');
     if (modal) {
         closeModal(modal);
