@@ -5,9 +5,7 @@
 }
 
 .tarjeta-objetivo {
-    background: white;
-    border-radius: 16px;
-    overflow: hidden;
+    border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     position: relative;
 }
@@ -19,15 +17,14 @@
 }
 
 .etiqueta-categoria {
-    color: #6B7280;
+    color: #0C3B5D;
     font-size: 0.75rem;
-    font-weight: 600;
 }
 
 .titulo-objetivo {
     font-size: 1.15rem;
-    font-weight: 700;
     color: #1F2937;
+    font-weight: 700;
 }
 
 .descripcion-objetivo {
@@ -36,7 +33,6 @@
     line-height: 1.4;
 }
 
-/* MONTOS */
 .etiqueta-monto {
     font-size: 0.85rem;
     color: #6B7280;
@@ -44,33 +40,22 @@
 
 .valor-monto {
     font-size: 0.95rem;
-    font-weight: 600;
-    color: #1F2937;
+    color: #0C3B5D;
 }
-
-/* BOTONES DE TARJETA */
 
 .boton-editar {
     color: black;
     font-size: 0.85rem;
-    font-weight: 600;
 }
 
 .boton-eliminar {
     color: red;
     font-size: 0.85rem;
-    font-weight: 600;
 }
 
 .boton-comprar {
     width: 100%;
     background-color: #3D5A73;
-    color: white;
-    padding: 0.75rem;
-    border-radius: 8px;
-    font-size: 0.95rem;
-    font-weight: 600;
-    margin-top: 0.75rem;
 }
 
 .superposicion-bloqueado {
@@ -81,7 +66,7 @@
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.7);
     color: white;
-    z-index: 5;
+    z-index: 1000;
 }
 
 .superposicion-bloqueado .icon {
@@ -90,5 +75,5 @@
 
 .mensaje-bloqueado {
     font-size: 0.9rem;
-    font-weight: 500;
+    font-weight: 700;
 }
