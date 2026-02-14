@@ -50,6 +50,7 @@
                       <th class="motivo">Motivo</th>
                       <th class="tipo">Tipo</th>
                       <th class="monto">Monto</th>
+                      <th class="categoria">Categoría</th>
                       <th class="modificar"></th>
                     </tr>
                 </thead>
@@ -80,7 +81,7 @@
               <div class="field">
                 <label class="label">Monto</label>
                 <div class="control">
-                  <input class="input" id="monto" type="text" inputmode="decimal" placeholder="Ingrese solo el numero" required>
+                  <input class="input" id="monto" type="text" inputmode="decimal" placeholder="Ingrese solo el numero (ejemplo: 4000.50)" required>
                 </div>
               </div>
       
@@ -95,31 +96,61 @@
                   </div>
                 </div>
               </div>
+
               <div class="field">
                 <label class="label">Categoría</label> 
                 <div class="control">
                   <div class="select is-fullwidth">
                     <select id="categoria">
-                      <option value="sueldo">Sueldo</option>
-                      <option value="ahorro">Ahorro</option>
-                      <option value="objetivo">Objetivo</option>
-                      <option value="alimento">Alimento</option>
-                      <option value="transporte">Transporte</option>
-                      <option value="salud">Salud</option>
-                      <option value="entretenimiento">Entretenimiento</option>
-                      <option value="otros">Otros</option>
+                      <option value="sueldo">Sueldo (ingreso)</option>
+                      <option value="ahorro">Ahorro (ingreso)</option>
+                      <option value="alimento">Alimento (gasto)</option>
+                      <option value="transporte">Transporte (gasto)</option>
+                      <option value="salud">Salud (gasto)</option>
+                      <option value="entretenimiento">Entretenimiento (gasto)</option>
+                      <option value="otros">Otros (ingreso/gasto)</option>
                     </select>
                   </div>
                 </div>
               </div>
+              
+            
+              
+
               <footer class="modal-card-foot is-justify-content-space-between">
-              <button class="button" id="cancelar-form">Cancelar</button>
+              <button class="button" id="cancelar-form" type="button">Cancelar</button>
               <button class="button is-success" id="guardar-form" type="submit">Guardar</button>
               </footer>
               </form>
               </section>      
               </div>
             </div>
+
+            <div class="modal" id="modal-ahorro">
+                  <div class="modal-background"></div>
+                  <div class="modal-card">
+                    <header class="modal-card-head">
+                      <p class="modal-card-title">Agregar objetivo de ahorro</p>
+                    </header>
+                    <section class="modal-card-body">
+                      <form id="form-ahorro">
+                        <div class="field">
+                          <label class="label">Objetivo (esta transaccion no se podrá modificar ni eliminar)</label>
+                          <div class="control">
+                            <div class="select is-fullwidth">
+                              <select id="objetivo-ahorro">
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                        <footer class="modal-card-foot is-justify-content-space-between">
+                          <button class="button" id="cancelar-ahorro" type="button">Cancelar</button>
+                          <button class="button is-success" id="guardar-ahorro" type="submit">Guardar</button>
+                        </footer>
+                      </form>
+                    </section>
+                  </div>
+              </div>
 
           <div class="modal" id="modal-editar-transaccion">
           <div class="modal-background"></div>
@@ -162,14 +193,13 @@
                 <div class="control">
                   <div class="select is-fullwidth">
                     <select id="new-categoria">
-                      <option value="sueldo">Sueldo</option>
-                      <option value="ahorro">Ahorro</option>
-                      <option value="objetivo">Objetivo</option>
-                      <option value="alimento">Alimento</option>
-                      <option value="transporte">Transporte</option>
-                      <option value="salud">Salud</option>
-                      <option value="entretenimiento">Entretenimiento</option>
-                      <option value="otros">Otros</option>
+                      <option value="sueldo">Sueldo (ingreso)</option>
+                      <option value="ahorro">Ahorro (ingreso) x</option>
+                      <option value="alimento">Alimento (gasto)</option>
+                      <option value="transporte">Transporte (gasto)</option>
+                      <option value="salud">Salud (gasto)</option>
+                      <option value="entretenimiento">Entretenimiento (gasto)</option>
+                      <option value="otros">Otros (ingreso/gasto)</option>
                     </select>
                   </div>
                 </div>

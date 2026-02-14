@@ -1,10 +1,11 @@
-//const usuarioId = localStorage.getItem("usuario_id");
-const usuarioId = 1;
-
 const mostrarBienvenida = async () => {
     try {
-        const url = `http://localhost:3000/usuario/${usuarioId}`
-        const response = await fetch(url);
+        const url = `http://localhost:3000/inicio/usuario`
+        const response = await fetch(url, {
+          headers: {
+            //"x-token": localStorage.getItem("token")
+            "x-token": "user-1" //pruebo asignandole valor
+          }});
         const data =  await response.json();
         const nombre = data.nombre;
         const espSaludo = document.querySelector("#saludo-inicio")
@@ -19,7 +20,11 @@ const mostrarBienvenida = async () => {
 }
 
 const obtenerSaldo = async() => {
-    try{const response = await fetch(`http://localhost:3000/usuario/${usuarioId}/saldo`)
+    try{const response = await fetch(`http://localhost:3000/inicio/saldo`, {
+        headers: {
+            //"x-token": localStorage.getItem("token")
+            "x-token": "user-1"
+        }})
         const data = await response.json();
         if (!response.ok) {
             alert(data.error || "Error en la base de datos");
@@ -34,20 +39,29 @@ const obtenerSaldo = async() => {
     }
 }
 
+
 const resumenInicio = async () => {
     try {
-        const url =  `http://localhost:3000/usuario/${usuarioId}/inicio`
-        const response = await fetch(url);
+        const url =  `http://localhost:3000/inicio/resumen`
+        const response = await fetch(url, {
+            headers: {
+                //"x-token": localStorage.getItem("token")
+              "x-token": "user-1"
+            }});
         const data = await response.json();
         const saldoUsuario = await obtenerSaldo();
 
+        //filtro valores mensuales
         const ingresos = data.filter( item => item.tipo === "ingreso");
-        const gastos = data.filter(item => item.tipo === "gasto");
+        const gastos = data.filter(item => item.tipo === "gasto" && item.categoria !== "objetivo");
         const ahorros = ingresos.filter( item => item.categoria === "ahorro");
+        const gastosObj = data.filter(item => item.tipo === "gasto" && item.categoria === "objetivo");
 
+        //sumo valores mensuales
         const ingresoMensual = ingresos.reduce((a,b) => a + Number(b.monto), 0)
         const gastoMensual = gastos.reduce((a,b) => a + Number(b.monto), 0);
         const ahorroMensual = ahorros.reduce((a,b) => a + Number(b.monto), 0);
+        const gastoObjMensual = gastosObj.reduce((a,b) => a + Number(b.monto), 0);
 
         //resumen mensual
         const filaIngreso = document.querySelector("#ingreso-mensual");
@@ -62,12 +76,13 @@ const resumenInicio = async () => {
         const filaSaldoFijo = document.querySelector("#saldo-fijo");
         filaSaldoFijo.textContent = `$${saldoUsuario}`
 
+        const filaGastoAhorro = document.querySelector("#gasto-ahorro-mensual");
+        filaGastoAhorro.textContent = `$${gastoObjMensual}`
+
         //obtener saldo de usuario y calcular lo demas
         const saldoMensual = saldoUsuario + ingresoMensual - gastoMensual - ahorroMensual;
         const filaSaldo = document.querySelector("#saldo-mensual")
         filaSaldo.textContent = `$${saldoMensual}`
-
-        //falta agregar funcion para guardar saldo mensual en saldo de usuario
 
         let porcDisp = 0;
         if (ingresoMensual > 0){
