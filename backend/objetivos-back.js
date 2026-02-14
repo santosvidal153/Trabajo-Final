@@ -270,6 +270,9 @@ objetivosRouter.patch("/:id/completar", async (req, res) => {
 
 // PUT /api/objetivos/:id
 objetivosRouter.put("/:id", async (req, res) => {
+  if (!req.usuario_id) {
+    return res.status(401).json({ message: "Autenticación requerida" });
+  }
   const usuarioId = req.usuario_id;
   const objetivoId = getObjetivoId(req);
   const { nombre, descripcion, monto, imagen } = req.body;
@@ -281,9 +284,7 @@ objetivosRouter.put("/:id", async (req, res) => {
   }
 
   if (monto && monto <= 0) {
-    return res
-      .status(400)
-      .json({ message: "El monto debe ser mayor a 0" });
+    return res.status(400).json({ message: "El monto debe ser mayor a 0" });
   }
 
   try {
@@ -313,11 +314,6 @@ objetivosRouter.put("/:id", async (req, res) => {
       nuevoMonto = monto;
     }
 
-    let nuevaImagen = objetivoActual.imagen;
-    if (imagen) {
-      nuevaImagen = imagen;
-    }
-
     const { rows } = await pool.query(
       `
       UPDATE objetivos 
@@ -325,12 +321,11 @@ objetivosRouter.put("/:id", async (req, res) => {
         nombre = $1,
         descripcion = $2,
         monto = $3,
-        imagen = $4,
         updated_at = CURRENT_TIMESTAMP
-      WHERE id = $5 AND usuario_id = $6
+      WHERE id = $4 AND usuario_id = $5
       RETURNING *
       `,
-      [nuevoNombre, nuevaDescripcion, nuevoMonto, nuevaImagen, objetivoId, usuarioId]
+      [nuevoNombre, nuevaDescripcion, nuevoMonto, objetivoId, usuarioId]
     );
 
     res.json({ message: "Objetivo actualizado", data: rows[0] });
@@ -342,6 +337,9 @@ objetivosRouter.put("/:id", async (req, res) => {
 
 // DELETE /api/objetivos/:id
 objetivosRouter.delete("/:id", async (req, res) => {
+  if (!req.usuario_id) {
+    return res.status(401).json({ message: "Autenticación requerida" });
+  }
   const usuarioId = req.usuario_id;
   const objetivoId = getObjetivoId(req);
 
@@ -356,6 +354,16 @@ objetivosRouter.delete("/:id", async (req, res) => {
     }
 
     const montoReembolsar = Number.parseFloat(objetivo.actual) || 0;
+
+    const transaccionesExistentes = await pool.query(
+      "SELECT id, motivo, objetivo_id FROM transacciones WHERE objetivo_id = $1 AND usuario_id = $2",
+      [objetivoId, usuarioId]
+    );
+    
+    const resultadoTransacciones = await pool.query(
+      "DELETE FROM transacciones WHERE objetivo_id = $1 AND usuario_id = $2 RETURNING *",
+      [objetivoId, usuarioId]
+    );
 
     await pool.query(
       "DELETE FROM objetivos WHERE id = $1 AND usuario_id = $2",
