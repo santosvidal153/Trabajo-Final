@@ -64,11 +64,16 @@ async function actualizarEstadosDinamicos(usuarioId) {
   }
 }
 
-// GET /api/objetivos
+//GET /api/objetivos
 objetivosRouter.get("/", async (req, res) => {
+  if (!req.usuario_id) {
+    return res.status(401).json({ message: "Autenticación requerida" });
+  }
   const usuarioId = req.usuario_id;
 
   try {
+    await actualizarEstadosDinamicos(usuarioId);
+
     const { rows } = await pool.query(
       `
       SELECT 
@@ -103,8 +108,6 @@ objetivosRouter.get("/", async (req, res) => {
       [usuarioId]
     );
 
-    const saldo = await getSaldo(usuarioId);
-
     res.json({
       data: rows.map((objetivo) => ({
         ...objetivo,
@@ -113,7 +116,6 @@ objetivosRouter.get("/", async (req, res) => {
           porcentaje: objetivo.porcentaje,
         },
       })),
-      saldo: saldo,
     });
   } catch (error) {
     console.error("Error obteniendo objetivos:", error);
@@ -123,6 +125,9 @@ objetivosRouter.get("/", async (req, res) => {
 
 // GET /api/objetivos/:id 
 objetivosRouter.get("/:id", async (req, res) => {
+  if (!req.usuario_id) {
+    return res.status(401).json({ message: "Autenticación requerida" });
+  }
   const usuarioId = req.usuario_id;
   const objetivoId = getObjetivoId(req);
 
@@ -144,6 +149,9 @@ objetivosRouter.get("/:id", async (req, res) => {
 
 // POST /api/objetivos
 objetivosRouter.post("/", async (req, res) => {
+  if (!req.usuario_id) {
+    return res.status(401).json({ message: "Autenticación requerida" });
+  }
   const usuarioId = req.usuario_id;
   const {
     nombre,
@@ -151,7 +159,6 @@ objetivosRouter.post("/", async (req, res) => {
     actual = 0,
     categoria,
     descripcion,
-    fecha_limite,
     requeridos = 0,
   } = req.body;
 
@@ -167,13 +174,20 @@ objetivosRouter.post("/", async (req, res) => {
       message: "El monto debe ser mayor a 0",
     });
   }
-
+  
   try {
+    const { rows: objetivosCompletados } = await pool.query(
+      "SELECT COUNT(*) as completados FROM objetivos WHERE usuario_id = $1 AND estado = 'completado'",
+      [usuarioId]
+    );
+    
+    const cantidadCompletados = parseInt(objetivosCompletados[0].completados);
     let estadoInicial = "bloqueado";
-    if (requeridos === 0) {
+    
+    // Si el usuario tiene suficientes objetivos completados, el objetivo está disponible
+    if (cantidadCompletados >= requeridos) {
       estadoInicial = "progreso";
     }
-    const imagenAsignada = asignarImagen(categoria);
 
     const { rows } = await pool.query(
       `INSERT INTO objetivos (
@@ -204,72 +218,11 @@ objetivosRouter.post("/", async (req, res) => {
   }
 });
 
-// PATCH /api/objetivos/:id/progresar
-objetivosRouter.patch("/:id/progresar", async (req, res) => {
-  const usuarioId = req.usuario_id;
-  const objetivoId = getObjetivoId(req);
-  const { monto } = req.body;
-
-  if (!objetivoId) {
-    return res.status(404).json({ message: "Objetivo no encontrado" });
-  }
-
-  // Validar monto
-  const montoNumero = parseFloat(monto);
-
-  if (!monto || isNaN(montoNumero) || montoNumero <= 0) {
-    return res.status(400).json({ 
-      message: "El monto debe ser un número mayor a 0",
-      recibido: monto,
-    });
-  }
-
-  try {
-    // Buscar el objetivo
-    const objetivo = await getObjetivoPorId(usuarioId, objetivoId);
-    if (!objetivo) {
-      return res.status(404).json({ message: "Objetivo no encontrado" });
-    }
-
-    // Verificar que no esté completado
-    if (objetivo.estado === "completado") {
-      return res.status(400).json({
-        message: "No se puede agregar dinero a un objetivo completado",
-      });
-    }
-
-    // Calcular nuevos valores
-    const actualActual = parseFloat(objetivo.actual);
-    const montoTotal = parseFloat(objetivo.monto);
-    const nuevoActual = actualActual + montoNumero;
-    let nuevoEstado = 'progreso';
-    if (nuevoActual >= montoTotal) {
-      nuevoEstado = 'listo';
-    }
-
-    // Actualizar objetivo
-    const { rows } = await pool.query(
-      `UPDATE objetivos 
-       SET actual = actual + $1, estado = $2, updated_at = CURRENT_TIMESTAMP
-       WHERE id = $3 AND usuario_id = $4
-       RETURNING *`,
-      [montoNumero, nuevoEstado, objetivoId, usuarioId]
-    );
-
-    res.json({
-      message: `Se agregaron $${montoNumero} al objetivo`,
-      data: rows[0],
-    });
-  } catch (error) {
-    console.error("Error al agregar dinero al objetivo:", error);
-    res.status(500).json({ 
-      message: "Error al agregar dinero al objetivo" 
-    });
-  }
-});
-
 // PATCH /api/objetivos/:id/completar
 objetivosRouter.patch("/:id/completar", async (req, res) => {
+  if (!req.usuario_id) {
+    return res.status(401).json({ message: "Autenticación requerida" });
+  }
   const usuarioId = req.usuario_id;
   const objetivoId = getObjetivoId(req);
 
@@ -283,9 +236,15 @@ objetivosRouter.patch("/:id/completar", async (req, res) => {
       return res.status(404).json({ message: "Objetivo no encontrado" });
     }
 
-    if (objetivo.estado !== "listo") {
+    const montoActual = parseFloat(objetivo.actual);
+    const montoObjetivo = parseFloat(objetivo.monto);
+    
+    if (montoActual < montoObjetivo) {
       return res.status(400).json({
         message: "Solo se pueden completar objetivos que tengan el monto completo ahorrado",
+        monto_actual: montoActual,
+        monto_objetivo: montoObjetivo,
+        estado_actual: objetivo.estado
       });
     }
 
