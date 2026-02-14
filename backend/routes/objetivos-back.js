@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { pool } from "./server.js";
+import { pool } from "./db.js";
 
 export const objetivosRouter = Router();
 
