@@ -1,6 +1,3 @@
-//const usuarioId = localStorage.getItem("usuario_id");
-const usuarioId = 1;
-
 const botonCrearTransaccion = document.querySelector("#nueva-transaccion");
 const modal = document.querySelector("#modal-transaccion");
 const botonCancelar = document.querySelector("#cancelar-form");
@@ -28,7 +25,7 @@ formTransaccion.addEventListener("submit", async (e) => {
     const tipo = document.querySelector("#tipo").value;
     const categoria = document.querySelector("#categoria").value;
 
-    transTemporal = {motivo,monto,tipo,categoria,usuarioId};
+    transTemporal = {motivo,monto,tipo,categoria};
 
     //pruebo
     if (categoria === "ahorro" && tipo !== "gasto") {
@@ -55,11 +52,13 @@ formAhorro.addEventListener("submit", async (e)=> {
 
 const guardarTransaccion = async(datos) => {
     try {
-        const url = `http://localhost:3000/usuario/${usuarioId}/transacciones`
+        const url = `http://localhost:3000/transacciones`
         const response = await fetch(url, {
         method: "POST",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            //"x-token": localStorage.getItem("token")
+            "x-token": "user-1"
             },  
         body: JSON.stringify(datos)
         })
@@ -87,8 +86,12 @@ const guardarTransaccion = async(datos) => {
 document.addEventListener("DOMContentLoaded", () => {
     const mostrarTransacciones = async () => {
         try {
-            const url = `http://localhost:3000/usuario/${usuarioId}/transacciones`
-            const response = await fetch(url);
+            const url = `http://localhost:3000/transacciones`
+            const response = await fetch(url, {
+                headers: {
+                    //"x-token": localStorage.getItem("token")
+                    "x-token": "user-1"
+                }});
             const transacciones = await response.json();
             transacciones.forEach(element => {
                 datosNuevos(element);
@@ -105,9 +108,13 @@ document.addEventListener("DOMContentLoaded", () => {
 //funcion de boton de eliminar 
 const eliminarTransferencia = async (transaccionId, fila) => {
     try {
-        const url = `http://localhost:3000/usuario/${usuarioId}/transacciones/${transaccionId}`
+        const url = `http://localhost:3000/transacciones/${transaccionId}`
         const response = await fetch(url, {
-            method: "DELETE",});
+            method: "DELETE",
+            headers: {
+                //"x-token": localStorage.getItem("token")
+                "x-token": "user-1"
+            }});
         if (!response.ok) {
             const errorData = await response.json();
             alert(errorData.error || "Error en la base de datos");
@@ -184,9 +191,13 @@ const guardarCambios = async (transaccionId) => {
     const categoria = document.querySelector("#new-categoria").value;
 
     try {
-        const response = await fetch(`http://localhost:3000/usuario/${usuarioId}/transacciones/${transaccionId}`, {
+        const response = await fetch(`http://localhost:3000/transacciones/${transaccionId}`, {
             method: "PUT",
-            headers: {"Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json",
+                "x-token": "user-1"
+                //"x-token": localStorage.getItem("token")
+             },
             body: JSON.stringify({
             motivo: motivo,
             monto: monto,
@@ -257,7 +268,11 @@ const actualizarDatos = (transaccion) => {
 //abrir modal de ahorro 
 const abrirModalAhorro = async() => {
     try {
-        const response = await fetch(`http://localhost:3000/usuario/${usuarioId}/objetivoAhorro`)
+        const response = await fetch(`http://localhost:3000/transacciones/objetivoAhorro`, {
+            headers:{
+                //"x-token": localStorage.getItem("token")
+                "x-token": "user-1"
+            }},) 
 
         if (!response.ok) {
             const data = await response.json()

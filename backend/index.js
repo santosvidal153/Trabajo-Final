@@ -4,7 +4,9 @@ import cors from "cors";
 
 
 //agregar import desde aca
-import usuario from "./routes/usuario-back.js"
+import inicio from "./routes/inicio-back.js"
+import transacciones from "./routes/transacciones-back.js"
+
 
 dotenv.config();
 const app = express();
@@ -19,7 +21,8 @@ app.get("/",(req, res) => {
 
 
 //agregar rutas desde aca
-app.use("/usuario", usuario);
+app.use("/inicio", inicio);
+app.use("/transacciones", transacciones);
 
 app.listen(process.env.PORT, () => {
   console.log("backend ok, puerto:", process.env.PORT);
