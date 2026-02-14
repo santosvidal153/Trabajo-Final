@@ -11,7 +11,7 @@ function inicializarObjetivos() {
 async function crearObjetivo(objetivo) {
     const token = localStorage.getItem('token');
     if (!token) {
-        window.location.href = 'inicio.html';
+        alert('No autenticado. Por favor, inicia sesión nuevamente.');
         return;
     }
     
@@ -45,7 +45,7 @@ async function actualizarObjetivo(id, objetivo) {
     try {
         const token = localStorage.getItem('token');
         if (!token) {
-            window.location.href = 'inicio.html';
+            alert('No autenticado. Por favor, inicia sesión nuevamente.');
             return;
         }
         
@@ -90,7 +90,7 @@ async function eliminarObjetivo(id) {
         
         const token = localStorage.getItem('token');
         if (!token) {
-            window.location.href = 'inicio.html';
+            alert('No autenticado. Por favor, inicia sesión nuevamente.');
             return;
         }
         
@@ -129,22 +129,70 @@ async function eliminarObjetivo(id) {
 //funcion para cargar objetivos
 async function cargarObjetivos() {    
     try {
-        const response = await fetch('http://localhost:3000/api/objetivos', {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            alert('No autenticado. Por favor, inicia sesión nuevamente.');
+            return;
+        }
+        
+        const response = await fetch(`http://localhost:3000/api/objetivos`, {
             headers: {
-                'x-token': localStorage.getItem('token') || 'user-1'
-            }
+                'x-token': token,
+            },
         });
+        
+        if (response.status === 401) {
+            localStorage.removeItem('token');
+            window.location.href = 'inicio.html';
+            return;
+        }
         
         const data = await response.json();
         
         if (data.data) {
-            mostrarSaldo(data.saldo);
+            await cargarTransaccionesAhorro();
             renderizarObjetivos(data.data);
+            if (typeof configurarModalEditar === 'function') {
+                configurarModalEditar();
+            }
         } else {
             alert('Error cargando objetivos');
         }
     } catch (error) {
         alert('Error de conexión');
+    }
+}
+
+//funcion para cargar transacciones de ahorro y actualizar objetivos
+async function cargarTransaccionesAhorro() {
+    try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            alert('No autenticado. Por favor, inicia sesión nuevamente.');
+            return;
+        }
+        const response = await fetch(`http://localhost:3000/usuario/${usuarioId}/transacciones`, {
+            headers: {
+                'x-token': token
+            },
+        });
+        
+        if (response.status === 401) {
+            localStorage.removeItem('token');
+            window.location.href = 'inicio.html';
+            return;
+        }
+        
+        if (!response.ok) {
+            console.error('Error cargando transacciones de ahorro:', response.status, response.statusText);
+            return;
+        }
+        
+        const transacciones = await response.json();
+        procesarTransaccionesAhorro(transacciones);
+        
+    } catch (error) {
+        console.error('Error de conexión al cargar transacciones:', error);
     }
 }
 
@@ -242,21 +290,9 @@ function crearTarjetaObjetivo(objetivo) {
         `;
         
         //agregar botones según estado
-        if (estado === 'progreso') {
-            tarjeta.querySelector('.p-4').innerHTML += `
-                <button class="boton-comprar" onclick="agregarFondos(${objetivo.id})">Ahorrar</button>
-            `;
-        }
-        
         if (estado === 'listo') {
             tarjeta.querySelector('.p-4').innerHTML += `
                 <button class="boton-comprar" onclick="completarObjetivo(${objetivo.id})">Comprar</button>
-            `;
-        }
-        
-        if (estado === 'completado') {
-            tarjeta.querySelector('.p-4').innerHTML += `
-                <button class="boton-detalles" onclick="verDetalles(${objetivo.id})">Ver Detalles</button>
             `;
         }
     }
@@ -273,82 +309,10 @@ function getProgressClass(estado) {
     return clases[estado];
 }
 
-//funcion para mostrar saldo
-function mostrarSaldo(saldo) {
-    let saldoElement = document.getElementById('saldo-usuario');
-    
-    if (!saldoElement) {
-        const encabezado = document.querySelector('.encabezado-pagina');
-        if (encabezado) {
-            const saldoDiv = document.createElement('div');
-            saldoDiv.className = 'saldo-usuario';
-            saldoDiv.innerHTML = `
-                <div class="saldo-info">
-                    <span class="saldo-label">Saldo disponible:</span>
-                    <span class="saldo-amount" id="saldo-usuario">$${parseFloat(saldo).toFixed(2)}</span>
-                </div>
-            `;
-            const titulo = encabezado.querySelector('.titulo-objetivo');
-            if (titulo) {
-                titulo.insertAdjacentElement('afterend', saldoDiv);
-            }
-            saldoElement = document.getElementById('saldo-usuario');
-        }
-    }
-    
-    if (saldoElement) {
-        saldoElement.textContent = `$${parseFloat(saldo).toFixed(2)}`;
-    }
-}
-
 function configurarEventListeners() {
     const btnAniadir = document.querySelector('.btn-aniadir-objetivo');
     if (btnAniadir) {
         btnAniadir.addEventListener('click', mostrarFormularioObjetivo);
-    }
-}
-
-//función para agregar fondos
-async function agregarFondos(objetivoId) {
-    try {
-        const montoStr = prompt('¿Cuánto quieres ahorrar en este objetivo?');
-        
-        //validar con regex antes de convertir a número
-        if (!montoStr || !/^\d+(\.\d{1,2})?$/.test(montoStr)) {
-            alert('Por favor, ingresa un monto válido (ej: 100 o 150.50)');
-            return;
-        }
-        
-        const monto = parseFloat(montoStr);
-        
-        if (monto <= 0) {
-            alert('El monto debe ser mayor a 0');
-            return;
-        }
-        
-        const response = await fetch(`http://localhost:3000/api/objetivos/${objetivoId}/progresar`, {
-            method: 'PATCH',
-            headers: {
-                'x-token': localStorage.getItem('token') || 'user-1',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ monto })
-        });
-        
-        const data = await response.json();
-        
-        if (!response.ok) {
-            alert(data.message || `Error HTTP: ${response.status}`);
-            return;
-        }
-        
-        if (data.message) {
-            alert(data.message);
-            await cargarObjetivos();
-        }
-    } catch (error) {
-        console.error(error);
-        alert('Error de conexión al agregar fondos: ' + error.message);
     }
 }
 
@@ -395,26 +359,3 @@ function editarObjetivo(objetivoId) {
         alert('Error: función de carga no disponible');
     }
 }
-
-//función para consultar saldo (Pensaba en sacarlo ya que esta en inicio)
-async function consultarSaldo() {
-    const response = await fetch('http://localhost:3000/api/objetivos/saldo', {
-        headers: {
-            'x-token': localStorage.getItem('token') || 'user-1'
-        }
-    });
-    
-    const data = await response.json();
-    alert(`Saldo disponible: $${data.data.saldo.toFixed(2)}`);
-    
-    return data.data.saldo;
-}
-
-//funciones disponibles globalmente
-window.consultarSaldo = consultarSaldo;
-window.agregarFondos = agregarFondos;
-window.completarObjetivo = completarObjetivo;
-window.editarObjetivo = editarObjetivo;
-window.eliminarObjetivo = eliminarObjetivo;
-window.crearObjetivo = crearObjetivo;
-window.actualizarObjetivo = actualizarObjetivo;
