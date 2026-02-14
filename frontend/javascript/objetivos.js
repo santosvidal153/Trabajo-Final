@@ -9,41 +9,60 @@ function inicializarObjetivos() {
 
 //funcion para crear objetivo
 async function crearObjetivo(objetivo) {
-    try {        
-        const response = await fetch('http://localhost:3000/api/objetivos', {
-            method: 'POST',
-            headers: {
-                'x-token': localStorage.getItem('token') || 'user-1',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(objetivo)
-        });
+    const token = localStorage.getItem('token');
+    if (!token) {
+        alert('No autenticado. Por favor, inicia sesión nuevamente.');
+        return;
+    }
+    
+    const response = await fetch('http://localhost:3000/api/objetivos', {
+        method: 'POST',
+        headers: {
+            'x-token': token,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(objetivo)
+    });
+    
+    if (response.status === 401) {
+        localStorage.removeItem('token');
+        window.location.href = 'inicio.html';
+        return;
+    }
         
-        const data = await response.json();
+    const data = await response.json();
         
-        if (data.message) {
-            await cargarObjetivos();
-        } else {
-            console.error(error);
-            alert('Error creando objetivo:');
-        }
-    } catch (error) {
-        console.error(error);
-        alert('Error de conexión al crear objetivo');
+    if (data.message) {
+        await cargarObjetivos();
+    } else {
+        console.error(data);
+        alert('Error creando objetivo: ' + data.message);
     }
 }
 
 //funcion para editar objetivo
 async function actualizarObjetivo(id, objetivo) {
     try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            alert('No autenticado. Por favor, inicia sesión nuevamente.');
+            return;
+        }
+        
         const response = await fetch(`http://localhost:3000/api/objetivos/${id}`, {
             method: 'PUT',
             headers: {
-                'x-token': localStorage.getItem('token') || 'user-1',
+                'x-token': token,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(objetivo)
         });
+        
+        if (response.status === 401) {
+            localStorage.removeItem('token');
+            window.location.href = 'inicio.html';
+            return;
+        }
         
         if (!response.ok) {
             throw new Error(`Error HTTP: ${response.status}`);
@@ -66,15 +85,27 @@ async function actualizarObjetivo(id, objetivo) {
 async function eliminarObjetivo(id) {
     try {        
         if (!confirm('¿Estás seguro de que quieres eliminar este objetivo? Se reembolsará el dinero ahorrado a tu saldo.')) {
-            return { success: false, message: 'Cancelado por usuario' };
+            return;
+        }
+        
+        const token = localStorage.getItem('token');
+        if (!token) {
+            alert('No autenticado. Por favor, inicia sesión nuevamente.');
+            return;
         }
         
         const response = await fetch(`http://localhost:3000/api/objetivos/${id}`, {
             method: 'DELETE',
             headers: {
-                'x-token': localStorage.getItem('token') || 'user-1'
-            }
+                'x-token': token
+            },
         });
+        
+        if (response.status === 401) {
+            localStorage.removeItem('token');
+            window.location.href = 'inicio.html';
+            return;
+        }
         
         if (!response.ok) {
             throw new Error(`Error HTTP: ${response.status}`);
@@ -84,37 +115,101 @@ async function eliminarObjetivo(id) {
         if (data.message) {
             alert(data.message);
             await cargarObjetivos();
-            return { success: true, data: data.data };
+            return;
         } else {
             alert('Error eliminando objetivo: ' + data.message);
-            return { success: false, message: data.message };
+            return;
         }
     } catch (error) {
         alert('Error de conexión al eliminar objetivo');
-        return { success: false, message: error.message };
+        return;
     }
 }
 
 //funcion para cargar objetivos
 async function cargarObjetivos() {    
     try {
-        const response = await fetch('http://localhost:3000/api/objetivos', {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            alert('No autenticado. Por favor, inicia sesión nuevamente.');
+            return;
+        }
+        
+        const response = await fetch(`http://localhost:3000/api/objetivos`, {
             headers: {
-                'x-token': localStorage.getItem('token') || 'user-1'
-            }
+                'x-token': token,
+            },
         });
+        
+        if (response.status === 401) {
+            localStorage.removeItem('token');
+            window.location.href = 'inicio.html';
+            return;
+        }
         
         const data = await response.json();
         
         if (data.data) {
-            mostrarSaldo(data.saldo);
+            await cargarTransaccionesAhorro();
             renderizarObjetivos(data.data);
+            if (typeof configurarModalEditar === 'function') {
+                configurarModalEditar();
+            }
         } else {
             alert('Error cargando objetivos');
         }
     } catch (error) {
         alert('Error de conexión');
     }
+}
+
+//funcion para cargar transacciones de ahorro y actualizar objetivos
+async function cargarTransaccionesAhorro() {
+    try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            alert('No autenticado. Por favor, inicia sesión nuevamente.');
+            return;
+        }
+        const response = await fetch(`http://localhost:3000/usuario/${usuarioId}/transacciones`, {
+            headers: {
+                'x-token': token
+            },
+        });
+        
+        if (response.status === 401) {
+            localStorage.removeItem('token');
+            window.location.href = 'inicio.html';
+            return;
+        }
+        
+        if (!response.ok) {
+            console.error('Error cargando transacciones de ahorro:', response.status, response.statusText);
+            return;
+        }
+        
+        const transacciones = await response.json();
+        procesarTransaccionesAhorro(transacciones);
+        
+    } catch (error) {
+        console.error('Error de conexión al cargar transacciones:', error);
+    }
+}
+
+function procesarTransaccionesAhorro(transacciones) {
+    const transaccionesAhorro = transacciones.filter(trans => 
+        trans.categoria === 'ahorro' && trans.objetivo_id
+    );
+    
+    const ahorrosPorObjetivo = {};
+    transaccionesAhorro.forEach(trans => {
+        if (!ahorrosPorObjetivo[trans.objetivo_id]) {
+            ahorrosPorObjetivo[trans.objetivo_id] = 0;
+        }
+        ahorrosPorObjetivo[trans.objetivo_id] += parseFloat(trans.monto);
+    });
+    
+    window.ahorrosTransacciones = ahorrosPorObjetivo;
 }
 
 function renderizarObjetivos(objetivos) {
@@ -135,13 +230,40 @@ function crearTarjetaObjetivo(objetivo) {
     //obtener el estado del objetivo
     let estado;
     let porcentaje;
+
+    let montoActual = parseFloat(objetivo.actual) || 0;
     
-    if (objetivo.estado_dinamico) {
-        estado = objetivo.estado_dinamico.estado;
-        porcentaje = objetivo.estado_dinamico.porcentaje;
+    porcentaje = Math.round((montoActual / objetivo.monto) * 100);
+    
+    if (porcentaje >= 100) {
+        if (objetivo.estado_dinamico.estado === 'completado') {
+            estado = 'completado';  
+        } else {
+            estado = 'listo';       
+        }
+    } else if (porcentaje >= 80) {
+        estado = 'listo';
+    } else if (objetivo.estado_dinamico.estado === 'bloqueado') {
+        estado = 'bloqueado';
     } else {
-        estado = objetivo.estado;
-        porcentaje = Math.round((objetivo.actual / objetivo.monto) * 100);
+        estado = 'progreso';
+    }
+
+    function getContenidoSuperiorDerecho(estado, objetivo) {
+        if (estado === 'completado' || estado === 'listo') {
+            return '<span class="etiqueta-completado">Completado</span>';
+        } else {
+            return `<div class="is-flex is-gap-0-5"><button class="boton-editar px-2 py-1 js-modal-trigger" id="editar-${objetivo.id}" data-target="modal-editar-objetivo">Editar</button><button class="boton-eliminar px-2 py-1" id="eliminar-${objetivo.id}" onclick="eliminarObjetivo('${objetivo.id}')">Eliminar</button></div>`;
+        }
+    }
+
+    function getMensajeProgreso(estado, objetivo, montoActual) {
+        if (estado === 'completado') {
+            return '<span class="completado">Completado</span>';
+        } else {
+            const montoFaltante = parseFloat(objetivo.monto) - montoActual;
+            return `<span class="falta">Faltan $${montoFaltante.toFixed(2)}</span>`;
+        }
     }
     
     if (estado === 'bloqueado') {
@@ -158,10 +280,7 @@ function crearTarjetaObjetivo(objetivo) {
             <div class="p-4">
                 <div class="is-flex is-justify-content-space-between is-align-items-center mb-4">
                     <span class="etiqueta-categoria">${objetivo.categoria}</span>
-                    <div class="is-flex is-gap-0-5">
-                        <button class="boton-editar px-2 py-1" id="editar-${objetivo.id}">Editar</button>
-                        <button class="boton-eliminar px-2 py-1" id="eliminar-${objetivo.id}">Eliminar</button>
-                    </div>
+                    <span class="etiqueta-bloqueado">Bloqueado</span>
                 </div>
                 <h3 class="titulo-objetivo mb-2">${objetivo.nombre}</h3>
                 <p class="descripcion-objetivo mb-4">${objetivo.descripcion || 'Sin descripción'}</p>
@@ -179,12 +298,7 @@ function crearTarjetaObjetivo(objetivo) {
             <div class="p-4">
                 <div class="is-flex is-justify-content-space-between is-align-items-center mb-4">
                     <span class="etiqueta-categoria">${objetivo.categoria}</span>
-                    ${estado === 'completado' ? 
-                        `<span class="etiqueta-completado">Completado</span>` :
-                        `<div class="is-flex is-gap-0-5">
-                            <button class="boton-editar px-2 py-1" id="editar-${objetivo.id}" onclick="editarObjetivo(${objetivo.id})">Editar</button>
-                            <button class="boton-eliminar px-2 py-1" id="eliminar-${objetivo.id}" onclick="eliminarObjetivo(${objetivo.id})">Eliminar</button>
-                        </div>`
+                    ${getContenidoSuperiorDerecho(estado, objetivo)}
                     }
                 </div>
                 <h3 class="titulo-objetivo mb-2">${objetivo.nombre}</h3>
@@ -202,30 +316,14 @@ function crearTarjetaObjetivo(objetivo) {
                 <progress class="progress ${getProgressClass(estado)}" value="${porcentaje}" max="100">${porcentaje}%</progress>
                 <p class="is-flex is-justify-content-space-between is-align-items-center">
                     <span>${porcentaje}%</span>
-                    ${estado === 'completado' ?
-                        `<span class="completado">Completado</span>` :
-                        `<span class="falta">Faltan $${(parseFloat(objetivo.monto) - parseFloat(objetivo.actual)).toFixed(2)}</span>`
-                    }
+                    ${getMensajeProgreso(estado, objetivo, montoActual)}
                 </p>
             </div>
         `;
         
-        //agregar botones según estado
-        if (estado === 'progreso') {
-            tarjeta.querySelector('.p-4').innerHTML += `
-                <button class="boton-comprar" onclick="agregarFondos(${objetivo.id})">Ahorrar</button>
-            `;
-        }
-        
         if (estado === 'listo') {
             tarjeta.querySelector('.p-4').innerHTML += `
                 <button class="boton-comprar" onclick="completarObjetivo(${objetivo.id})">Comprar</button>
-            `;
-        }
-        
-        if (estado === 'completado') {
-            tarjeta.querySelector('.p-4').innerHTML += `
-                <button class="boton-detalles" onclick="verDetalles(${objetivo.id})">Ver Detalles</button>
             `;
         }
     }
@@ -242,34 +340,6 @@ function getProgressClass(estado) {
     return clases[estado];
 }
 
-//funcion para mostrar saldo
-function mostrarSaldo(saldo) {
-    let saldoElement = document.getElementById('saldo-usuario');
-    
-    if (!saldoElement) {
-        const encabezado = document.querySelector('.encabezado-pagina');
-        if (encabezado) {
-            const saldoDiv = document.createElement('div');
-            saldoDiv.className = 'saldo-usuario';
-            saldoDiv.innerHTML = `
-                <div class="saldo-info">
-                    <span class="saldo-label">Saldo disponible:</span>
-                    <span class="saldo-amount" id="saldo-usuario">$${parseFloat(saldo).toFixed(2)}</span>
-                </div>
-            `;
-            const titulo = encabezado.querySelector('.titulo-objetivo');
-            if (titulo) {
-                titulo.insertAdjacentElement('afterend', saldoDiv);
-            }
-            saldoElement = document.getElementById('saldo-usuario');
-        }
-    }
-    
-    if (saldoElement) {
-        saldoElement.textContent = `$${parseFloat(saldo).toFixed(2)}`;
-    }
-}
-
 function configurarEventListeners() {
     const btnAniadir = document.querySelector('.btn-aniadir-objetivo');
     if (btnAniadir) {
@@ -277,113 +347,90 @@ function configurarEventListeners() {
     }
 }
 
-//función para agregar fondos
-async function agregarFondos(objetivoId) {
-    try {
-        const montoStr = prompt('¿Cuánto quieres ahorrar en este objetivo?');
-        
-        //validar con regex antes de convertir a número
-        if (!montoStr || !/^\d+(\.\d{1,2})?$/.test(montoStr)) {
-            alert('Por favor, ingresa un monto válido (ej: 100 o 150.50)');
-            return;
-        }
-        
-        const monto = parseFloat(montoStr);
-        
-        if (monto <= 0) {
-            alert('El monto debe ser mayor a 0');
-            return;
-        }
-        
-        const response = await fetch(`http://localhost:3000/api/objetivos/${objetivoId}/progresar`, {
-            method: 'PATCH',
-            headers: {
-                'x-token': localStorage.getItem('token') || 'user-1',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ monto })
-        });
-        
-        const data = await response.json();
-        
-        if (!response.ok) {
-            alert(data.message || `Error HTTP: ${response.status}`);
-            return;
-        }
-        
-        if (data.message) {
-            alert(data.message);
-            await cargarObjetivos();
-        }
-    } catch (error) {
-        console.error(error);
-        alert('Error de conexión al agregar fondos: ' + error.message);
-    }
+function editarObjetivo(objetivoId) {
+    cargarObjetivoParaEdicion(objetivoId);
 }
 
-//función para completar objetivo
+//funcion para completar objetivo
 async function completarObjetivo(objetivoId) {
+    const token = localStorage.getItem('token');
+    const usuarioId = localStorage.getItem('usuario_id');
+    
+    if (!token) {
+        alert('No autenticado. Por favor, inicia sesión nuevamente.');
+        return;
+    }
+    
+    if (!confirm('¿Estás seguro de que quieres completar este objetivo? Se marcará como comprado y se registrará un gasto en tu historial de transacciones.')) {
+        return;
+    }
+
     try {
-        if (!confirm('¿Estás seguro de que quieres marcar este objetivo como comprado?')) {
-            return;
-        }
         
-        const response = await fetch(`http://localhost:3000/api/objetivos/${objetivoId}/completar`, {
-            method: 'PATCH',
+        const responseObjetivo = await fetch(`http://localhost:3000/api/objetivos/${objetivoId}`, {
             headers: {
-                'x-token': localStorage.getItem('token') || 'user-1'
+                'x-token': token
             }
         });
         
-        const data = await response.json();
+        if (response.status === 401) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('usuario_id');
+            window.location.href = 'inicio.html';
+            return;
+        }
+        
+        if (!responseObjetivo.ok) {
+            throw new Error('Error al obtener datos del objetivo');
+        }
+        
+        const dataObjetivo = await responseObjetivo.json();
+        const objetivo = dataObjetivo.data;
+        
+        const transaccionGasto = {
+            motivo: `Compra: ${objetivo.nombre}`,
+            monto: objetivo.actual.toString(),
+            tipo: 'gasto',
+            categoria: 'objetivo'
+        };
+        
+        const responseTransaccion = await fetch(`http://localhost:3000/usuario/${usuarioId}/transacciones`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(transaccionGasto)
+        });
+        
+        if (!responseTransaccion.ok) {
+            const errorData = await responseTransaccion.json();
+            throw new Error(`Error al crear transacción: ${errorData.error || 'Error desconocido'}`);
+        }
+
+        const responseCompletar = await fetch(`http://localhost:3000/api/objetivos/${objetivoId}/completar`, {
+            method: 'PATCH',
+            headers: {
+                'x-token': token,
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        if (response.status === 401) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('usuario_id');
+            window.location.href = 'inicio.html';
+            return;
+        }
+        
+        const data = await responseCompletar.json();
         
         if (data.message) {
-            alert(data.message);
             await cargarObjetivos();
         } else {
             alert('Error completando objetivo');
         }
     } catch (error) {
-        alert('Error de conexión');
+        console.error(error);
+        alert(`Error al completar objetivo: ${error.message}`);
     }
-}
-
-//función para editar objetivo
-function editarObjetivo(objetivoId) {
-    const modal = document.getElementById('modal-editar-objetivo');
-    if (!modal) {
-        alert('Modal para editar no encontrado');
-        return;
-    }
-    
-    if (typeof cargarObjetivoParaEdicion === 'function') {
-        cargarObjetivoParaEdicion(objetivoId).then(() => {
-            modal.classList.add('is-active');
-        });
-    } else {
-        alert('Error: función de carga no disponible');
-    }
-}
-
-//función para consultar saldo (Pensaba en sacarlo ya que esta en inicio)
-async function consultarSaldo() {
-    const response = await fetch('http://localhost:3000/api/objetivos/saldo', {
-        headers: {
-            'x-token': localStorage.getItem('token') || 'user-1'
-        }
-    });
-    
-    const data = await response.json();
-    alert(`Saldo disponible: $${data.data.saldo.toFixed(2)}`);
-    
-    return data.data.saldo;
-}
-
-//funciones disponibles globalmente
-window.consultarSaldo = consultarSaldo;
-window.agregarFondos = agregarFondos;
-window.completarObjetivo = completarObjetivo;
-window.editarObjetivo = editarObjetivo;
-window.eliminarObjetivo = eliminarObjetivo;
-window.crearObjetivo = crearObjetivo;
-window.actualizarObjetivo = actualizarObjetivo;
+};

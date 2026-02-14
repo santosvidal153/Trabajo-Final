@@ -3,11 +3,6 @@ import { pool } from "./server.js";
 
 export const objetivosRouter = Router();
 
-// Esto despues lo cambio para que sea dinamico
-async function getSaldo(usuarioId) {
-  return 10000000.0;
-}
-
 function getId(req, paramName = 'id') {
   const id = Number.parseInt(req.params[paramName]);
   if (Number.isNaN(id)) {
@@ -20,10 +15,6 @@ function getObjetivoId(req) {
   return getId(req, 'id');
 }
 
-function asignarImagen(categoria) {
-   return "https://images.unsplash.com/photo-1615733475255-e5427d8b0f2c?w=500&h=300&fit=crop";
-}
-
 async function getObjetivoPorId(usuarioId, objetivoId) {
   const { rows } = await pool.query(
     "SELECT * FROM objetivos WHERE id = $1 AND usuario_id = $2",
@@ -32,11 +23,57 @@ async function getObjetivoPorId(usuarioId, objetivoId) {
   return rows[0] || null;
 }
 
-// GET /api/objetivos
+//función para actualizar estados (bloqueado, progreso, listo, completado) de objetivos
+async function actualizarEstadosDinamicos(usuarioId) {
+  try {
+    const { rows: completados } = await pool.query(
+      "SELECT COUNT(*) as count FROM objetivos WHERE usuario_id = $1 AND estado = 'completado'",
+      [usuarioId]
+    );
+    const cantidadCompletados = parseInt(completados[0].count);
+
+    const { rows: objetivos } = await pool.query(
+      "SELECT id, requeridos, estado, actual, monto FROM objetivos WHERE usuario_id = $1",
+      [usuarioId]
+    );
+
+    for (const obj of objetivos) {
+      let nuevoEstado;
+      
+      if (cantidadCompletados >= obj.requeridos) {
+        if (obj.estado === 'completado') {
+          nuevoEstado = 'completado';
+        } else if (obj.actual >= obj.monto) {
+          nuevoEstado = 'listo';
+        } else {
+          nuevoEstado = 'progreso';
+        }
+      } else {
+        nuevoEstado = 'bloqueado';
+      }
+
+      if (obj.estado !== nuevoEstado) {
+        await pool.query(
+          "UPDATE objetivos SET estado = $1 WHERE id = $2 AND usuario_id = $3",
+          [nuevoEstado, obj.id, usuarioId]
+        );
+      } 
+    }
+  } catch (error) {
+    console.error("Error actualizando estados dinámicos:", error);
+  }
+}
+
+//GET /api/objetivos
 objetivosRouter.get("/", async (req, res) => {
+  if (!req.usuario_id) {
+    return res.status(401).json({ message: "Autenticación requerida" });
+  }
   const usuarioId = req.usuario_id;
 
   try {
+    await actualizarEstadosDinamicos(usuarioId);
+
     const { rows } = await pool.query(
       `
       SELECT 
@@ -71,8 +108,6 @@ objetivosRouter.get("/", async (req, res) => {
       [usuarioId]
     );
 
-    const saldo = await getSaldo(usuarioId);
-
     res.json({
       data: rows.map((objetivo) => ({
         ...objetivo,
@@ -81,7 +116,6 @@ objetivosRouter.get("/", async (req, res) => {
           porcentaje: objetivo.porcentaje,
         },
       })),
-      saldo: saldo,
     });
   } catch (error) {
     console.error("Error obteniendo objetivos:", error);
@@ -91,6 +125,9 @@ objetivosRouter.get("/", async (req, res) => {
 
 // GET /api/objetivos/:id 
 objetivosRouter.get("/:id", async (req, res) => {
+  if (!req.usuario_id) {
+    return res.status(401).json({ message: "Autenticación requerida" });
+  }
   const usuarioId = req.usuario_id;
   const objetivoId = getObjetivoId(req);
 
@@ -112,6 +149,9 @@ objetivosRouter.get("/:id", async (req, res) => {
 
 // POST /api/objetivos
 objetivosRouter.post("/", async (req, res) => {
+  if (!req.usuario_id) {
+    return res.status(401).json({ message: "Autenticación requerida" });
+  }
   const usuarioId = req.usuario_id;
   const {
     nombre,
@@ -119,7 +159,6 @@ objetivosRouter.post("/", async (req, res) => {
     actual = 0,
     categoria,
     descripcion,
-    fecha_limite,
     requeridos = 0,
   } = req.body;
 
@@ -135,13 +174,20 @@ objetivosRouter.post("/", async (req, res) => {
       message: "El monto debe ser mayor a 0",
     });
   }
-
+  
   try {
+    const { rows: objetivosCompletados } = await pool.query(
+      "SELECT COUNT(*) as completados FROM objetivos WHERE usuario_id = $1 AND estado = 'completado'",
+      [usuarioId]
+    );
+    
+    const cantidadCompletados = parseInt(objetivosCompletados[0].completados);
     let estadoInicial = "bloqueado";
-    if (requeridos === 0) {
+    
+    // Si el usuario tiene suficientes objetivos completados, el objetivo está disponible
+    if (cantidadCompletados >= requeridos) {
       estadoInicial = "progreso";
     }
-    const imagenAsignada = asignarImagen(categoria);
 
     const { rows } = await pool.query(
       `INSERT INTO objetivos (
@@ -172,72 +218,11 @@ objetivosRouter.post("/", async (req, res) => {
   }
 });
 
-// PATCH /api/objetivos/:id/progresar
-objetivosRouter.patch("/:id/progresar", async (req, res) => {
-  const usuarioId = req.usuario_id;
-  const objetivoId = getObjetivoId(req);
-  const { monto } = req.body;
-
-  if (!objetivoId) {
-    return res.status(404).json({ message: "Objetivo no encontrado" });
-  }
-
-  // Validar monto
-  const montoNumero = parseFloat(monto);
-
-  if (!monto || isNaN(montoNumero) || montoNumero <= 0) {
-    return res.status(400).json({ 
-      message: "El monto debe ser un número mayor a 0",
-      recibido: monto,
-    });
-  }
-
-  try {
-    // Buscar el objetivo
-    const objetivo = await getObjetivoPorId(usuarioId, objetivoId);
-    if (!objetivo) {
-      return res.status(404).json({ message: "Objetivo no encontrado" });
-    }
-
-    // Verificar que no esté completado
-    if (objetivo.estado === "completado") {
-      return res.status(400).json({
-        message: "No se puede agregar dinero a un objetivo completado",
-      });
-    }
-
-    // Calcular nuevos valores
-    const actualActual = parseFloat(objetivo.actual);
-    const montoTotal = parseFloat(objetivo.monto);
-    const nuevoActual = actualActual + montoNumero;
-    let nuevoEstado = 'progreso';
-    if (nuevoActual >= montoTotal) {
-      nuevoEstado = 'listo';
-    }
-
-    // Actualizar objetivo
-    const { rows } = await pool.query(
-      `UPDATE objetivos 
-       SET actual = actual + $1, estado = $2, updated_at = CURRENT_TIMESTAMP
-       WHERE id = $3 AND usuario_id = $4
-       RETURNING *`,
-      [montoNumero, nuevoEstado, objetivoId, usuarioId]
-    );
-
-    res.json({
-      message: `Se agregaron $${montoNumero} al objetivo`,
-      data: rows[0],
-    });
-  } catch (error) {
-    console.error("Error al agregar dinero al objetivo:", error);
-    res.status(500).json({ 
-      message: "Error al agregar dinero al objetivo" 
-    });
-  }
-});
-
 // PATCH /api/objetivos/:id/completar
 objetivosRouter.patch("/:id/completar", async (req, res) => {
+  if (!req.usuario_id) {
+    return res.status(401).json({ message: "Autenticación requerida" });
+  }
   const usuarioId = req.usuario_id;
   const objetivoId = getObjetivoId(req);
 
@@ -251,9 +236,15 @@ objetivosRouter.patch("/:id/completar", async (req, res) => {
       return res.status(404).json({ message: "Objetivo no encontrado" });
     }
 
-    if (objetivo.estado !== "listo") {
+    const montoActual = parseFloat(objetivo.actual);
+    const montoObjetivo = parseFloat(objetivo.monto);
+    
+    if (montoActual < montoObjetivo) {
       return res.status(400).json({
         message: "Solo se pueden completar objetivos que tengan el monto completo ahorrado",
+        monto_actual: montoActual,
+        monto_objetivo: montoObjetivo,
+        estado_actual: objetivo.estado
       });
     }
 
@@ -279,6 +270,9 @@ objetivosRouter.patch("/:id/completar", async (req, res) => {
 
 // PUT /api/objetivos/:id
 objetivosRouter.put("/:id", async (req, res) => {
+  if (!req.usuario_id) {
+    return res.status(401).json({ message: "Autenticación requerida" });
+  }
   const usuarioId = req.usuario_id;
   const objetivoId = getObjetivoId(req);
   const { nombre, descripcion, monto, imagen } = req.body;
@@ -290,9 +284,7 @@ objetivosRouter.put("/:id", async (req, res) => {
   }
 
   if (monto && monto <= 0) {
-    return res
-      .status(400)
-      .json({ message: "El monto debe ser mayor a 0" });
+    return res.status(400).json({ message: "El monto debe ser mayor a 0" });
   }
 
   try {
@@ -322,11 +314,6 @@ objetivosRouter.put("/:id", async (req, res) => {
       nuevoMonto = monto;
     }
 
-    let nuevaImagen = objetivoActual.imagen;
-    if (imagen) {
-      nuevaImagen = imagen;
-    }
-
     const { rows } = await pool.query(
       `
       UPDATE objetivos 
@@ -334,12 +321,11 @@ objetivosRouter.put("/:id", async (req, res) => {
         nombre = $1,
         descripcion = $2,
         monto = $3,
-        imagen = $4,
         updated_at = CURRENT_TIMESTAMP
-      WHERE id = $5 AND usuario_id = $6
+      WHERE id = $4 AND usuario_id = $5
       RETURNING *
       `,
-      [nuevoNombre, nuevaDescripcion, nuevoMonto, nuevaImagen, objetivoId, usuarioId]
+      [nuevoNombre, nuevaDescripcion, nuevoMonto, objetivoId, usuarioId]
     );
 
     res.json({ message: "Objetivo actualizado", data: rows[0] });
@@ -351,6 +337,9 @@ objetivosRouter.put("/:id", async (req, res) => {
 
 // DELETE /api/objetivos/:id
 objetivosRouter.delete("/:id", async (req, res) => {
+  if (!req.usuario_id) {
+    return res.status(401).json({ message: "Autenticación requerida" });
+  }
   const usuarioId = req.usuario_id;
   const objetivoId = getObjetivoId(req);
 
@@ -365,6 +354,16 @@ objetivosRouter.delete("/:id", async (req, res) => {
     }
 
     const montoReembolsar = Number.parseFloat(objetivo.actual) || 0;
+
+    const transaccionesExistentes = await pool.query(
+      "SELECT id, motivo, objetivo_id FROM transacciones WHERE objetivo_id = $1 AND usuario_id = $2",
+      [objetivoId, usuarioId]
+    );
+    
+    const resultadoTransacciones = await pool.query(
+      "DELETE FROM transacciones WHERE objetivo_id = $1 AND usuario_id = $2 RETURNING *",
+      [objetivoId, usuarioId]
+    );
 
     await pool.query(
       "DELETE FROM objetivos WHERE id = $1 AND usuario_id = $2",
@@ -388,7 +387,7 @@ objetivosRouter.delete("/:id", async (req, res) => {
       data: { monto_reembolsado: montoReembolsar },
     });
   } catch (error) {
-    console.error("Error eliminando objetivo:", error);
+    console.error(error);
     res.status(500).json({ 
       message: "Error al eliminar el objetivo" 
     });
