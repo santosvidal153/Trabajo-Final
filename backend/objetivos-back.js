@@ -387,7 +387,7 @@ objetivosRouter.delete("/:id", async (req, res) => {
       data: { monto_reembolsado: montoReembolsar },
     });
   } catch (error) {
-    console.error("Error eliminando objetivo:", error);
+    console.error(error);
     res.status(500).json({ 
       message: "Error al eliminar el objetivo" 
     });

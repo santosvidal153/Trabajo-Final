@@ -29,18 +29,17 @@
 
 .descripcion-objetivo {
     font-size: 0.9rem;
-    color: #6B7280;
-    line-height: 1.4;
+    color: black;
 }
 
 .etiqueta-monto {
     font-size: 0.85rem;
-    color: #6B7280;
+    color: black;
 }
 
 .valor-monto {
     font-size: 0.95rem;
-    color: #0C3B5D;
+    color: black;
 }
 
 .boton-editar {

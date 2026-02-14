@@ -351,33 +351,78 @@ function editarObjetivo(objetivoId) {
     cargarObjetivoParaEdicion(objetivoId);
 }
 
-//función para completar objetivo
+//funcion para completar objetivo
 async function completarObjetivo(objetivoId) {
+    const token = localStorage.getItem('token');
+    const usuarioId = localStorage.getItem('usuario_id');
+    
+    if (!token) {
+        alert('No autenticado. Por favor, inicia sesión nuevamente.');
+        return;
+    }
+    
+    if (!confirm('¿Estás seguro de que quieres completar este objetivo? Se marcará como comprado y se registrará un gasto en tu historial de transacciones.')) {
+        return;
+    }
+
     try {
-        if (!confirm('¿Estás seguro de que quieres marcar este objetivo como comprado?')) {
-            return;
-        }
-
-        const token = localStorage.getItem('token');
-        if (!token) {
-            alert('No autenticado. Por favor, inicia sesión nuevamente.');
-            return;
-        }
-
-        const response = await fetch(`http://localhost:3000/api/objetivos/${objetivoId}/completar`, {
-            method: 'PATCH',
+        
+        const responseObjetivo = await fetch(`http://localhost:3000/api/objetivos/${objetivoId}`, {
             headers: {
                 'x-token': token
             }
         });
-
+        
         if (response.status === 401) {
             localStorage.removeItem('token');
+            localStorage.removeItem('usuario_id');
             window.location.href = 'inicio.html';
             return;
         }
         
-        const data = await response.json();
+        if (!responseObjetivo.ok) {
+            throw new Error('Error al obtener datos del objetivo');
+        }
+        
+        const dataObjetivo = await responseObjetivo.json();
+        const objetivo = dataObjetivo.data;
+        
+        const transaccionGasto = {
+            motivo: `Compra: ${objetivo.nombre}`,
+            monto: objetivo.actual.toString(),
+            tipo: 'gasto',
+            categoria: 'objetivo'
+        };
+        
+        const responseTransaccion = await fetch(`http://localhost:3000/usuario/${usuarioId}/transacciones`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(transaccionGasto)
+        });
+        
+        if (!responseTransaccion.ok) {
+            const errorData = await responseTransaccion.json();
+            throw new Error(`Error al crear transacción: ${errorData.error || 'Error desconocido'}`);
+        }
+
+        const responseCompletar = await fetch(`http://localhost:3000/api/objetivos/${objetivoId}/completar`, {
+            method: 'PATCH',
+            headers: {
+                'x-token': token,
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        if (response.status === 401) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('usuario_id');
+            window.location.href = 'inicio.html';
+            return;
+        }
+        
+        const data = await responseCompletar.json();
         
         if (data.message) {
             await cargarObjetivos();
@@ -385,6 +430,7 @@ async function completarObjetivo(objetivoId) {
             alert('Error completando objetivo');
         }
     } catch (error) {
-        alert('Error de conexión');
+        console.error(error);
+        alert(`Error al completar objetivo: ${error.message}`);
     }
-}
+};
