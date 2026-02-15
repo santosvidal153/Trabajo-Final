@@ -47,7 +47,7 @@
                     <p class="etiqueta-categoria">maria.perez@email.com</p>
                 </div>
             </div>
-            <button class="boton-editar-perfil">
+            <button class="boton-editar-perfil js-modal-trigger" data-target="modal-js-example">
                 Editar
             </button>
         </div>
@@ -70,39 +70,15 @@
             
             <div class="info-fila">
                 <div class="info-columna">
-                    <p class="etiqueta-categoria">GÉNERO</p>
+                    <p class="etiqueta-categoria">EMAIL</p>
                     <div class="info-item">
-                        <p class="valor-monto">Femenino</p>
-                    </div>
-                </div>
-                <div class="info-columna">
-                    <p class="etiqueta-categoria">NACIMIENTO</p>
-                    <div class="info-item">
-                        <p class="valor-monto">12/05/1995</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="info-fila">
-                <div class="info-columna">
-                    <p class="etiqueta-categoria">DE DONDE ES</p>
-                    <div class="info-item">
-                        <p class="valor-monto">Buenos Aires, ARG</p>
+                        <p class="valor-monto">maria.perez@email.com</p>
                     </div>
                 </div>
                 <div class="info-columna">
                     <p class="etiqueta-categoria">TELÉFONO</p>
                     <div class="info-item">
                         <p class="valor-monto">+54 11 1234-5678</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="info-fila">
-                <div class="info-columna">
-                    <p class="etiqueta-categoria">EMAIL</p>
-                    <div class="info-item">
-                        <p class="valor-monto">maria.perez@email.com</p>
                     </div>
                 </div>
             </div>
@@ -115,7 +91,46 @@
                 Cerrar Sesión <i class="fas fa-sign-out-alt"></i>
             </button>
         </div>
+        <div id="modal-js-example" class="modal">
+          <div class="modal-background"></div>
+          <div class="modal-card">
+            <header class="modal-card-head">
+              <p class="modal-card-title">Editar Perfil</p>
+              <button class="delete" aria-label="close"></button>
+            </header>
+            <section class="modal-card-body">
+              <form id="form-editar-perfil">
+                <div class="field">
+                  <label class="label">Nombre Completo</label>
+                  <div class="control">
+                    <input class="input" type="text" id="perfil-nombre" placeholder="Tu nombre completo" required>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label class="label">Trabajo</label>
+                  <div class="control">
+                    <input class="input" type="text" id="perfil-trabajo" placeholder="Tu puesto o profesión">
+                  </div>
+                </div>
+
+               <div class="field">
+                  <label class="label">Teléfono</label>
+                  <div class="control">
+                    <input class="input" type="tel" id="perfil-telefono" placeholder="+54 9 11 1234-5678">
+                  </div>
+               </div>
+          </form>
+        </section>
+        <footer class="modal-card-foot">
+          <div class="buttons">
+            <button class="button is-success" id="btn-guardar-perfil">Guardar Cambios</button>
+            <button class="button is-link">Cancelar</button>
+          </div>
+        </footer>
+      </div>
     </main>
+
 
     <script src="../js/navbar.js"></script>
 </body>
