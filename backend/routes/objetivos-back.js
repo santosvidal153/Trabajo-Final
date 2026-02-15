@@ -1,7 +1,9 @@
 import { Router } from "express";
 import { pool } from "./db.js";
+import simpleAuth from "../autenticacion.js";
 
 export const objetivosRouter = Router();
+objetivosRouter.use(simpleAuth);
 
 function getId(req, paramName = 'id') {
   const id = Number.parseInt(req.params[paramName]);
@@ -85,7 +87,6 @@ objetivosRouter.get("/", async (req, res) => {
         o.categoria,
         o.descripcion,
         o.imagen,
-        o.fecha_limite,
         o.requeridos,
         o.created_at,
         o.updated_at,

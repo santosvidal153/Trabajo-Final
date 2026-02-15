@@ -73,11 +73,12 @@ function configurarModalEditar() {
 
 async function cargarObjetivoParaEdicion(id) {
     try {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            alert('No autenticado. Por favor, inicia sesión nuevamente.');
-            return;
-        }
+        //const token = localStorage.getItem('token');
+        //if (!token) {
+        //    alert('No autenticado. Por favor, inicia sesión nuevamente.');
+        //    return;
+        //}
+        const token = "user-1";
         
         const response = await fetch(`http://localhost:3000/api/objetivos/${id}`, {
             headers: {
@@ -131,6 +132,9 @@ async function guardarCambiosObjetivo() {
     const objetivoId = form.dataset.objetivoId;
     
     if (!objetivoId) {
+        console.log('dataset:', form.dataset);
+        console.log('objetivoId:', form.dataset.objetivoId);
+
         alert('Error: No se pudo identificar el objetivo a editar');
         return;
     }

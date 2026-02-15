@@ -9,11 +9,12 @@ function inicializarObjetivos() {
 
 //funcion para crear objetivo
 async function crearObjetivo(objetivo) {
-    const token = localStorage.getItem('token');
-    if (!token) {
-        alert('No autenticado. Por favor, inicia sesión nuevamente.');
-        return;
-    }
+    //const token = localStorage.getItem('token');
+    //if (!token) {
+    //    alert('No autenticado. Por favor, inicia sesión nuevamente.');
+    //    return;
+    //}
+    const token = "user-1" //pruebo
     
     const response = await fetch('http://localhost:3000/api/objetivos', {
         method: 'POST',
@@ -43,11 +44,12 @@ async function crearObjetivo(objetivo) {
 //funcion para editar objetivo
 async function actualizarObjetivo(id, objetivo) {
     try {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            alert('No autenticado. Por favor, inicia sesión nuevamente.');
-            return;
-        }
+        //const token = localStorage.getItem('token');
+        //if (!token) {
+        //    alert('No autenticado. Por favor, inicia sesión nuevamente.');
+        //    return;
+        //}
+        const token = "user-1" //pruebo
         
         const response = await fetch(`http://localhost:3000/api/objetivos/${id}`, {
             method: 'PUT',
@@ -88,11 +90,12 @@ async function eliminarObjetivo(id) {
             return;
         }
         
-        const token = localStorage.getItem('token');
-        if (!token) {
-            alert('No autenticado. Por favor, inicia sesión nuevamente.');
-            return;
-        }
+        //const token = localStorage.getItem('token');
+        //if (!token) {
+        //    alert('No autenticado. Por favor, inicia sesión nuevamente.');
+        //    return;
+        //}
+        const token = "user-1" //pruebo
         
         const response = await fetch(`http://localhost:3000/api/objetivos/${id}`, {
             method: 'DELETE',
@@ -129,11 +132,12 @@ async function eliminarObjetivo(id) {
 //funcion para cargar objetivos
 async function cargarObjetivos() {    
     try {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            alert('No autenticado. Por favor, inicia sesión nuevamente.');
-            return;
-        }
+        //const token = localStorage.getItem('token');
+        //if (!token) {
+        //    alert('No autenticado. Por favor, inicia sesión nuevamente.');
+        //    return;
+        //}
+        const token = "user-1" //pruebo
         
         const response = await fetch(`http://localhost:3000/api/objetivos`, {
             headers: {
@@ -166,12 +170,13 @@ async function cargarObjetivos() {
 //funcion para cargar transacciones de ahorro y actualizar objetivos
 async function cargarTransaccionesAhorro() {
     try {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            alert('No autenticado. Por favor, inicia sesión nuevamente.');
-            return;
-        }
-        const response = await fetch(`http://localhost:3000/usuario/${usuarioId}/transacciones`, {
+        //const token = localStorage.getItem('token');
+        //if (!token) {
+        //    alert('No autenticado. Por favor, inicia sesión nuevamente.');
+        //    return;
+        //}
+        const token = "user-1" //pruebo
+        const response = await fetch(`http://localhost:3000/transacciones`, {
             headers: {
                 'x-token': token
             },
@@ -353,13 +358,14 @@ function editarObjetivo(objetivoId) {
 
 //funcion para completar objetivo
 async function completarObjetivo(objetivoId) {
-    const token = localStorage.getItem('token');
-    const usuarioId = localStorage.getItem('usuario_id');
-    
-    if (!token) {
-        alert('No autenticado. Por favor, inicia sesión nuevamente.');
-        return;
-    }
+    //const token = localStorage.getItem('token');
+    //const usuarioId = localStorage.getItem('usuario_id');
+    //
+    //if (!token) {
+    //    alert('No autenticado. Por favor, inicia sesión nuevamente.');
+    //    return;
+    //}
+    const token = "user-1" //pruebo
     
     if (!confirm('¿Estás seguro de que quieres completar este objetivo? Se marcará como comprado y se registrará un gasto en tu historial de transacciones.')) {
         return;
@@ -394,10 +400,11 @@ async function completarObjetivo(objetivoId) {
             categoria: 'objetivo'
         };
         
-        const responseTransaccion = await fetch(`http://localhost:3000/usuario/${usuarioId}/transacciones`, {
+        const responseTransaccion = await fetch(`http://localhost:3000/transacciones`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'x-token': token
             },
             body: JSON.stringify(transaccionGasto)
         });
