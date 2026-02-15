@@ -2,7 +2,7 @@ CREATE TABLE usuarios (
     id SERIAL PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,             
     email VARCHAR(255) UNIQUE NOT NULL,     
-    password_hash VARCHAR(255) NOT NULL,     
+    contrasena VARCHAR(255) NOT NULL,     
     ocupacion VARCHAR(255),                   
     telefono VARCHAR(30),
     saldo DECIMAL(12,2) CHECK (saldo >= 0),
