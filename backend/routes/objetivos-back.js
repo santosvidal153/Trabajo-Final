@@ -353,13 +353,6 @@ objetivosRouter.delete("/:id", async (req, res) => {
     if (!objetivo) {
       return res.status(404).json({ message: "Objetivo no encontrado" });
     }
-
-    const montoReembolsar = Number.parseFloat(objetivo.actual) || 0;
-
-    const transaccionesExistentes = await pool.query(
-      "SELECT id, motivo, objetivo_id FROM transacciones WHERE objetivo_id = $1 AND usuario_id = $2",
-      [objetivoId, usuarioId]
-    );
     
     const resultadoTransacciones = await pool.query(
       "DELETE FROM transacciones WHERE objetivo_id = $1 AND usuario_id = $2 RETURNING *",
@@ -371,21 +364,14 @@ objetivosRouter.delete("/:id", async (req, res) => {
       [objetivoId, usuarioId]
     );
 
-    if (montoReembolsar > 0) {
-      await pool.query(
-        "UPDATE usuarios SET saldo = saldo + $1 WHERE id = $2",
-        [montoReembolsar, usuarioId]
-      );
-    }
-
     let mensaje = "Objetivo eliminado exitosamente";
-    if (montoReembolsar > 0) {
-      mensaje = `Objetivo eliminado. Se reembolsaron $${montoReembolsar} a tu saldo`;
-    }
 
     res.status(200).json({
       message: mensaje,
-      data: { monto_reembolsado: montoReembolsar },
+      data: { 
+        objetivoEliminado: objetivo, 
+        transaccionesEliminadas: resultadoTransacciones.rows 
+      },
     });
   } catch (error) {
     console.error(error);
