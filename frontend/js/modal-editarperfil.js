@@ -50,3 +50,23 @@ function configurarFormularioEditar() {
     btnGuardar.addEventListener('click', guardarCambiosPerfil);
   }
 }
+
+async function cargarDatosPerfil() {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
+    const response = await fetch('http://localhost:3000/api/perfil', {
+      headers: {
+        'x-token': token
+      }
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      const perfil = data.data;
+    }
+  } catch (error) {
+    console.error('Error cargando datos del perfil:', error);
+  }
+}
