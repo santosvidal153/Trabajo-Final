@@ -53,3 +53,32 @@ async function handleLogin(e) {
         mostrarError('Error de conexión');
     }
 }
+
+function togglePasswordVisibility() {
+    const passwordInput = document.querySelector('input[name="contrasena"]');
+    const eyeIcon = document.getElementById('eye-icon');
+    
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        eyeIcon.classList.remove('fa-eye');
+        eyeIcon.classList.add('fa-eye-slash');
+    } else {
+        passwordInput.type = 'password';
+        eyeIcon.classList.remove('fa-eye-slash');
+        eyeIcon.classList.add('fa-eye');
+    }
+}
+
+function mostrarError(mensaje) {
+    const errorDiv = document.querySelector('.notification');
+    const errorText = document.getElementById('errorLogin');
+    
+    if (errorDiv && errorText) {
+        errorText.textContent = mensaje;
+        errorDiv.classList.remove('is-hidden');
+        
+        setTimeout(() => {
+            errorDiv.classList.add('is-hidden');
+        }, 3000);
+    }
+}
