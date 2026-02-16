@@ -100,3 +100,54 @@ perfilRouter.post("/login", async (req, res) => {
         return res.sendStatus(500);
     }
 });
+
+// PUT /api/perfil
+perfilRouter.put("/", simpleAuth, async (req, res) => {
+    const { nombre, ciudad, pais } = req.body;
+    const usuario_id = req.usuario_id;
+
+    const queryColumns = [];
+    const queryValues = [];
+    let valuesCount = 1;
+
+    if (typeof nombre === "string" && nombre.length > 3 && nombre.length < 60) {
+        queryColumns.push(`nombre = $${valuesCount}`);
+        queryValues.push(nombre);
+        valuesCount++;
+    }
+    
+    if (typeof ciudad === "string" && ciudad.length > 0) {
+        queryColumns.push(`ciudad = $${valuesCount}`);
+        queryValues.push(ciudad);
+        valuesCount++;
+    }
+
+    if (typeof pais === "string" && pais.length > 0) {
+        queryColumns.push(`pais = $${valuesCount}`);
+        queryValues.push(pais);
+        valuesCount++;
+    }
+
+    if (queryColumns.length === 0) {
+        return res.status(400).json({
+            error: "No se proporcionaron campos válidos para actualizar",
+        });
+    }
+
+    queryValues.push(usuario_id);
+
+    try {
+        await pool.query(
+            `UPDATE usuarios SET ${queryColumns.join(", ")}, updated_at = NOW() WHERE id = $${valuesCount}`,
+            queryValues
+        );
+
+        return res.status(200).json({
+            message: "Perfil actualizado correctamente",
+        });
+    } catch (_) {
+        return res.status(500).json({
+            error: "No se pudo actualizar el perfil"
+        });
+    }
+});
