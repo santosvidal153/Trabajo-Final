@@ -108,3 +108,23 @@ async function eliminarCuenta() {
         mostrarMensaje('Error de conexión', 'error');
     }
 }
+
+function cerrarSesion() {
+    if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('usuarioLogueado');
+        window.location.href = '../pages/login.html';
+    }
+}
+
+function cargarInformacionUsuario() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        window.location.href = '../pages/login.html';
+        return;
+    }
+}
+
+function mostrarMensaje(mensaje, tipo) {
+    alert(mensaje);
+}
