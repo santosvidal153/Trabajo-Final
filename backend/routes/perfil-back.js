@@ -4,6 +4,7 @@ import simpleAuth from '../autenticacion.js';
 export const perfilRouter = express.Router();
 
 const EMAIL_REGEX = /^\S+@\S+\.\S+$/;
+const LETTERS_REGEX = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ]+(?:\s+[a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*(?:\s+[a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*$/;
 
 //POST /api/perfil
 perfilRouter.post("/", async (req, res) => {
@@ -21,15 +22,21 @@ perfilRouter.post("/", async (req, res) => {
         });
     }
 
-    if (nombre.length < 3 || nombre.length > 60) {
+    if (nombre.length < 3 || nombre.length > 60 || !LETTERS_REGEX.test(nombre)) {
         return res.status(422).json({
-            error: "El nombre debe tener entre 3 y 60 caracteres",
+            error: "El nombre debe tener entre 3 y 60 caracteres y solo puede contener letras y espacios",
         });
     }
 
     if (contrasena.length < 8) {
         return res.status(422).json({
             error: "La contraseña debe tener al menos 8 caracteres",
+        });
+    }
+
+    if (pais && (pais.length < 2 || !LETTERS_REGEX.test(pais))) {
+        return res.status(422).json({
+            error: "El pais debe tener más de 2 letras",
         });
     }
 
@@ -49,7 +56,7 @@ perfilRouter.post("/", async (req, res) => {
     } catch (e) {
         if (e instanceof Error && e.code === '23505') {
             return res.status(409).json({
-                error: "El usuario o email ya está en uso",
+                error: "email ya está en uso",
             });
         }
 
@@ -59,7 +66,6 @@ perfilRouter.post("/", async (req, res) => {
 
 //POST /api/perfil/login
 perfilRouter.post("/login", async (req, res) => {
-    console.log("Datos recibidos en login:", req.body);
     const { email, contrasena } = req.body;
 
     if (!email || !contrasena) {
@@ -71,7 +77,6 @@ perfilRouter.post("/login", async (req, res) => {
 
     try {
         const { rows } = await pool.query("SELECT * FROM usuarios WHERE email = $1", [email]);
-        console.log("Usuarios encontrados:", rows.length);
         
         if (rows.length !== 1) {
             console.log("Error: Usuario no encontrado");
@@ -98,6 +103,32 @@ perfilRouter.post("/login", async (req, res) => {
         });
     } catch (_) {
         return res.sendStatus(500);
+    }
+});
+
+// GET /api/perfil
+perfilRouter.get('/', simpleAuth, async (req, res) => {
+    try {
+        const usuario_id = req.usuario_id;
+        const { rows } = await pool.query(
+            `SELECT id, nombre, email, ciudad, pais, created_at, updated_at 
+             FROM usuarios WHERE id = $1`, 
+            [usuario_id]
+        );
+        
+        if (rows.length !== 1) {
+            return res.status(404).json({
+                error: "Usuario no encontrado",
+            });
+        }
+
+        return res.status(200).json({
+            data: rows.at(0),
+        });
+    } catch (error) {
+        return res.status(500).json({
+            error: "Error al obtener perfil del usuario",
+        });
     }
 });
 
