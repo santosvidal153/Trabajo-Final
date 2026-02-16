@@ -62,3 +62,49 @@ function actualizarInterfazPerfil(perfil) {
         if (elemento) elemento.textContent = valor;
     });
 }
+
+function configurarEventListeners() {
+    const botonEliminar = document.querySelector('.boton-eliminar');
+    if (botonEliminar) {
+        botonEliminar.addEventListener('click', eliminarCuenta);
+    }
+    
+    const botonCerrarSesion = document.querySelector('.boton-cerrar-sesion');
+    if (botonCerrarSesion) {
+        botonCerrarSesion.addEventListener('click', cerrarSesion);
+    }
+}
+
+async function eliminarCuenta() {
+    const confirmacion = prompt('Para eliminar tu cuenta, escribe "ELIMINAR" para confirmar:');
+    
+    if (confirmacion !== 'ELIMINAR') return;
+    
+    try {
+        const token = localStorage.getItem('token');
+        
+        const response = await fetch('http://localhost:3000/api/perfil', {
+            method: 'DELETE',
+            headers: {
+                'x-token': token
+            }
+        });
+        
+        if (response.ok) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('usuarioLogueado');
+            window.location.href = '../pages/login.html';
+        } else {
+            const responseText = await response.text();
+            let error;
+            try {
+                error = JSON.parse(responseText);
+            } catch (e) {
+                error = { error: 'Error del servidor al eliminar cuenta' };
+            }
+            mostrarMensaje(error.error || 'Error eliminando cuenta', 'error');
+        }
+    } catch (error) {
+        mostrarMensaje('Error de conexión', 'error');
+    }
+}
