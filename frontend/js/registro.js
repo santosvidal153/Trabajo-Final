@@ -144,3 +144,132 @@ function validarPais() {
         return true;
     }
 }
+
+async function handleRegistro(e) {
+    e.preventDefault();
+
+    const esNombreValido = validarNombre();
+    const esEmailValido = validarEmail();
+    const esPasswordValido = validarPassword();
+    const esPaisValido = validarPais();
+
+    if (!esNombreValido || !esEmailValido || !esPasswordValido || !esPaisValido) {
+        mostrarError('Revisa los campos marcados');
+        return;
+    }
+
+    const nombre = document.querySelector('input[name="nombre"]').value;
+    const email = document.querySelector('input[name="email"]').value;
+    const contrasena = document.querySelector('input[name="contrasena"]').value;
+    const pais = document.querySelector('input[name="pais"]').value;
+
+    const datos = {
+        nombre,
+        email,
+        contrasena,
+        pais
+    };
+
+    try {
+        const respuesta = await fetch('http://localhost:3000/api/perfil', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(datos),
+        });
+
+
+        if (respuesta.ok) {
+            mostrarExito('Registro exitoso');
+            
+            try {
+                const loginResponse = await fetch('http://localhost:3000/api/perfil/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, contrasena })
+                });
+                
+                if (loginResponse.ok) {
+                    const loginData = await loginResponse.json();
+                    localStorage.setItem('token', loginData.token);
+                    localStorage.setItem('usuarioLogueado', email);
+                    
+                    setTimeout(() => {
+                        window.location.href = './inicio.html';
+                    }, 2000);
+                } else {
+                    setTimeout(() => {
+                        window.location.href = './login.html';
+                    }, 2000);
+                }
+            } catch (loginError) {
+                setTimeout(() => {
+                    window.location.href = './login.html';
+                }, 2000);
+            }
+        } else if (respuesta.status === 409) {
+            const resData = await respuesta.json();
+            console.log('Error 409 - Datos duplicados:', resData);
+            const mensajeNombre = document.getElementById('textNombre');
+            const mensajeEmail = document.getElementById('textEmail');
+
+            mensajeNombre.textContent = resData.error || '';
+            mensajeEmail.textContent = resData.error || '';
+        } else if (respuesta.status === 422) {
+            const resData = await respuesta.json();
+            console.log('Error 422 - Validación fallida:', resData);
+            mostrarError(resData.error || 'Verifica los datos ingresados');
+        } else {
+            mostrarError('No se pudo completar el registro');
+        }
+    } catch (error) {
+        console.error('Error en registro:', error);
+        mostrarError('Error de conexión');
+    }
+}
+
+function togglePasswordVisibility() {
+    const passwordInput = document.querySelector('input[name="contrasena"]');
+    const eyeIcon = document.getElementById('eye-icon');
+    
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        eyeIcon.classList.remove('fa-eye');
+        eyeIcon.classList.add('fa-eye-slash');
+    } else {
+        passwordInput.type = 'password';
+        eyeIcon.classList.remove('fa-eye-slash');
+        eyeIcon.classList.add('fa-eye');
+    }
+}
+
+function mostrarError(mensaje) {
+    const errorText = document.getElementById('errorLogin');
+    
+    if (errorText) {
+        errorText.textContent = mensaje;
+        errorText.style.color = '#f14668';
+        errorText.style.fontWeight = 'normal';
+        errorText.style.fontSize = '0.875rem';
+        
+        setTimeout(() => {
+            errorText.textContent = '';
+        }, 5000);
+    }
+}
+
+function mostrarExito(mensaje) {
+    const errorText = document.getElementById('errorLogin');
+    
+    if (errorText) {
+        errorText.textContent = mensaje;
+        errorText.style.color = '#48c774'; 
+        errorText.style.fontWeight = 'normal';
+        errorText.style.fontSize = '0.875rem';
+        
+        setTimeout(() => {
+            errorText.textContent = '';
+        }, 5000);
+    }
+}
