@@ -91,3 +91,56 @@ function validarNombre() {
         return true;
     }
 }
+
+function validarEmail() {
+    const email = document.querySelector('input[name="email"]').value;
+    const mensaje = document.getElementById('textEmail');
+    const EMAIL_REGEX = /^\S+@\S+\.\S+$/;
+    
+    if (email === '') {
+        mensaje.textContent = 'Es obligatorio colocar un email';
+        return false;
+    } else if (email.length > 255 || !EMAIL_REGEX.test(email)) {
+        mensaje.textContent = 'La estructura del correo es inválida';
+        return false;
+    } else {
+        mensaje.textContent = '';
+        return true;
+    }
+}
+
+function validarPassword() {
+    const password = document.querySelector('input[name="contrasena"]').value;
+    const mensaje = document.getElementById('textPassword');
+    
+    if (password === '') {
+        mensaje.textContent = 'Es obligatorio colocar una contraseña';
+        return false;
+    } else if (password.length < 8) {
+        mensaje.textContent = 'La contraseña debe tener al menos 8 caracteres';
+        return false;
+    } else {
+        mensaje.textContent = '';
+        return true;
+    }
+}
+
+function validarPais() {
+    const pais = document.querySelector('input[name="pais"]').value;
+    const mensaje = document.getElementById('textPais');
+    const LETTERS_REGEX = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ]+(?:[\s\-]+[a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*$/;
+    
+    if (pais === '') {
+        mensaje.textContent = 'Es obligatorio colocar un país';
+        return false;
+    } else if (pais.length < 2) {
+        mensaje.textContent = 'El país debe tener más de 2 letras';
+        return false;
+    } else if (!LETTERS_REGEX.test(pais)) {
+        mensaje.textContent = 'El país solo puede contener letras';
+        return false;
+    } else {
+        mensaje.textContent = '';
+        return true;
+    }
+}
