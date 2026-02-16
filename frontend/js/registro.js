@@ -26,3 +26,30 @@ function configurarEventListeners() {
     }
 }
 
+function configurarValidaciones() {
+    const inputNombre = document.querySelector('input[name="nombre"]');
+    const inputEmail = document.querySelector('input[name="email"]');
+    const inputPassword = document.querySelector('input[name="contrasena"]');
+    const inputPais = document.querySelector('input[name="pais"]');
+    
+    crearMensajeError('nombre', 'textNombre');
+    crearMensajeError('email', 'textEmail');
+    crearMensajeError('password', 'textPassword');
+    crearMensajeError('pais', 'textPais');
+    
+    if (inputNombre) {
+        inputNombre.addEventListener('input', validarNombre);
+    }
+    
+    if (inputEmail) {
+        inputEmail.addEventListener('input', validarEmail);
+    }
+    
+    if (inputPassword) {
+        inputPassword.addEventListener('input', validarPassword);
+    }
+    
+    if (inputPais) {
+        inputPais.addEventListener('input', validarPais);
+    }
+}
