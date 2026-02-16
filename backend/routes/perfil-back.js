@@ -56,3 +56,47 @@ perfilRouter.post("/", async (req, res) => {
         return res.sendStatus(500);
     }
 }); 
+
+//POST /api/perfil/login
+perfilRouter.post("/login", async (req, res) => {
+    console.log("Datos recibidos en login:", req.body);
+    const { email, contrasena } = req.body;
+
+    if (!email || !contrasena) {
+        console.log("Error: Campos faltantes");
+        return res.status(400).json({
+            error: "Todos los campos son requeridos",
+        });
+    }
+
+    try {
+        const { rows } = await pool.query("SELECT * FROM usuarios WHERE email = $1", [email]);
+        console.log("Usuarios encontrados:", rows.length);
+        
+        if (rows.length !== 1) {
+            console.log("Error: Usuario no encontrado");
+            return res.status(400).json({
+                error: "El email o la contraseña son invalidos"
+            });
+        }
+
+        const user = rows[0];
+        if (user.contrasena !== contrasena) {
+            return res.status(400).json({
+                error: "El email o la contraseña son invalidos"
+            });
+        }
+
+        return res.status(200).json({
+            message: "Inicio de sesión exitoso",
+            token: "user-" + user.id,
+            usuario: {
+                id: user.id,
+                nombre: user.nombre,
+                email: user.email
+            }
+        });
+    } catch (_) {
+        return res.sendStatus(500);
+    }
+});
