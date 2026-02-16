@@ -68,3 +68,26 @@ function crearMensajeError(campo, id) {
         }
     }
 }
+
+function validarNombre() {
+    const nombre = document.querySelector('input[name="nombre"]').value;
+    const mensaje = document.getElementById('textNombre');
+    const LETTERS_REGEX = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ]+(?:\s+[a-zA-ZáéíóúÁÉÍÓÚñÑ]+)+$/;
+    
+    if (nombre === '') {
+        mensaje.textContent = 'Es obligatorio colocar un nombre';
+        return false;
+    } else if (nombre.length < 3) {
+        mensaje.textContent = 'El nombre debe tener al menos 3 caracteres';
+        return false;
+    } else if (nombre.length > 60) {
+        mensaje.textContent = 'El nombre debe tener máximo 60 caracteres';
+        return false;
+    } else if (!LETTERS_REGEX.test(nombre)) {
+        mensaje.textContent = 'Debe incluir nombre y apellido(s)';
+        return false;
+    } else {
+        mensaje.textContent = '';
+        return true;
+    }
+}
