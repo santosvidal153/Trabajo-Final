@@ -40,3 +40,25 @@ async function cargarDatosPerfil() {
         mostrarMensaje('Error de conexión', 'error');
     }
 }
+
+function actualizarInterfazPerfil(perfil) {
+    if (!perfil) return;
+    
+    const nombreUsuario = document.querySelector('.titulo-usuario');
+    const emailUsuario = document.querySelector('.perfil-datos .etiqueta-categoria');
+    
+    if (nombreUsuario) nombreUsuario.textContent = perfil.nombre || 'Sin nombre';
+    if (emailUsuario) emailUsuario.textContent = perfil.email || 'Sin email';
+    
+    const actualizaciones = [
+        { selector: '.info-simple .info-fila:nth-child(1) .info-columna:nth-child(1) .valor-monto', valor: perfil.nombre || 'Sin nombre' },
+        { selector: '.info-simple .info-fila:nth-child(1) .info-columna:nth-child(2) .valor-monto', valor: perfil.pais || 'Sin país' },
+        { selector: '.info-simple .info-fila:nth-child(2) .info-columna:nth-child(1) .valor-monto', valor: perfil.email || 'Sin email' },
+        { selector: '.info-simple .info-fila:nth-child(2) .info-columna:nth-child(2) .valor-monto', valor: perfil.ciudad || 'Sin ciudad' }
+    ];
+    
+    actualizaciones.forEach(({ selector, valor }) => {
+        const elemento = document.querySelector(selector);
+        if (elemento) elemento.textContent = valor;
+    });
+}
