@@ -151,3 +151,28 @@ perfilRouter.put("/", simpleAuth, async (req, res) => {
         });
     }
 });
+
+// DELETE /api/perfil
+perfilRouter.delete("/", simpleAuth, async (req, res) => {
+    const usuario_id = req.usuario_id;
+
+    try {
+        const result = await pool.query("DELETE FROM usuarios WHERE id = $1", [usuario_id]);
+        
+        if (result.rowCount === 0) {
+            return res.status(404).json({
+                error: "Usuario no encontrado"
+            });
+        }
+        
+        return res.status(200).json({
+            message: "Cuenta eliminada exitosamente"
+        });
+    } catch (error) {
+        return res.status(500).json({
+            error: "No se pudo eliminar la cuenta"
+        });
+    }
+});
+
+export default perfilRouter;
