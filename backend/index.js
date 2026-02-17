@@ -5,6 +5,7 @@ import cors from "cors";
 //agregar import desde aca
 import inicio from "./routes/inicio-back.js"
 import transacciones from "./routes/transacciones-back.js"
+import objetivosRouter from "./routes/objetivos-back.js";
 import perfilRoutes from './routes/perfil-back.js';
 
 
@@ -13,6 +14,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(cors());
+
 
 
 app.get("/",(req, res) => {
@@ -24,6 +26,7 @@ app.get("/",(req, res) => {
 app.use('/api/perfil', perfilRoutes);
 app.use("/inicio", inicio);
 app.use("/transacciones", transacciones);
+app.use('/api/objetivos', objetivosRouter);
 
 
 app.listen(process.env.PORT, () => {
