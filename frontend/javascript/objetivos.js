@@ -238,8 +238,6 @@ function crearTarjetaObjetivo(objetivo) {
         } else {
             estado = 'listo';       
         }
-    } else if (porcentaje >= 80) {
-        estado = 'listo';
     } else if (objetivo.estado_dinamico.estado === 'bloqueado') {
         estado = 'bloqueado';
     } else {
@@ -273,7 +271,7 @@ function crearTarjetaObjetivo(objetivo) {
                 </span>
                 <p class="mensaje-bloqueado has-text-centered mx-4">${mensaje}</p>
             </div>
-            <img src="${objetivo.imagen}" alt="${objetivo.nombre}">
+            <img src="../assets/chanchito-ahorra.jpg" alt="alcancia de chanchito">
             <div class="p-4">
                 <div class="is-flex is-justify-content-space-between is-align-items-center mb-4">
                     <span class="etiqueta-categoria">${objetivo.categoria}</span>
@@ -291,7 +289,7 @@ function crearTarjetaObjetivo(objetivo) {
         `;
     } else {
         tarjeta.innerHTML = `
-            <img src="${objetivo.imagen}" alt="${objetivo.nombre}">
+            <img src="../assets/chanchito-ahorra.jpg" alt="alcancia de chanchito">
             <div class="p-4">
                 <div class="is-flex is-justify-content-space-between is-align-items-center mb-4">
                     <span class="etiqueta-categoria">${objetivo.categoria}</span>
