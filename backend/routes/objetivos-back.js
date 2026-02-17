@@ -3,7 +3,6 @@ import { pool } from "./db.js";
 import simpleAuth from "../autenticacion.js";
 
 export const objetivosRouter = Router();
-objetivosRouter.use(simpleAuth);
 
 function getId(req, paramName = 'id') {
   const id = Number.parseInt(req.params[paramName]);
@@ -67,7 +66,7 @@ async function actualizarEstadosDinamicos(usuarioId) {
 }
 
 //GET /api/objetivos
-objetivosRouter.get("/", async (req, res) => {
+objetivosRouter.get("/", simpleAuth, async (req, res) => {
   if (!req.usuario_id) {
     return res.status(401).json({ message: "Autenticación requerida" });
   }
@@ -125,7 +124,7 @@ objetivosRouter.get("/", async (req, res) => {
 });
 
 // GET /api/objetivos/:id 
-objetivosRouter.get("/:id", async (req, res) => {
+objetivosRouter.get("/:id", simpleAuth, async (req, res) => {
   if (!req.usuario_id) {
     return res.status(401).json({ message: "Autenticación requerida" });
   }
@@ -149,7 +148,7 @@ objetivosRouter.get("/:id", async (req, res) => {
 });
 
 // POST /api/objetivos
-objetivosRouter.post("/", async (req, res) => {
+objetivosRouter.post("/", simpleAuth,async (req, res) => {
   if (!req.usuario_id) {
     return res.status(401).json({ message: "Autenticación requerida" });
   }
@@ -220,7 +219,7 @@ objetivosRouter.post("/", async (req, res) => {
 });
 
 // PATCH /api/objetivos/:id/completar
-objetivosRouter.patch("/:id/completar", async (req, res) => {
+objetivosRouter.patch("/:id/completar", simpleAuth, async (req, res) => {
   if (!req.usuario_id) {
     return res.status(401).json({ message: "Autenticación requerida" });
   }
@@ -270,7 +269,7 @@ objetivosRouter.patch("/:id/completar", async (req, res) => {
 });
 
 // PUT /api/objetivos/:id
-objetivosRouter.put("/:id", async (req, res) => {
+objetivosRouter.put("/:id", simpleAuth, async (req, res) => {
   if (!req.usuario_id) {
     return res.status(401).json({ message: "Autenticación requerida" });
   }
@@ -292,6 +291,12 @@ objetivosRouter.put("/:id", async (req, res) => {
     const objetivoActual = await getObjetivoPorId(usuarioId, objetivoId);
     if (!objetivoActual) {
       return res.status(404).json({ message: "Objetivo no encontrado" });
+    }
+
+    if (objetivoActual.estado === 'bloqueado') {
+      return res.status(403).json({ 
+        message: "No puedes editar un objetivo bloqueado. Completa más objetivos para desbloquearlo." 
+      });
     }
 
     if (monto && monto < Number.parseFloat(objetivoActual.actual)) {
@@ -337,7 +342,7 @@ objetivosRouter.put("/:id", async (req, res) => {
 });
 
 // DELETE /api/objetivos/:id
-objetivosRouter.delete("/:id", async (req, res) => {
+objetivosRouter.delete("/:id", simpleAuth, async (req, res) => {
   if (!req.usuario_id) {
     return res.status(401).json({ message: "Autenticación requerida" });
   }
