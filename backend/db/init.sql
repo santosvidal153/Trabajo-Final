@@ -3,8 +3,8 @@ CREATE TABLE usuarios (
     nombre VARCHAR(255) NOT NULL,             
     email VARCHAR(255) UNIQUE NOT NULL,     
     contrasena VARCHAR(255) NOT NULL,     
-    ocupacion VARCHAR(255),                   
-    telefono VARCHAR(30),
+    pais VARCHAR(100),                   
+    ciudad VARCHAR(100),
     saldo DECIMAL(12,2) CHECK (saldo >= 0),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
