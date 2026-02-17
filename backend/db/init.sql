@@ -25,3 +25,15 @@ CREATE TABLE objetivos (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT actual_no_excede_monto CHECK (actual <= monto)
 );
+
+CREATE TABLE transacciones (
+    id SERIAL PRIMARY KEY,
+    motivo VARCHAR(100) NOT NULL,
+    monto DECIMAL(12,2) NOT NULL CHECK (monto > 0),
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    tipo VARCHAR(10) NOT NULL CHECK (tipo IN ('ingreso','gasto')),
+    categoria VARCHAR(50) NOT NULL CHECK (categoria IN ('sueldo','ahorro','objetivo','alimento','transporte','salud','entretenimiento','otros')),
+    usuario_id INTEGER NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE,
+    objetivo_id INTEGER REFERENCES objetivos(id) ON DELETE SET NULL
+);
+
