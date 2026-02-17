@@ -11,8 +11,8 @@ CREATE TABLE usuarios (
 );
 
 CREATE TABLE objetivos (
-    id SERIAL PRIMARY KEY, -- PK
-    usuario_id INTEGER NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE, -- FK (Relación con Usuarios)
+    id SERIAL PRIMARY KEY,
+    usuario_id INTEGER NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE,
     nombre VARCHAR(255) NOT NULL,
     monto DECIMAL(12,2) NOT NULL CHECK (monto > 0),
     actual DECIMAL(12,2) DEFAULT 0 CHECK (actual >= 0),

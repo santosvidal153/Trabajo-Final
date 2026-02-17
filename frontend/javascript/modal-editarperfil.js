@@ -94,6 +94,12 @@ async function guardarCambiosPerfil() {
         return;
       }
 
+      const palabras = nombre.trim().split(/\s+/);
+      if (palabras.length < 2) {
+        mostrarMensaje('El nombre debe tener al menos dos palabras', 'error');
+        return;
+      }
+
       //validar que solo contenga letras, espacios y caracteres especiales comunes
       const nombreRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
       if (!nombreRegex.test(nombre)) {
