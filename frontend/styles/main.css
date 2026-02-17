@@ -1,13 +1,12 @@
 @import "https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css";
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Montserrat:wght@700&family=Poppins:wght@400;600&display=swap');
-@import url(./base/inicio-basico.css);  
-@import url(./base/login.css);
+@import url("./base/inicio-basico.css");  
+@import url("./base/login.css");
 @import url("./base/registro.css");
 @import url("./base/inicio.css");
 @import url("./base/transacciones.css");
 @import url("./componentes/navbar.css");
 @import url("./componentes/cards.css");
-@import url("./componentes/navbar2.css");
 @import url("./componentes/footer.css");
 @import url("./componentes/tarjetas.css");
 @import url("./base/objetivos.css");
