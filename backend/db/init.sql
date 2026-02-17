@@ -12,7 +12,7 @@ CREATE TABLE usuarios (
 
 CREATE TABLE objetivos (
     id SERIAL PRIMARY KEY, -- PK
-    usuario_id INTEGER NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE, -- FK
+    usuario_id INTEGER NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE, -- FK (Relación con Usuarios)
     nombre VARCHAR(255) NOT NULL,
     monto DECIMAL(12,2) NOT NULL CHECK (monto > 0),
     actual DECIMAL(12,2) DEFAULT 0 CHECK (actual >= 0),
@@ -36,3 +36,4 @@ CREATE TABLE transacciones (
     usuario_id INTEGER NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE,
     objetivo_id INTEGER REFERENCES objetivos(id) ON DELETE SET NULL
 );
+
