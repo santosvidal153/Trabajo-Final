@@ -103,6 +103,9 @@ router.post("/", simpleAuth, async (req,res) => {
 
         if ( categoria === "ahorro" && objetivoId ) {
             await pool.query("UPDATE objetivos SET actual = actual + $1 WHERE id = $2 AND usuario_id = $3", [monto, objetivoId, id])
+
+            const { actualizarEstadosDinamicos } = await import('./objetivos-back.js');
+            await actualizarEstadosDinamicos(id);
         }
         res.status(201).json(datosForm.rows[0]);
     }

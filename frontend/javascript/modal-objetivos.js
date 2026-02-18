@@ -9,6 +9,14 @@ function actualizarRequeridos() {
     }
 }
 
+function limpiarFormulario() {
+    const form = document.getElementById('form-nuevo-objetivo');
+    if (form) {
+        form.reset();
+        delete form.dataset.objetivoId;
+    }
+}
+
 function configurarModalEventListeners() {
     const modals = document.querySelectorAll('.modal');
     modals.forEach(modal => {
@@ -89,6 +97,9 @@ function closeModal(modal) {
     if (modal) {
         modal.classList.remove('is-active');
         document.body.classList.remove('is-clipped');
+        if (modal.id === 'modal-js-example') {
+            limpiarFormulario();
+        }
     }
 }
 
@@ -106,5 +117,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('form-nuevo-objetivo');
     if (form) {
         form.addEventListener('submit', handleSubmitForm);
+    }
+
+    const btnCancelar = document.getElementById('btn-cancelar-objetivo');
+    if (btnCancelar) {
+        btnCancelar.addEventListener('click', () => {
+            const modal = document.getElementById('modal-js-example');
+            if (modal) {
+                closeModal(modal);
+            }
+        });
     }
 });

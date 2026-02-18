@@ -36,4 +36,3 @@ CREATE TABLE transacciones (
     usuario_id INTEGER NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE,
     objetivo_id INTEGER REFERENCES objetivos(id) ON DELETE SET NULL
 );
-
