@@ -6,6 +6,9 @@ const router = express.Router();
 
 //obtener nombre de usuario
 router.get("/usuario", simpleAuth, async(req,res) => {
+    if (!req.usuario_id) {
+        return res.status(401).json({ error: "Autenticación requerida" });
+    }
     try {
         const id = req.usuario_id;
         const nombre = await pool.query("SELECT nombre FROM usuarios WHERE id = $1", [id]);
@@ -19,6 +22,9 @@ router.get("/usuario", simpleAuth, async(req,res) => {
 
 //obtener transacciones mensuales
 router.get("/resumen", simpleAuth, async (req,res) => {
+    if (!req.usuario_id) {
+        return res.status(401).json({ error: "Autenticación requerida" });
+    }
     try {
         const id = req.usuario_id;
         const result = await pool.query(
@@ -34,6 +40,9 @@ router.get("/resumen", simpleAuth, async (req,res) => {
 
 //obtener saldo de usuarios
 router.get("/saldo", simpleAuth, async(req,res) => {
+    if (!req.usuario_id) {
+        return res.status(401).json({ error: "Autenticación requerida" });
+    }
     try {
         const id = req.usuario_id;
         const result = await pool.query("SELECT saldo FROM usuarios WHERE id = $1", [id]);

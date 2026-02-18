@@ -367,7 +367,7 @@ async function completarObjetivo(objetivoId) {
             }
         });
         
-        if (response.status === 401) {
+        if (responseObjetivo.status === 401) {
             localStorage.removeItem('token');
             localStorage.removeItem('usuario_id');
             window.location.href = 'inicio.html';
@@ -410,7 +410,7 @@ async function completarObjetivo(objetivoId) {
             }
         });
         
-        if (response.status === 401) {
+        if (responseCompletar.status === 401) {
             localStorage.removeItem('token');
             localStorage.removeItem('usuario_id');
             window.location.href = 'inicio.html';

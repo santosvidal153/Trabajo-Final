@@ -1,11 +1,20 @@
 const mostrarBienvenida = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        alert('No autenticado. Por favor, inicia sesión nuevamente.');
+        return;
+    } 
     try {
         const url = `http://localhost:3000/inicio/usuario`
         const response = await fetch(url, {
           headers: {
-            //"x-token": localStorage.getItem("token")
-            "x-token": "user-1" //pruebo asignandole valor
+            "x-token": token
           }});
+        if (response.status === 401) {
+            localStorage.removeItem('token');
+            window.location.href = 'login.html';
+            return;
+        }
         const data =  await response.json();
         const nombre = data.nombre;
         const espSaludo = document.querySelector("#saludo-inicio")
@@ -20,12 +29,23 @@ const mostrarBienvenida = async () => {
 }
 
 const obtenerSaldo = async() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        alert('No autenticado. Por favor, inicia sesión nuevamente.');
+        return;
+    } 
     try{const response = await fetch(`http://localhost:3000/inicio/saldo`, {
         headers: {
-            //"x-token": localStorage.getItem("token")
-            "x-token": "user-1"
+            "x-token": token
         }})
         const data = await response.json();
+
+        if (response.status === 401) {
+            localStorage.removeItem('token');
+            window.location.href = 'login.html';
+            return;
+        }
+
         if (!response.ok) {
             alert(data.error || "Error en la base de datos");
             return;
@@ -41,13 +61,23 @@ const obtenerSaldo = async() => {
 
 
 const resumenInicio = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        alert('No autenticado. Por favor, inicia sesión nuevamente.');
+        return;
+    } 
     try {
         const url =  `http://localhost:3000/inicio/resumen`
         const response = await fetch(url, {
             headers: {
-                //"x-token": localStorage.getItem("token")
-              "x-token": "user-1"
+              "x-token": token
             }});
+        
+        if (response.status === 401) {
+            localStorage.removeItem('token');
+            window.location.href = 'login.html';
+            return;
+        }
         const data = await response.json();
         const saldoUsuario = await obtenerSaldo();
 
