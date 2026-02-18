@@ -133,6 +133,9 @@ const eliminarTransferencia = async (transaccionId, fila) => {
         alert('No autenticado. Por favor, inicia sesión nuevamente.');
         return;
     }   
+    if (!confirm("¿Estas seguro de eliminar esta transaccion?")) {
+        return;
+    }
     try {
         const url = `http://localhost:3000/transacciones/${transaccionId}`
         const response = await fetch(url, {
@@ -222,6 +225,9 @@ const guardarCambios = async (transaccionId) => {
         alert('No autenticado. Por favor, inicia sesión nuevamente.');
         return;
     }   
+    if (!confirm("¿Estas seguro de modificar esta transaccion?")) {
+        return;
+    }
 
     const motivo = document.querySelector("#new-motivo").value;
     const monto = document.querySelector("#new-monto").value;
