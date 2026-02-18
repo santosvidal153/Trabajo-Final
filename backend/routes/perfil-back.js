@@ -111,7 +111,7 @@ perfilRouter.get('/', simpleAuth, async (req, res) => {
     try {
         const usuario_id = req.usuario_id;
         const { rows } = await pool.query(
-            `SELECT id, nombre, email, ciudad, pais, created_at, updated_at 
+            `SELECT id, nombre, email, ciudad, pais, saldo, created_at, updated_at 
              FROM usuarios WHERE id = $1`, 
             [usuario_id]
         );
@@ -134,7 +134,7 @@ perfilRouter.get('/', simpleAuth, async (req, res) => {
 
 // PUT /api/perfil
 perfilRouter.put("/", simpleAuth, async (req, res) => {
-    const { nombre, ciudad, pais } = req.body;
+    const { nombre, ciudad, pais, saldo} = req.body;
     const usuario_id = req.usuario_id;
 
     const queryColumns = [];
@@ -156,6 +156,12 @@ perfilRouter.put("/", simpleAuth, async (req, res) => {
     if (typeof pais === "string" && pais.length > 0) {
         queryColumns.push(`pais = $${valuesCount}`);
         queryValues.push(pais);
+        valuesCount++;
+    }
+
+    if ( saldo !== undefined ) {
+        queryColumns.push(`saldo = $${valuesCount}`);
+        queryValues.push(saldo);
         valuesCount++;
     }
 

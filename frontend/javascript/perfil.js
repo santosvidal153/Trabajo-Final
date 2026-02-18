@@ -46,9 +46,14 @@ function actualizarInterfazPerfil(perfil) {
     
     const nombreUsuario = document.querySelector('.titulo-usuario');
     const emailUsuario = document.querySelector('.perfil-datos .etiqueta-categoria');
+    const saldoUsuario = document.querySelector("#saldo-usuario");
     
     if (nombreUsuario) nombreUsuario.textContent = perfil.nombre || 'Sin nombre';
     if (emailUsuario) emailUsuario.textContent = perfil.email || 'Sin email';
+    if (saldoUsuario) {
+        const saldo = perfil.saldo 
+        saldoUsuario.textContent = `Saldo: $${Number(saldo).toFixed(2)}` || 'Saldo: $0.00';
+    }
     
     const actualizaciones = [
         { selector: '.info-simple .info-fila:nth-child(1) .info-columna:nth-child(1) .valor-monto', valor: perfil.nombre || 'Sin nombre' },

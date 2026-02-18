@@ -82,6 +82,7 @@ async function guardarCambiosPerfil() {
     const nombre = document.getElementById('perfil-nombre').value.trim();
     const pais = document.getElementById('perfil-pais').value.trim();
     const ciudad = document.getElementById('perfil-ciudad').value.trim();
+    const saldo = document.getElementById("perfil-saldo").value.trim();
 
     if (nombre) {
       if (nombre.length < 3) {
@@ -145,13 +146,21 @@ async function guardarCambiosPerfil() {
       }
     }
 
+    if (saldo) {
+      const regexNumeros = /^[0-9]+(\.\d{1,2})?$/
+      if (! regexNumeros.test(saldo)){
+          mostrarMensaje("El saldo debe contener solo numeros positivos y hasta dos decimales", 'error');
+          return;
+        }
+    }
+
     const response = await fetch('http://localhost:3000/api/perfil', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         'x-token': token
       },
-      body: JSON.stringify({ nombre, pais, ciudad })
+      body: JSON.stringify({ nombre, pais, ciudad, saldo})
     });
 
     if (response.ok) {
