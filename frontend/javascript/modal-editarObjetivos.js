@@ -73,12 +73,11 @@ function configurarModalEditar() {
 
 async function cargarObjetivoParaEdicion(id) {
     try {
-        //const token = localStorage.getItem('token');
-        //if (!token) {
-        //    alert('No autenticado. Por favor, inicia sesión nuevamente.');
-        //    return;
-        //}
-        const token = "user-1";
+        const token = localStorage.getItem('token');
+        if (!token) {
+            alert('No autenticado. Por favor, inicia sesión nuevamente.');
+            return;
+        }
         
         const response = await fetch(`http://localhost:3000/api/objetivos/${id}`, {
             headers: {
@@ -89,7 +88,7 @@ async function cargarObjetivoParaEdicion(id) {
         
         if (response.status === 401) {
             localStorage.removeItem('token');
-            window.location.href = 'inicio.html';
+            window.location.href = 'login.html';
             return;
         }
 

@@ -25,7 +25,7 @@ async function crearObjetivo(objetivo) {
     
     if (response.status === 401) {
         localStorage.removeItem('token');
-        window.location.href = 'inicio.html';
+        window.location.href = 'login.html';
         return;
     }
         
@@ -58,7 +58,7 @@ async function actualizarObjetivo(id, objetivo) {
         
         if (response.status === 401) {
             localStorage.removeItem('token');
-            window.location.href = 'inicio.html';
+            window.location.href = 'login.html';
             return;
         }
         
@@ -100,7 +100,7 @@ async function eliminarObjetivo(id) {
         
         if (response.status === 401) {
             localStorage.removeItem('token');
-            window.location.href = 'inicio.html';
+            window.location.href = 'login.html';
             return;
         }
         
@@ -140,7 +140,7 @@ async function cargarObjetivos() {
         
         if (response.status === 401) {
             localStorage.removeItem('token');
-            window.location.href = 'inicio.html';
+            window.location.href = 'login.html';
             return;
         }
         
@@ -176,7 +176,7 @@ async function cargarTransaccionesAhorro() {
         
         if (response.status === 401) {
             localStorage.removeItem('token');
-            window.location.href = 'inicio.html';
+            window.location.href = 'login.html';
             return;
         }
         
@@ -370,7 +370,7 @@ async function completarObjetivo(objetivoId) {
         if (responseObjetivo.status === 401) {
             localStorage.removeItem('token');
             localStorage.removeItem('usuario_id');
-            window.location.href = 'inicio.html';
+            window.location.href = 'login.html';
             return;
         }
         
@@ -413,7 +413,7 @@ async function completarObjetivo(objetivoId) {
         if (responseCompletar.status === 401) {
             localStorage.removeItem('token');
             localStorage.removeItem('usuario_id');
-            window.location.href = 'inicio.html';
+            window.location.href = 'login.html';
             return;
         }
         

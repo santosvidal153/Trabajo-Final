@@ -29,6 +29,6 @@ app.use("/transacciones", transacciones);
 app.use('/api/objetivos', objetivosRouter);
 
 
-app.listen(process.env.PORT, () => {
+app.listen(PORT, () => {
   console.log("backend ok, puerto:", PORT);
 });
