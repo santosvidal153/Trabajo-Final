@@ -26,39 +26,18 @@ function configurarEventListeners() {
     }
 }
 
-function configurarValidaciones() {
-    const inputNombre = document.querySelector('input[name="nombre"]');
-    const inputEmail = document.querySelector('input[name="email"]');
-    const inputPassword = document.querySelector('input[name="contrasena"]');
-    const inputPais = document.querySelector('input[name="pais"]');
-    
+function configurarValidaciones() {    
     crearMensajeError('nombre', 'textNombre');
     crearMensajeError('email', 'textEmail');
     crearMensajeError('password', 'textPassword');
     crearMensajeError('pais', 'textPais');
-    
-    if (inputNombre) {
-        inputNombre.addEventListener('input', validarNombre);
-    }
-    
-    if (inputEmail) {
-        inputEmail.addEventListener('input', validarEmail);
-    }
-    
-    if (inputPassword) {
-        inputPassword.addEventListener('input', validarPassword);
-    }
-    
-    if (inputPais) {
-        inputPais.addEventListener('input', validarPais);
-    }
 }
 
 function crearMensajeError(campo, id) {
     if (!document.getElementById(id)) {
         const mensajeDiv = document.createElement('div');
         mensajeDiv.id = id;
-        mensajeDiv.className = 'help is-danger';
+        mensajeDiv.style.color = 'red';
         mensajeDiv.style.fontSize = '0.75rem';
         mensajeDiv.style.marginTop = '0.25rem';
         
@@ -180,34 +159,9 @@ async function handleRegistro(e) {
 
         if (respuesta.ok) {
             mostrarExito('Registro exitoso');
-            
-            try {
-                const loginResponse = await fetch('http://localhost:3000/api/perfil/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ email, contrasena })
-                });
-                
-                if (loginResponse.ok) {
-                    const loginData = await loginResponse.json();
-                    localStorage.setItem('token', loginData.token);
-                    localStorage.setItem('usuarioLogueado', email);
-                    
-                    setTimeout(() => {
-                        window.location.href = './inicio.html';
-                    }, 2000);
-                } else {
-                    setTimeout(() => {
-                        window.location.href = './login.html';
-                    }, 2000);
-                }
-            } catch (loginError) {
-                setTimeout(() => {
-                    window.location.href = './login.html';
-                }, 2000);
-            }
+            setTimeout(() => {
+                window.location.href = './login.html';
+            }, 2000);
         } else if (respuesta.status === 409) {
             const resData = await respuesta.json();
             console.log('Error 409 - Datos duplicados:', resData);
