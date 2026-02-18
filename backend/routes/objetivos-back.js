@@ -394,4 +394,6 @@ objetivosRouter.delete("/:id", simpleAuth, async (req, res) => {
   }
 });
 
+export { actualizarEstadosDinamicos };
+
 export default objetivosRouter;
