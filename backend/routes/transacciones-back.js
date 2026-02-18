@@ -6,6 +6,9 @@ const router = express.Router();
 
 //obtener todas las transacciones 
 router.get("/", simpleAuth ,async (req,res) => {
+    if (!req.usuario_id) {
+          return res.status(401).json({ error: "Autenticación requerida" });
+        }
     try {
         const usuarioId = req.usuario_id;
         const transaccionTotal = await pool.query("SELECT * FROM transacciones WHERE usuario_id = $1 ORDER BY fecha DESC",
@@ -21,6 +24,9 @@ router.get("/", simpleAuth ,async (req,res) => {
 
 //guardar nueva transaccion en db
 router.post("/", simpleAuth, async (req,res) => {
+    if (!req.usuario_id) {
+          return res.status(401).json({ error: "Autenticación requerida" });
+        }
     try {
         const id = req.usuario_id;
         const {motivo, monto, tipo, categoria, objetivoId} = req.body;
@@ -108,6 +114,9 @@ router.post("/", simpleAuth, async (req,res) => {
 
 //modificar transacciones
 router.put("/:transaccionId", simpleAuth, async (req, res) => {
+    if (!req.usuario_id) {
+        return res.status(401).json({ error: "Autenticación requerida" });
+    }
     const id = req.usuario_id;
     const {transaccionId} = req.params; 
     const { motivo, monto, tipo, categoria } = req.body;
@@ -166,6 +175,9 @@ router.put("/:transaccionId", simpleAuth, async (req, res) => {
 
 //eliminar transacciones
 router.delete("/:transaccionId", simpleAuth, async (req,res) => {
+    if (!req.usuario_id) {
+        return res.status(401).json({ error: "Autenticación requerida" });
+    }
     const id = req.usuario_id;
     const {transaccionId} = req.params;
     try {
@@ -184,6 +196,9 @@ router.delete("/:transaccionId", simpleAuth, async (req,res) => {
 
 //obtener objetivos para ahorro
 router.get("/objetivoAhorro", simpleAuth, async (req,res) => {
+    if (!req.usuario_id) {
+        return res.status(401).json({ error: "Autenticación requerida" });
+    }
     try {
         const id = req.usuario_id;
         const result = await pool.query("SELECT id, nombre FROM objetivos WHERE usuario_id = $1 AND estado = 'progreso'", [id]);

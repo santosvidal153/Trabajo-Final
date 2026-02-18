@@ -189,6 +189,7 @@ objetivosRouter.post("/", simpleAuth,async (req, res) => {
       estadoInicial = "progreso";
     }
 
+    const imagenAsignada = "../../frontend/assets/chanchito-ahorra.jpg"
     const { rows } = await pool.query(
       `INSERT INTO objetivos (
         usuario_id, nombre, monto, actual, estado, categoria, 

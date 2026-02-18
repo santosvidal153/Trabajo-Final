@@ -51,17 +51,27 @@ formAhorro.addEventListener("submit", async (e)=> {
 
 
 const guardarTransaccion = async(datos) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        alert('No autenticado. Por favor, inicia sesión nuevamente.');
+        return;
+    }   
     try {
         const url = `http://localhost:3000/transacciones`
         const response = await fetch(url, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            //"x-token": localStorage.getItem("token")
-            "x-token": "user-1"
+            "x-token": token
             },  
         body: JSON.stringify(datos)
         })
+
+        if (response.status === 401) {
+            localStorage.removeItem('token');
+            window.location.href = 'login.html';
+            return;
+        }
 
         if (!response.ok) {
             const data = await response.json()
@@ -85,13 +95,24 @@ const guardarTransaccion = async(datos) => {
 
 document.addEventListener("DOMContentLoaded", () => {
     const mostrarTransacciones = async () => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            alert('No autenticado. Por favor, inicia sesión nuevamente.');
+            return;
+        }   
         try {
             const url = `http://localhost:3000/transacciones`
             const response = await fetch(url, {
                 headers: {
-                    //"x-token": localStorage.getItem("token")
-                    "x-token": "user-1"
+                    "x-token": token
                 }});
+
+            if (response.status === 401) {
+            localStorage.removeItem('token');
+            window.location.href = 'login.html';
+            return;
+            }
+
             const transacciones = await response.json();
             transacciones.forEach(element => {
                 datosNuevos(element);
@@ -107,14 +128,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
 //funcion de boton de eliminar 
 const eliminarTransferencia = async (transaccionId, fila) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        alert('No autenticado. Por favor, inicia sesión nuevamente.');
+        return;
+    }   
     try {
         const url = `http://localhost:3000/transacciones/${transaccionId}`
         const response = await fetch(url, {
             method: "DELETE",
             headers: {
-                //"x-token": localStorage.getItem("token")
-                "x-token": "user-1"
+                "x-token": token
             }});
+
+        if (response.status === 401) {
+            localStorage.removeItem('token');
+            window.location.href = 'login.html';
+            return;
+        }
+
         if (!response.ok) {
             const errorData = await response.json();
             alert(errorData.error || "Error en la base de datos");
@@ -185,6 +217,12 @@ const datosNuevos = (transaccion) => {
 
 
 const guardarCambios = async (transaccionId) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        alert('No autenticado. Por favor, inicia sesión nuevamente.');
+        return;
+    }   
+
     const motivo = document.querySelector("#new-motivo").value;
     const monto = document.querySelector("#new-monto").value;
     const tipo = document.querySelector("#new-tipo").value;
@@ -195,8 +233,7 @@ const guardarCambios = async (transaccionId) => {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
-                "x-token": "user-1"
-                //"x-token": localStorage.getItem("token")
+                "x-token": token
              },
             body: JSON.stringify({
             motivo: motivo,
@@ -205,6 +242,12 @@ const guardarCambios = async (transaccionId) => {
             categoria: categoria,
             })
         })
+
+        if (response.status === 401) {
+            localStorage.removeItem('token');
+            window.location.href = 'login.html';
+            return;
+        }
 
         if (!response.ok) {
                 const data = await response.json();
@@ -267,12 +310,22 @@ const actualizarDatos = (transaccion) => {
 
 //abrir modal de ahorro 
 const abrirModalAhorro = async() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        alert('No autenticado. Por favor, inicia sesión nuevamente.');
+        return;
+    }   
     try {
         const response = await fetch(`http://localhost:3000/transacciones/objetivoAhorro`, {
             headers:{
-                //"x-token": localStorage.getItem("token")
-                "x-token": "user-1"
+                "x-token": token
             }},) 
+        
+        if (response.status === 401) {
+            localStorage.removeItem('token');
+            window.location.href = 'login.html';
+            return;
+        }
 
         if (!response.ok) {
             const data = await response.json()
