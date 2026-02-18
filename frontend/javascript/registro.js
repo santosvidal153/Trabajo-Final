@@ -107,7 +107,7 @@ function validarPassword() {
 function validarPais() {
     const pais = document.querySelector('input[name="pais"]').value;
     const mensaje = document.getElementById('textPais');
-    const LETTERS_REGEX = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ]+(?:[\s\-]+[a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*$/;
+    const PAIS_REGEX = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ]+(?:\s+[a-zA-ZáéíóúÁÉÍÓÚñÑ]+)?$/;
     
     if (pais === '') {
         mensaje.textContent = 'Es obligatorio colocar un país';
@@ -115,8 +115,8 @@ function validarPais() {
     } else if (pais.length < 2) {
         mensaje.textContent = 'El país debe tener más de 2 letras';
         return false;
-    } else if (!LETTERS_REGEX.test(pais)) {
-        mensaje.textContent = 'El país solo puede contener letras';
+    } else if (!PAIS_REGEX.test(pais)) {
+        mensaje.textContent = 'El país solo puede contener letras y maximo 2 palabras';
         return false;
     } else {
         mensaje.textContent = '';
@@ -156,7 +156,6 @@ async function handleRegistro(e) {
             body: JSON.stringify(datos),
         });
 
-
         if (respuesta.ok) {
             mostrarExito('Registro exitoso');
             setTimeout(() => {
@@ -164,7 +163,6 @@ async function handleRegistro(e) {
             }, 2000);
         } else if (respuesta.status === 409) {
             const resData = await respuesta.json();
-            console.log('Error 409 - Datos duplicados:', resData);
             const mensajeNombre = document.getElementById('textNombre');
             const mensajeEmail = document.getElementById('textEmail');
 
@@ -172,13 +170,11 @@ async function handleRegistro(e) {
             mensajeEmail.textContent = resData.error || '';
         } else if (respuesta.status === 422) {
             const resData = await respuesta.json();
-            console.log('Error 422 - Validación fallida:', resData);
             mostrarError(resData.error || 'Verifica los datos ingresados');
         } else {
             mostrarError('No se pudo completar el registro');
         }
     } catch (error) {
-        console.error('Error en registro:', error);
         mostrarError('Error de conexión');
     }
 }
