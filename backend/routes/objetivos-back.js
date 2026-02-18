@@ -365,6 +365,10 @@ objetivosRouter.delete("/:id", simpleAuth, async (req, res) => {
       [objetivoId, usuarioId]
     );
 
+    const montoADevolver = await pool.query("SELECT actual FROM objetivos WHERE id = $1 AND usuario_id = $2", [objetivoId,usuarioId]);
+    const monto = montoADevolver.rows[0].actual;
+    await pool.query("INSERT INTO transacciones (motivo, monto, tipo, categoria, usuario_id) VALUES ('Objetivo eliminado: devolucion de ahorro',$1,'ingreso','otros',$2)", [monto,usuarioId])
+
     await pool.query(
       "DELETE FROM objetivos WHERE id = $1 AND usuario_id = $2",
       [objetivoId, usuarioId]
