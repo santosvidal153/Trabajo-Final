@@ -103,6 +103,10 @@ router.post("/", simpleAuth, async (req,res) => {
     
         const datosForm = await pool.query("INSERT INTO transacciones (motivo, monto, tipo, categoria, usuario_id, objetivo_id) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *",
             [motivo, monto, tipo, categoria, id, objetivoId]);
+
+        if ( categoria === "ahorro" && objetivoId ) {
+            await pool.query("UPDATE objetivos SET actual = actual + $1 WHERE id = $2 AND usuario_id = $3", [monto, objetivoId, id])
+        }
         res.status(201).json(datosForm.rows[0]);
     }
 
