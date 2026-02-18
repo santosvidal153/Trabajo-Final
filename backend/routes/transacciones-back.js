@@ -59,7 +59,7 @@ router.post("/", simpleAuth, async (req,res) => {
 
         const saldoDisponible = Number(saldoActual.rows[0].saldo) + Number(ingresos.rows[0].ingresos) - Number(gastos.rows[0].gastos) - Number(ahorros.rows[0].ahorros);
 
-        if ( tipo === stringGasto && Number(monto) > saldoDisponible) {
+        if ( tipo === stringGasto && categoria !== "objetivo" && Number(monto) > saldoDisponible) {
             return res.status(400).json({ error: "No se puede realizar un gasto mayor al saldo disponible"});
         }
         if ( tipo === stringGasto && categoria === stringAhorro) {
