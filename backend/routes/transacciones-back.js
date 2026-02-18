@@ -68,9 +68,6 @@ router.post("/", simpleAuth, async (req,res) => {
         if ( tipo === stringGasto && categoria === 'sueldo') {
             return res.status(400).json({ error: "Sueldo no puede ser ingresado como gasto"})
         }
-        if ( tipo === stringIngresos && categoria === 'objetivo') {
-            return res.status(400).json({ error: "Objetivo no puede ser ingresado como ingreso"})
-        }
         if ( tipo === stringIngresos && categoria === 'alimento') {
             return res.status(400).json({ error: "Alimento no puede ser ingresado como ingreso"})
         }
@@ -162,6 +159,9 @@ router.put("/:transaccionId", simpleAuth, async (req, res) => {
         if ( transOriginal.rows[0].categoria === stringAhorro) {
             return res.status(400).json({ error: "No se puede modificar un ahorro"})
         } 
+        if ( transOriginal.rows[0].categoria === 'objetivo') {
+            return res.status(400).json({ error: "No se puede modificar un objetivo"})
+        } 
         if ( categoria === stringAhorro ){
             return res.status(400).json({error: "No se puede modificar una transaccion a ahorro"})
         }
@@ -188,6 +188,9 @@ router.delete("/:transaccionId", simpleAuth, async (req,res) => {
         const transaccion = await pool.query("SELECT categoria FROM transacciones WHERE id = $1 AND usuario_id = $2", [transaccionId,id]);
         if ( transaccion.rows[0].categoria === "ahorro"){
             return res.status(400).json({ error: "No se puede eliminar un ingreso de ahorro"});
+        }
+        if ( transaccion.rows[0].categoria === "objetivo"){
+            return res.status(400).json({ error: "No se pueden eliminar transacciones relacionadas a objetivos."});
         }
         await pool.query("DELETE FROM transacciones WHERE id = $1 AND usuario_id = $2", [transaccionId,id]);
         res.status(204).end();
