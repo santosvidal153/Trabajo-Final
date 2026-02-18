@@ -5,12 +5,14 @@ export const perfilRouter = express.Router();
 
 const EMAIL_REGEX = /^\S+@\S+\.\S+$/;
 const LETTERS_REGEX = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ]+(?:\s+[a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*(?:\s+[a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*$/;
+const PAIS_REGEX = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ]+(?:\s+[a-zA-ZáéíóúÁÉÍÓÚñÑ]+)?$/;
+const CIUDAD_REGEX = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
 
 //POST /api/perfil
 perfilRouter.post("/", async (req, res) => {
     const { email, nombre, contrasena, pais } = req.body;
 
-    if (!email || !nombre || !contrasena) {
+    if (!email || !nombre || !contrasena || !pais) {
         return res.status(400).json({
             error: "Todos los campos son requeridos",
         });
@@ -34,7 +36,7 @@ perfilRouter.post("/", async (req, res) => {
         });
     }
 
-    if (pais && (pais.length < 2 || !LETTERS_REGEX.test(pais))) {
+    if (pais && (pais.length < 2 || !PAIS_REGEX.test(pais))) {
         return res.status(422).json({
             error: "El pais debe tener más de 2 letras",
         });
@@ -141,19 +143,19 @@ perfilRouter.put("/", simpleAuth, async (req, res) => {
     const queryValues = [];
     let valuesCount = 1;
 
-    if (typeof nombre === "string" && nombre.length > 3 && nombre.length < 60) {
+    if (typeof nombre === "string" && nombre.length > 3 && nombre.length < 60 && LETTERS_REGEX.test(nombre)) {
         queryColumns.push(`nombre = $${valuesCount}`);
         queryValues.push(nombre);
         valuesCount++;
     }
     
-    if (typeof ciudad === "string" && ciudad.length > 0) {
+    if (typeof ciudad === "string" && ciudad.length > 0 && CIUDAD_REGEX.test(ciudad)) {
         queryColumns.push(`ciudad = $${valuesCount}`);
         queryValues.push(ciudad);
         valuesCount++;
     }
 
-    if (typeof pais === "string" && pais.length > 0) {
+    if (typeof pais === "string" && pais.length > 0 && PAIS_REGEX.test(pais)) {
         queryColumns.push(`pais = $${valuesCount}`);
         queryValues.push(pais);
         valuesCount++;
