@@ -294,7 +294,6 @@ function crearTarjetaObjetivo(objetivo) {
                 <div class="is-flex is-justify-content-space-between is-align-items-center mb-4">
                     <span class="etiqueta-categoria">${objetivo.categoria}</span>
                     ${getContenidoSuperiorDerecho(estado, objetivo)}
-                    }
                 </div>
                 <h3 class="titulo-objetivo mb-2">${objetivo.nombre}</h3>
                 <p class="descripcion-objetivo mb-4">${objetivo.descripcion || 'Sin descripción'}</p>
