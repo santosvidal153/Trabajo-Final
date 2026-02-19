@@ -82,9 +82,9 @@ const resumenInicio = async () => {
         const saldoUsuario = await obtenerSaldo();
 
         //filtro valores mensuales
-        const ingresos = data.filter( item => item.tipo === "ingreso");
+        const ingresos = data.filter( item => item.tipo === "ingreso" && item.categoria !== "ahorro");
         const gastos = data.filter(item => item.tipo === "gasto" && item.categoria !== "objetivo");
-        const ahorros = ingresos.filter( item => item.categoria === "ahorro");
+        const ahorros = data.filter( item => item.tipo === "ingreso" && item.categoria === "ahorro");
         const gastosObj = data.filter(item => item.tipo === "gasto" && item.categoria === "objetivo");
 
         //sumo valores mensuales
@@ -112,7 +112,13 @@ const resumenInicio = async () => {
         //obtener saldo de usuario y calcular lo demas
         const saldoMensual = saldoUsuario + ingresoMensual - gastoMensual - ahorroMensual;
         const filaSaldo = document.querySelector("#saldo-mensual")
-        filaSaldo.textContent = `$${saldoMensual}`
+
+        //mostrar saldo en rojo si es negativo
+        if (saldoMensual < 0) {
+            filaSaldo.innerHTML = `<span class="has-text-danger">$${saldoMensual}</span>`;
+        } else {
+            filaSaldo.innerHTML = `<span>$${saldoMensual}</span>`;
+        }
 
         let porcDisp = 0;
         if (ingresoMensual > 0){
@@ -121,6 +127,14 @@ const resumenInicio = async () => {
         const porcentaje = document.querySelector("#nota-porcentaje");
 
         //notificacion de abajo
+        if (saldoMensual < 0) {
+            porcentaje.innerHTML = `
+            <article class="message is-danger">
+            <div class="message-body">
+              ¡Cuidado! Tu saldo es negativo. Revisa tus gastos e ingresos.
+            </div>
+            </article>` 
+        }
         if (porcDisp <= 100 && porcDisp > 60) {
             porcentaje.innerHTML = `
             <article class="message is-success">
@@ -147,12 +161,12 @@ const resumenInicio = async () => {
         }
 
         //gastos por categoria
-        const objetivo = gastos.filter(item => item.categoria === "objetivo");
-        const alimento = gastos.filter(item => item.categoria === "alimento");
-        const transporte = gastos.filter(item => item.categoria === "transporte");
-        const salud = gastos.filter(item => item.categoria === "salud");
-        const entretenimiento = gastos.filter(item => item.categoria === "entretenimiento");
-        const otros = gastos.filter(item => item.categoria === "otros");
+        const objetivo = data.filter(item => item.tipo === "gasto" && item.categoria === "objetivo");
+        const alimento = gastos.filter(item => item.tipo === "gasto" && item.categoria === "alimento");
+        const transporte = gastos.filter(item => item.tipo === "gasto" && item.categoria === "transporte");
+        const salud = gastos.filter(item => item.tipo === "gasto" && item.categoria === "salud");
+        const entretenimiento = gastos.filter(item => item.tipo === "gasto" && item.categoria === "entretenimiento");
+        const otros = gastos.filter(item => item.tipo === "gasto" && item.categoria === "otros");
         
         const gastoObj = objetivo.reduce((a,b) => a + Number(b.monto), 0);
         const gastoAli = alimento.reduce((a,b) => a + Number(b.monto), 0);
