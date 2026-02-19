@@ -100,7 +100,12 @@ objetivosRouter.get("/", simpleAuth, async (req, res) => {
             )
           ELSE 'bloqueado'
         END AS estado_calculado,
-        ROUND((o.actual / o.monto) * 100) AS porcentaje
+        ROUND((o.actual / o.monto) * 100) AS porcentaje,
+        CASE 
+          WHEN o.requeridos - (SELECT COUNT(*) FROM objetivos WHERE usuario_id = $1 AND estado = 'completado') < 0 
+            THEN 0
+          ELSE o.requeridos - (SELECT COUNT(*) FROM objetivos WHERE usuario_id = $1 AND estado = 'completado')
+        END AS restantes
       FROM objetivos o 
       WHERE o.usuario_id = $1 
       ORDER BY o.created_at DESC
@@ -114,6 +119,7 @@ objetivosRouter.get("/", simpleAuth, async (req, res) => {
         estado_dinamico: {
           estado: objetivo.estado_calculado,
           porcentaje: objetivo.porcentaje,
+          restantes: objetivo.restantes,
         },
       })),
     });
