@@ -44,7 +44,7 @@ async function actualizarEstadosDinamicos(usuarioId) {
       if (cantidadCompletados >= obj.requeridos) {
         if (obj.estado === 'completado') {
           nuevoEstado = 'completado';
-        } else if (obj.actual >= obj.monto) {
+        } else if (parseFloat(obj.actual) >= parseFloat(obj.monto)) {
           nuevoEstado = 'listo';
         } else {
           nuevoEstado = 'progreso';
@@ -94,7 +94,7 @@ objetivosRouter.get("/", simpleAuth, async (req, res) => {
             THEN (
               CASE 
                 WHEN o.estado = 'completado' THEN 'completado'
-                WHEN o.actual >= o.monto THEN 'listo'
+                WHEN CAST(o.actual AS NUMERIC) >= CAST(o.monto AS NUMERIC) THEN 'listo'
                 ELSE 'progreso'
               END
             )

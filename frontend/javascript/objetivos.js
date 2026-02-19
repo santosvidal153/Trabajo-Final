@@ -263,7 +263,7 @@ function crearTarjetaObjetivo(objetivo) {
     
     if (estado === 'bloqueado') {
         tarjeta.classList.add('objetivo-bloqueado');
-        const mensaje = `Completa ${objetivo.requeridos} objetivo(s) para desbloquear`;
+        const mensaje = `Completa ${objetivo.requeridos} objetivos para desbloquear`;
         tarjeta.innerHTML = `
             <div class="superposicion-bloqueado is-flex is-flex-direction-column is-align-items-center is-justify-content-center">
                 <span class="icon mb-2">
@@ -294,7 +294,6 @@ function crearTarjetaObjetivo(objetivo) {
                 <div class="is-flex is-justify-content-space-between is-align-items-center mb-4">
                     <span class="etiqueta-categoria">${objetivo.categoria}</span>
                     ${getContenidoSuperiorDerecho(estado, objetivo)}
-                    }
                 </div>
                 <h3 class="titulo-objetivo mb-2">${objetivo.nombre}</h3>
                 <p class="descripcion-objetivo mb-4">${objetivo.descripcion || 'Sin descripción'}</p>
