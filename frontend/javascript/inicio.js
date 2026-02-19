@@ -113,12 +113,12 @@ const resumenInicio = async () => {
         const saldoMensual = saldoUsuario + ingresoMensual - gastoMensual - ahorroMensual - gastoObjMensual;
         const filaSaldo = document.querySelector("#saldo-mensual")
 
-        /*mostrar saldo en rojo si es negativo
+        //mostrar saldo en rojo si es negativo
         if (saldoMensual < 0) {
             filaSaldo.innerHTML = `<span class="has-text-danger">$${saldoMensual}</span>`;
         } else {
             filaSaldo.innerHTML = `<span>$${saldoMensual}</span>`;
-        }*/
+        }
 
         let porcDisp = 0;
         if (ingresoMensual > 0){
