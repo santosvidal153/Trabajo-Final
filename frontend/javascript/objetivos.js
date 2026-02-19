@@ -263,7 +263,7 @@ function crearTarjetaObjetivo(objetivo) {
     
     if (estado === 'bloqueado') {
         tarjeta.classList.add('objetivo-bloqueado');
-        const mensaje = `Completa ${objetivo.requeridos} objetivo(s) para desbloquear`;
+        const mensaje = `Completa ${objetivo.restantes} objetivo(s) para desbloquear`;
         tarjeta.innerHTML = `
             <div class="superposicion-bloqueado is-flex is-flex-direction-column is-align-items-center is-justify-content-center">
                 <span class="icon mb-2">
