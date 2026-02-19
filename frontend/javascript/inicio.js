@@ -84,7 +84,7 @@ const resumenInicio = async () => {
         //filtro valores mensuales
         const ingresos = data.filter( item => item.tipo === "ingreso" && item.categoria !== "ahorro");
         const gastos = data.filter(item => item.tipo === "gasto" && item.categoria !== "objetivo");
-        const ahorros = ingresos.filter( item => item.tipo === "ingreso" && item.categoria === "ahorro");
+        const ahorros = data.filter( item => item.tipo === "ingreso" && item.categoria === "ahorro");
         const gastosObj = data.filter(item => item.tipo === "gasto" && item.categoria === "objetivo");
 
         //sumo valores mensuales
@@ -110,7 +110,7 @@ const resumenInicio = async () => {
         filaGastoAhorro.textContent = `$${gastoObjMensual}`
 
         //obtener saldo de usuario y calcular lo demas
-        const saldoMensual = saldoUsuario + ingresoMensual - gastoMensual - ahorroMensual - gastoObjMensual;
+        const saldoMensual = saldoUsuario + ingresoMensual - gastoMensual - ahorroMensual;
         const filaSaldo = document.querySelector("#saldo-mensual")
 
         //mostrar saldo en rojo si es negativo
@@ -161,7 +161,7 @@ const resumenInicio = async () => {
         }
 
         //gastos por categoria
-        const objetivo = gastos.filter(item => item.tipo === "gasto" && item.categoria === "objetivo");
+        const objetivo = data.filter(item => item.tipo === "gasto" && item.categoria === "objetivo");
         const alimento = gastos.filter(item => item.tipo === "gasto" && item.categoria === "alimento");
         const transporte = gastos.filter(item => item.tipo === "gasto" && item.categoria === "transporte");
         const salud = gastos.filter(item => item.tipo === "gasto" && item.categoria === "salud");
