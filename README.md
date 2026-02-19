@@ -15,6 +15,14 @@ cd Trabajo-Final
 ```
 
 ### 2. Ejecutar backend
+
+#### Opcion 1: Correr Makefile
+```
+cd backend
+make setup
+```
+
+#### Opcion 2: Correr comandos separados
 ```
 cd backend
 npm install
