@@ -3,6 +3,11 @@ document.addEventListener('DOMContentLoaded', () => {
   configurarFormularioEditar();
 });
 
+const LETTERS_REGEX = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ]+(?:\s+[a-zA-ZáéíóúÁÉÍÓÚñÑ]+)+$/;
+const EMAIL_REGEX = /^\S+@\S+\.\S+$/;
+const PAIS_REGEX = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ]+(?:\s+[a-zA-ZáéíóúÁÉÍÓÚñÑ]+)?$/;
+const CIUDAD_REGEX = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
+
 function configurarModal() {
   function openModal($el) {
     $el.classList.add('is-active');
@@ -90,8 +95,8 @@ async function guardarCambiosPerfil() {
         return;
       }
 
-      if (nombre.length > 50) {
-        mostrarMensaje('El nombre no puede tener más de 50 caracteres', 'error');
+      if (nombre.length > 60) {
+        mostrarMensaje('El nombre no puede tener más de 60 caracteres', 'error');
         return;
       }
 
@@ -102,9 +107,8 @@ async function guardarCambiosPerfil() {
       }
 
       //validar que solo contenga letras, espacios y caracteres especiales comunes
-      const nombreRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
-      if (!nombreRegex.test(nombre)) {
-        mostrarMensaje('El nombre solo puede contener letras y espacios', 'error');
+      if (!LETTERS_REGEX.test(nombre)) {
+        mostrarMensaje('El nombre debe contener solo letras y espacios', 'error');
         return;
       }
     }
@@ -120,9 +124,8 @@ async function guardarCambiosPerfil() {
         return;
       }
 
-      const ubicacionRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s\-]+$/;
-      if (!ubicacionRegex.test(pais)) {
-        mostrarMensaje('El país solo puede contener letras y espacios ', 'error');
+      if (!PAIS_REGEX.test(pais)) {
+        mostrarMensaje('El país solo puede contener letras y espacios', 'error');
         return;
       }
     }
@@ -139,16 +142,15 @@ async function guardarCambiosPerfil() {
       }
 
       //validar que solo contenga letras, espacios y guiones
-      const ubicacionRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s\-]+$/;
-      if (!ubicacionRegex.test(ciudad)) {
-        mostrarMensaje('La ciudad solo puede contener letras y espacios', 'error');
+      if (!CIUDAD_REGEX.test(ciudad)) {
+        mostrarMensaje('La ciudad solo puede contener letras, espacios y guiones', 'error');
         return;
       }
     }
 
     if (saldo) {
       const regexNumeros = /^[0-9]+(\.\d{1,2})?$/
-      if (! regexNumeros.test(saldo)){
+      if (!regexNumeros.test(saldo)){
           mostrarMensaje("El saldo debe contener solo numeros positivos y hasta dos decimales", 'error');
           return;
         }
