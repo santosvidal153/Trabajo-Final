@@ -5,8 +5,9 @@
 @import url("./base/registro.css");
 @import url("./base/inicio.css");
 @import url("./base/transacciones.css");
+@import url("./base/objetivos.css");
+@import url("./base/perfil.css");
 @import url("./componentes/navbar.css");
 @import url("./componentes/cards.css");
 @import url("./componentes/tarjetas.css");
-@import url("./base/objetivos.css");
-@import url("./base/perfil.css");
+@import url("./componentes/footer-modal.css");
