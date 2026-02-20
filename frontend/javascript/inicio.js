@@ -110,7 +110,7 @@ const resumenInicio = async () => {
         filaGastoAhorro.textContent = `$${gastoObjMensual}`
 
         //obtener saldo de usuario y calcular lo demas
-        const saldoMensual = saldoUsuario + ingresoMensual - gastoMensual - ahorroMensual;
+        const saldoMensual = saldoUsuario + ingresoMensual - gastoMensual;
         const filaSaldo = document.querySelector("#saldo-mensual")
 
         //mostrar saldo en rojo si es negativo
