@@ -160,7 +160,6 @@ async function handleRegistro(e) {
         if (respuesta.ok) {
             const el = document.getElementById("noti-exito");
             el.classList.remove("is-hidden");
-            mostrarExito('Registro exitoso');
             setTimeout(() => {
                 window.location.href = './login.html';
             }, 2000);
