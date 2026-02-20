@@ -80,7 +80,7 @@ async function handleSubmitForm(e) {
         await crearObjetivo(objetivo);
     }
     
-    const modal = document.getElementById('modal-js-example');
+    const modal = document.getElementById('modal-crear-objetivos');
     if (modal) {
         closeModal(modal);
     }
@@ -97,7 +97,7 @@ function closeModal(modal) {
     if (modal) {
         modal.classList.remove('is-active');
         document.body.classList.remove('is-clipped');
-        if (modal.id === 'modal-js-example') {
+        if (modal.id === 'modal-crear-objetivos') {
             limpiarFormulario();
         }
     }
@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const btnCancelar = document.getElementById('btn-cancelar-objetivo');
     if (btnCancelar) {
         btnCancelar.addEventListener('click', () => {
-            const modal = document.getElementById('modal-js-example');
+            const modal = document.getElementById('modal-crear-objetivos');
             if (modal) {
                 closeModal(modal);
             }

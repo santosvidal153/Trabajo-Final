@@ -40,14 +40,14 @@
     <main class="contenedor-principal">
         <div class="encabezado-pagina">
             <h1 class="titulo-objetivo">Mis Objetivos</h1>
-            <button class="boton-primario js-modal-trigger" id="btnObjetivo" data-target="modal-js-example">+ Nuevo Objetivo</button>
+            <button class="boton-primario js-modal-trigger" id="btnObjetivo" data-target="modal-crear-objetivos">+ Nuevo Objetivo</button>
         </div>
 
         <div class="cuadricula-objetivos">
         </div>
 
         <!-- Modal crear objetivos -->
-        <div id="modal-js-example" class="modal">
+        <div id="modal-crear-objetivos" class="modal">
           <div class="modal-background"></div>
 
           <div class="modal-card">
@@ -118,12 +118,10 @@
                     </div>
                   </div>
                 </div>
-                    <footer class="modal-card-foot">
-                    <div class="buttons">
-                      <button class="button is-success" type="submit">Guardar Objetivo</button>
-                      <button class="button is-link" type="button" id="btn-cancelar-objetivo">Cancelar</button>
-                    </div>
-                  </footer>
+                <footer>
+                  <button class="button is-success" type="submit">Guardar Objetivo</button>
+                  <button class="button is-link" type="button" id="btn-cancelar-objetivo">Cancelar</button>
+                </footer>
               </form>
             </section>
           </div>
@@ -163,15 +161,11 @@
                 </div>
 
               </form>
-            </section>
-
-            <footer class="modal-card-foot">
-              <div class="buttons">
+              <footer>
                 <button class="button is-success js-modal-trigger" id="btn-guardar-objetivo">Guardar Cambios</button>
                 <button class="button is-link js-modal-trigger">Cancelar</button>
-              </div>
-            </footer>
-            
+              </footer>
+            </section>
           </div>
         </div>
     </main>
