@@ -18,7 +18,7 @@ function configurarEventListeners() {
         togglePassword.addEventListener('click', togglePasswordVisibility);
     }
     
-    const botonLogin = document.getElementById("botonLogin");
+    const botonLogin = document.getElementById("boton-login");
     if (botonLogin) {
         botonLogin.addEventListener("click", () => {
             window.location.href = './login.html';
@@ -158,6 +158,8 @@ async function handleRegistro(e) {
 
 
         if (respuesta.ok) {
+            const el = document.getElementById("noti-exito");
+            el.classList.remove("is-hidden");
             mostrarExito('Registro exitoso');
             setTimeout(() => {
                 window.location.href = './login.html';
