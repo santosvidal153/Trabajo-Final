@@ -15,3 +15,11 @@
     background-color: #E3AC00;
     color: #1f2937 !important;
 }
+
+.button.is-small {
+    width: 100%;
+}
+
+.tag {
+    width: 100%;
+}
