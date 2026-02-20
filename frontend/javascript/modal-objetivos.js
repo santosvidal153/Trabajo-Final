@@ -5,7 +5,6 @@ function actualizarRequeridos() {
     if (categoriaSelect) {
         const selectedOption = categoriaSelect.options[categoriaSelect.selectedIndex];
         const requeridos = selectedOption.getAttribute('data-requeridos');
-        console.log('Categoría seleccionada:', selectedOption.value, 'Requeridos:', requeridos);
     }
 }
 
