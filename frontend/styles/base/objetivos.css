@@ -4,11 +4,6 @@
     padding: 2rem 3rem;
 }
 
-.titulo-objetivo {
-    font-size: 2rem;
-    color: #1f2937;
-}
-
 .encabezado-pagina {
     display: flex;
     justify-content: space-between;
