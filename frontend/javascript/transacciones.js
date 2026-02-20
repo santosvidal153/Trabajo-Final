@@ -80,7 +80,7 @@ const guardarTransaccion = async(datos) => {
         }
 
         const datosGuardados = await response.json();
-        datosNuevos(datosGuardados);
+        datosNuevos(datosGuardados, true);
         modal.classList.remove("is-active");
         formTransaccion.reset(); 
     }
@@ -168,7 +168,7 @@ const eliminarTransferencia = async (transaccionId, fila) => {
 
 //funcion de agregar nueva transaccion 
 
-const datosNuevos = (transaccion) => {
+const datosNuevos = (transaccion, esNueva = false) => {
     const espDatos = document.querySelector("#info-transacciones");
     const nuevoDato = document.createElement("tr");
     nuevoDato.dataset.id = transaccion.id;
@@ -214,8 +214,12 @@ const datosNuevos = (transaccion) => {
     btnEliminar.addEventListener("click", () => {
         eliminarTransferencia(transaccion.id,nuevoDato); 
     })
-
+    
+    if (esNueva) {
+        espDatos.prepend(nuevoDato)
+    } else { 
     espDatos.appendChild(nuevoDato);
+    }
 }
 
 
