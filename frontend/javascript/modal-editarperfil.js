@@ -3,6 +3,14 @@ document.addEventListener('DOMContentLoaded', () => {
   configurarFormularioEditar();
 });
 
+function limpiarFormulario() {
+    const form = document.getElementById('form-editar-perfil');
+    if (form) {
+        form.reset();
+        delete form.dataset.objetivoId;
+    }
+}
+
 const LETTERS_REGEX = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ]+(?:\s+[a-zA-ZáéíóúÁÉÍÓÚñÑ]+)+$/;
 const EMAIL_REGEX = /^\S+@\S+\.\S+$/;
 const PAIS_REGEX = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ]+(?:\s+[a-zA-ZáéíóúÁÉÍÓÚñÑ]+)?$/;
@@ -16,6 +24,9 @@ function configurarModal() {
 
   function closeModal($el) {
     $el.classList.remove('is-active');
+    if ($el.id === 'modal-js-example'){
+      limpiarFormulario()
+    }
   }
 
   function closeAllModals() {

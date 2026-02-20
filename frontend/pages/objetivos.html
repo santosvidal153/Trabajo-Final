@@ -1,184 +1,168 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Objetivos - UpFinance</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
     <link rel="icon" href="../assets/favicon.ico">
     <link rel="stylesheet" href="../styles/main.css">
-</head>
-<body>
+  </head>
+  <body>
     <!-- NAVBAR -->
     <header>
-       <nav class="navbar" role="navigation" aria-label="main navigation">
-          <div class="navbar-brand">
-            <a class="navbar-item logo">
-              <img src="../assets/logov2.png" alt="Logo finanzas">
-            </a>
+      <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+          <a class="navbar-item logo">
+            <img src="../assets/logov2.png" alt="Logo finanzas">
+          </a>
+        </div>
+        
+        <div id="navbarBasicExample" class="navbar-menu">
+          <div class="navbar-start">
+            <a class="navbar-item" href="inicio.html">Inicio</a>
+            <a class="navbar-item" href="objetivos.html">Objetivos</a>
+            <a class="navbar-item" href="transacciones.html">Transacciones</a>
           </div>
-          
-          <div id="navbarBasicExample" class="navbar-menu">
-            <div class="navbar-start">
-
-              <a class="navbar-item" href="inicio.html">Inicio</a>
-              <a class="navbar-item" href="objetivos.html">Objetivos</a>
-              <a class="navbar-item" href="transacciones.html">Transacciones</a>
-
-            </div>
-
-            <div class="navbar-end">
-                <a class="navbar-item" href="perfil.html">Mi Perfil</a>
-            </div>
+          <div class="navbar-end">
+              <a class="navbar-item" href="perfil.html">Mi Perfil</a>
           </div>
-           
-        </nav>
+        </div> 
+      </nav>
     </header>
 
-
     <main class="contenedor-principal">
-        <div class="encabezado-pagina">
-            <h1 class="titulo-objetivo">Mis Objetivos</h1>
-            <button class="boton-primario js-modal-trigger" id="btnObjetivo" data-target="modal-js-example">+ Nuevo Objetivo</button>
-        </div>
+      <div class="encabezado-pagina">
+        <h1 class="titulo-objetivo">Mis Objetivos</h1>
+        <button class="boton-primario js-modal-trigger" id="btnObjetivo" data-target="modal-js-example">+ Nuevo Objetivo</button>
+      </div>
 
-        <div class="cuadricula-objetivos">
-        </div>
+      <div class="cuadricula-objetivos"></div>
 
-        <!-- Modal crear objetivos -->
-        <div id="modal-js-example" class="modal">
-          <div class="modal-background"></div>
+      <!-- Modal crear objetivos -->
+      <div id="modal-js-example" class="modal">
+        <div class="modal-background"></div>
 
-          <div class="modal-card">
-            <header class="modal-card-head">
-              <p class="modal-card-title">Nuevo Objetivo</p>
-              <button class="delete" aria-label="close"></button>
-            </header>
-    
-            <section class="modal-card-body">
-
-              <form id="form-nuevo-objetivo">
-                <div class="field">
-                  <label class="label">Nombre del Objetivo</label>
-                  <div class="control">
-                    <input class="input" type="text" id="obj-nombre" name="nombre" placeholder="Ej: Viaje a Europa" required>
-                  </div>
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title">Nuevo Objetivo</p>
+            <button class="delete" aria-label="close"></button>
+          </header>
+  
+          <section class="modal-card-body">
+            <form id="form-nuevo-objetivo">
+              <div class="field">
+                <label class="label">Nombre del Objetivo</label>
+                <div class="control">
+                  <input class="input" type="text" id="obj-nombre" name="nombre" placeholder="Ej: Viaje a Europa" required>
                 </div>
+              </div>
 
-                <div class="field">
-                  <label class="label">Descripción</label>
-                  <div class="control">
-                    <textarea class="textarea" id="obj-descripcion" name="descripcion" placeholder="Describe tu objetivo..."></textarea>
-                  </div>
+              <div class="field">
+                <label class="label">Descripción</label>
+                <div class="control">
+                  <textarea class="textarea" id="obj-descripcion" name="descripcion" placeholder="Describe tu objetivo..."></textarea>
                 </div>
+              </div>
 
-                <div class="columns">
-                  <div class="column">
-                    <div class="field">
-                      <label class="label">Monto Objetivo ($)</label>
-                      <div class="control">
-                         <input class="input" type="number" id="obj-monto" name="monto" placeholder="0.00" min="1" step="0.01" required>
-                      </div>
+              <div class="columns">
+                <div class="column">
+                  <div class="field">
+                    <label class="label">Monto Objetivo ($)</label>
+                    <div class="control">
+                        <input class="input" type="number" id="obj-monto" name="monto" placeholder="0.00" min="1" step="0.01" required>
                     </div>
                   </div>
+                </div>
+              </div>
+
+              <div class="columns">
+                <div class="column">
+                  <div class="field">
+                    <label class="label">Categoría</label>
+                    <div class="control">
+                        <div class="select is-fullwidth">
+                          <select id="obj-categoria" name="categoria">
+                            <option value="emergencia" data-requeridos="0">Emergencia (0 objetivos requeridos)</option>
+                            <option value="deporte" data-requeridos="0">Deporte (0 objetivos requeridos)</option>
+                            <option value="pequeños gustos" data-requeridos="0">Pequeños gustos (0 objetivos requeridos)</option>
+                            <option value="entretenimiento" data-requeridos="0">Entretenimiento (0 objetivos requeridos)</option>
+                            <option value="educacion" data-requeridos="1">Educación (1 objetivos requeridos)</option>
+                            <option value="hogar" data-requeridos="2">Hogar (2 objetivos requeridos)</option>
+                            <option value="escapadas" data-requeridos="3">Escapadas (3 objetivos requeridos)</option>
+                            <option value="transporte" data-requeridos="4">Transporte (4 objetivos requeridos)</option>
+                            <option value="tecnologia" data-requeridos="4">Tecnología (4 objetivos requeridos)</option>
+                            <option value="viajes" data-requeridos="5">Viajes (5 objetivos requeridos)</option>
+                          </select>
+                        </div>
+                      </div>
+                  </div>
+                </div>
         
-                </div>
-
-                <div class="columns">
-                  <div class="column">
-                    <div class="field">
-                      <label class="label">Categoría</label>
-                      <div class="control">
-                         <div class="select is-fullwidth">
-                           <select id="obj-categoria" name="categoria">
-                              <option value="emergencia" data-requeridos="0">Emergencia (0 objetivos requeridos)</option>
-                              <option value="deporte" data-requeridos="0">Deporte (0 objetivos requeridos)</option>
-                              <option value="pequeños gustos" data-requeridos="0">Pequeños gustos (0 objetivos requeridos)</option>
-                              <option value="entretenimiento" data-requeridos="0">Entretenimiento (0 objetivos requeridos)</option>
-                              <option value="educacion" data-requeridos="1">Educación (1 objetivos requeridos)</option>
-                              <option value="hogar" data-requeridos="2">Hogar (2 objetivos requeridos)</option>
-                              <option value="escapadas" data-requeridos="3">Escapadas (3 objetivos requeridos)</option>
-                              <option value="transporte" data-requeridos="4">Transporte (4 objetivos requeridos)</option>
-                              <option value="tecnologia" data-requeridos="4">Tecnología (4 objetivos requeridos)</option>
-                              <option value="viajes" data-requeridos="5">Viajes (5 objetivos requeridos)</option>
-                            </select>
-                          </div>
-                       </div>
+                <div class="column" style="display: none;">
+                  <div class="field">
+                    <label class="label">Objetivos Requeridos</label>
+                    <div class="control">
+                      <input class="input" type="number" id="obj-requeridos" name="requeridos" placeholder="0" min="0" value="0" readonly>
                     </div>
-                  </div>
-          
-                  <div class="column" style="display: none;">
-                    <div class="field">
-                      <label class="label">Objetivos Requeridos</label>
-                      <div class="control">
-                        <input class="input" type="number" id="obj-requeridos" name="requeridos" placeholder="0" min="0" value="0" readonly>
-                      </div>
-                      <p class="help">Se asigna automáticamente según la categoría</p>
-                    </div>
+                    <p class="help">Se asigna automáticamente según la categoría</p>
                   </div>
                 </div>
-                    <footer class="modal-card-foot">
-                    <div class="buttons">
-                      <button class="button is-success" type="submit">Guardar Objetivo</button>
-                      <button class="button is-link" type="button" id="btn-cancelar-objetivo">Cancelar</button>
-                    </div>
-                  </footer>
-              </form>
-            </section>
-          </div>
+              </div>
+              <footer class="footer-modal">
+                <button class="button is-success" type="submit">Guardar Objetivo</button>
+                <button class="button is-link" type="button" id="btn-cancelar-objetivo"> Cancelar </button>
+              </footer>
+            </form>
+          </section>
         </div>
+      </div>
 
-        <!-- Modal para editar objetivos -->
-        <div id="modal-editar-objetivo" class="modal">
-          <div class="modal-background"></div>
-          <div class="modal-card">
+      <!-- Modal para editar objetivos -->
+      <div id="modal-editar-objetivo" class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
 
-            <header class="modal-card-head">
-              <p class="modal-card-title">Editar Objetivo</p>
-              <button class="delete" aria-label="close"></button>
-            </header>
+          <header class="modal-card-head">
+            <p class="modal-card-title">Editar Objetivo</p>
+            <button class="delete" aria-label="close"></button>
+          </header>
 
-            <section class="modal-card-body">
-              <form id="form-editar-objetivo">
-                <div class="field">
-                  <label class="label">Nombre del Objetivo</label>
-                  <div class="control">
-                    <input class="input" type="text" id="objetivo-nombre" placeholder="Nombre del objetivo" required>
-                  </div>
+          <section class="modal-card-body">
+            <form id="form-editar-objetivo">
+              <div class="field">
+                <label class="label">Nombre del Objetivo</label>
+                <div class="control">
+                  <input class="input" type="text" id="objetivo-nombre" placeholder="Nombre del objetivo" required>
                 </div>
+              </div>
 
-                <div class="field">
-                  <label class="label">Descripción</label>
-                  <div class="control">
-                    <input class="input" type="text" id="objetivo-descripcion" placeholder="Descripción del objetivo">
-                  </div>
+              <div class="field">
+                <label class="label">Descripción</label>
+                <div class="control">
+                  <input class="input" type="text" id="objetivo-descripcion" placeholder="Descripción del objetivo">
                 </div>
+              </div>
 
-                <div class="field">
-                  <label class="label">Monto Objetivo ($)</label>
-                  <div class="control">
-                    <input class="input" type="number" id="objetivo-monto" placeholder="Monto objetivo">
-                  </div>
+              <div class="field">
+                <label class="label">Monto Objetivo ($)</label>
+                <div class="control">
+                  <input class="input" type="number" id="objetivo-monto" placeholder="Monto objetivo">
                 </div>
-
-              </form>
-            </section>
-
-            <footer class="modal-card-foot">
-              <div class="buttons">
+              </div>
+              <footer class="modal-card-foot" id="modal-editar">
                 <button class="button is-success js-modal-trigger" id="btn-guardar-objetivo">Guardar Cambios</button>
                 <button class="button is-link js-modal-trigger">Cancelar</button>
-              </div>
-            </footer>
+              </footer>
+            </form>
+          </section>  
             
-          </div>
         </div>
+      </div>
     </main>
 
     <script src="../javascript/objetivos.js"></script>
     <script src="../javascript/modal-objetivos.js"></script>
     <script src="../javascript/modal-editarObjetivos.js"></script>
 
-</body>
+  </body>
 </html>

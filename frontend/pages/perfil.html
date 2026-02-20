@@ -1,144 +1,144 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil - UpFinance</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
     <link rel="icon" href="../assets/favicon.ico">
     <link rel="stylesheet" href="../styles/main.css">
-</head>
-<body>
+  </head>
+  <body>
     <!-- NAVBAR -->
     <header>
-       <nav class="navbar" role="navigation" aria-label="main navigation">
+      <nav class="navbar" role="navigation" aria-label="main navigation">
           <div class="navbar-brand">
             <a class="navbar-item logo">
               <img src="../assets/logov2.png" alt="Logo finanzas">
             </a>
           </div>
-          
           <div id="navbarBasicExample" class="navbar-menu">
             <div class="navbar-start">
-
               <a class="navbar-item" href="inicio.html">Inicio</a>
               <a class="navbar-item" href="objetivos.html">Objetivos</a>
               <a class="navbar-item" href="transacciones.html">Transacciones</a>
-
             </div>
-
             <div class="navbar-end">
                 <a class="navbar-item" href="perfil.html">Mi Perfil</a>
             </div>
           </div>
-           
         </nav>
     </header>
 
     <main class="box">
-        <div class="perfil-header">
-            <div class="perfil-info-usuario">
-                <div class="circulo-usuario">
-                    <i class="fas fa-user"></i>
-                </div>
-                <div class="perfil-datos">
-                    <h1 class="titulo-usuario">Maria Perez</h1>
-                    <p class="etiqueta-categoria">maria.perez@email.com</p>
-                    <p class="etiqueta-categoria" id="saldo-usuario">saldo: $0.00</p>
-                </div>
-            </div>
-            <button class="boton-editar-perfil js-modal-trigger" data-target="modal-js-example">
-                Editar
-            </button>
-        </div>
-
-        <div class="info-simple">
-            <div class="info-fila">
-                <div class="info-columna">
-                    <p class="etiqueta-categoria">NOMBRE COMPLETO</p>
-                    <div class="info-item">
-                        <p class="valor-monto">Maria Perez</p>
-                    </div>
-                </div>
-                <div class="info-columna">
-                    <p class="etiqueta-categoria">PAIS</p>
-                    <div class="info-item">
-                        <p class="valor-monto">Argentina</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="info-fila">
-                <div class="info-columna">
-                    <p class="etiqueta-categoria">EMAIL</p>
-                    <div class="info-item">
-                        <p class="valor-monto">maria.perez@email.com</p>
-                    </div>
-                </div>
-                <div class="info-columna">
-                    <p class="etiqueta-categoria">CIUDAD</p>
-                    <div class="info-item">
-                        <p class="valor-monto">Buenos Aires</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="botones-container">
-            <button class="boton-eliminar">
-                Eliminar Cuenta
-            </button>
-            <button class="boton-cerrar-sesion">
-                Cerrar Sesión <i class="fas fa-sign-out-alt"></i>
-            </button>
-        </div>
-        <div id="modal-js-example" class="modal">
-          <div class="modal-background"></div>
-          <div class="modal-card">
-            <header class="modal-card-head">
-              <p class="modal-card-title">Editar Perfil</p>
-              <button class="delete" aria-label="close"></button>
-            </header>
-            <section class="modal-card-body">
-              <form id="form-editar-perfil">
-                <div class="field">
-                  <label class="label">Nombre Completo</label>
-                  <div class="control">
-                    <input class="input" type="text" id="perfil-nombre" placeholder="Tu nombre completo">
-                  </div>
-                </div>
-
-                <div class="field">
-                  <label class="label">Pais</label>
-                  <div class="control">
-                    <input class="input" type="text" id="perfil-pais" placeholder="Tu pais de residencia">
-                  </div>
-                </div>
-
-               <div class="field">
-                  <label class="label">Ciudad</label>
-                  <div class="control">
-                    <input class="input" type="text" id="perfil-ciudad" placeholder="Tu ciudad de residencia">
-                  </div>
-               </div>
-
-               <div class="field">
-                  <label class="label">Saldo</label>
-                  <div class="control">
-                    <input class="input" type="text" id="perfil-saldo" placeholder="Tu saldo fijo mensual">
-                  </div>
-                </div>
-          </form>
-        </section>
-        <footer class="modal-card-foot">
-          <div class="buttons">
-            <button class="button is-success" id="btn-guardar-perfil">Guardar Cambios</button>
-            <button class="button is-link">Cancelar</button>
+      <div class="perfil-header">
+        <div class="perfil-info-usuario">
+          <div class="circulo-usuario">
+            <i class="fas fa-user"></i>
           </div>
-        </footer>
+          <div class="perfil-datos">
+            <h1 class="titulo-usuario"></h1>
+            <p class="etiqueta-categoria"></p>
+            <p class="etiqueta-categoria" id="saldo-usuario">saldo: $0.00</p>
+          </div>
+        </div>
+        <button class="boton-editar-perfil js-modal-trigger" data-target="modal-js-example">
+            Editar
+        </button>
+      </div>
+
+      <div class="info-simple">
+        <div class="info-fila">
+          <div class="info-columna">
+            <p class="etiqueta-categoria">NOMBRE COMPLETO</p>
+            <div class="info-item">
+              <p class="valor-monto"></p>
+            </div>
+          </div>
+          <div class="info-columna">
+            <p class="etiqueta-categoria">PAIS</p>
+            <div class="info-item">
+              <p class="valor-monto"></p>
+            </div>
+          </div>
+        </div>
+            
+        <div class="info-fila">
+          <div class="info-columna">
+            <p class="etiqueta-categoria">EMAIL</p>
+            <div class="info-item">
+              <p class="valor-monto"></p>
+            </div>
+          </div>
+          <div class="info-columna">
+            <p class="etiqueta-categoria">CIUDAD</p>
+            <div class="info-item">
+              <p class="valor-monto"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="botones-container">
+        <button class="boton-eliminar">
+          Eliminar Cuenta
+        </button>
+        <button class="boton-cerrar-sesion">
+          Cerrar Sesión <i class="fas fa-sign-out-alt"></i>
+        </button>
+      </div>
+
+      <div id="modal-js-example" class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title">Editar Perfil</p>
+            <button class="delete" aria-label="close"></button>
+          </header>
+
+          <section class="modal-card-body">
+            <form id="form-editar-perfil">
+              
+              <div class="field">
+                <label class="label">Nombre Completo</label>
+                <div class="control">
+                  <input class="input" type="text" id="perfil-nombre" placeholder="Tu nombre completo">
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="label">Pais</label>
+                <div class="control">
+                  <input class="input" type="text" id="perfil-pais" placeholder="Tu pais de residencia">
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="label">Ciudad</label>
+                <div class="control">
+                  <input class="input" type="text" id="perfil-ciudad" placeholder="Tu ciudad de residencia">
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="label">Saldo</label>
+                <div class="control">
+                  <input class="input" type="text" id="perfil-saldo" placeholder="Tu saldo fijo mensual">
+                </div>
+              </div>
+
+              <footer class="footer-modal">
+                <button class="button is-success" id="btn-guardar-perfil">Guardar Cambios</button>
+                <button class="button is-link">Cancelar</button>
+              </footer>
+
+            </form>
+          </section>
+        </div>
       </div>
     </main>
+
     <script src="../javascript/modal-editarperfil.js"></script>
     <script src="../javascript/perfil.js"></script>
-</body>
+
+  </body>
 </html>
