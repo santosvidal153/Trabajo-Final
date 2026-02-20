@@ -1,0 +1,36 @@
+.pag-registro {
+    background-image: url(../../assets/imagen-fondo.png);
+    background-size: cover;
+    background-attachment: fixed;
+    background-color: #0c3b5d;
+    height: 130vh;
+}
+#contenedor-registro {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 35%;
+    padding-top: 2%;
+    padding-bottom: 2%;
+}
+.box {
+    width: 100%; 
+    display: flex;
+    flex-direction: column;
+}
+form {
+    padding-bottom: 2%;
+}
+.field{
+    padding-bottom: 1%;
+}
+#titulo{
+    font-size: 33px;
+    padding-bottom: 3%;
+}
+
+.button {
+    background-color: #0c3b5d;
+    color: white;
+}

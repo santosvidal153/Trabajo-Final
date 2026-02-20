@@ -1,0 +1,121 @@
+.circulo-usuario {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    font-size: 2rem;
+}
+
+.titulo-usuario {
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin: 0;
+}
+
+.box {
+    max-width: 1200px;
+    margin: 2rem auto;
+    color: #1F2937;
+}
+
+.etiqueta-categoria {
+    font-size: 0.75rem;
+    color: #6B7280;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+    margin: 0;
+}
+
+.perfil-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 4rem;
+    border-bottom: 1px solid #E5E7EB;
+}
+
+.perfil-info-usuario {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.perfil-datos {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.boton-editar-perfil {
+    color: white;
+    background-color: #3D5A73;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.info-simple {
+    margin: 2rem 0;
+}
+
+.info-fila {
+    display: flex;
+    gap: 8rem;
+    margin-bottom: 1.5rem;
+}
+
+.info-columna {
+    flex: 1;
+}
+
+.info-columna .etiqueta-categoria {
+    margin-bottom: 0.5rem;
+}
+
+.info-item {
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.info-item p {
+    margin: 0;
+}
+
+.valor-monto {
+    font-size: 0.95rem;
+    color: #374151;
+    font-weight: 500;
+}
+
+.botones-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+    gap: 2rem;
+}
+
+.boton-eliminar {
+    color: red;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.boton-cerrar-sesion {
+    color: #383737;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}

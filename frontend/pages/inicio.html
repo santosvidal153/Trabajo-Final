@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="icon" href="../assets/favicon.ico">
+    <title>Inicio - UpFinance</title>
+</head>
+<body>
+    <header>
+       <nav class="navbar" role="navigation" aria-label="main navigation">
+          <div class="navbar-brand">
+            <a class="navbar-item logo">
+              <img src="../assets/logov2.png" alt="Logo finanzas">
+            </a>
+          </div>
+          
+          <div id="navbarBasicExample" class="navbar-menu">
+            <div class="navbar-start">
+
+              <a class="navbar-item" href="inicio.html">Inicio</a>
+              <a class="navbar-item" href="objetivos.html">Objetivos</a>
+              <a class="navbar-item" href="transacciones.html">Transacciones</a>
+
+            </div>
+
+            <div class="navbar-end">
+                <a class="navbar-item" href="perfil.html">Mi Perfil</a>
+            </div>
+          </div>
+           
+        </nav>
+    </header>
+    
+    <main>
+    
+    <div class="saludo-inicio" id="saludo-inicio">
+      <section class="hero">
+        <div class="hero-body">
+          <p class="title">Hola, Usuario!</p>
+          <p class="subtitle">Tus gastos por categoría:</p>
+        </div>
+      </section>
+    </div>
+
+      <div class="gastos-categoria">
+        <nav class="level is-mobile">
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="heading">Objetivo</p>
+          <p class="title" id="gasto-objetivo">$0</p>
+        </div>
+      </div>
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="heading">Alimento</p>
+          <p class="title" id="gasto-alimento">$0</p>
+        </div>
+      </div>
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="heading">Transporte</p>
+          <p class="title" id="gasto-transporte">$0</p>
+        </div>
+      </div>
+        <div class="level-item has-text-centered">
+        <div>
+          <p class="heading">Salud</p>
+          <p class="title" id="gasto-salud">$0</p>
+        </div>
+      </div>
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="heading">Entretenimiento</p>
+          <p class="title" id="gasto-entretenimiento">$0</p>
+        </div>
+      </div>
+        <div class="level-item has-text-centered">
+        <div>
+          <p class="heading">Otros</p>
+          <p class="title" id="gasto-otros">$0</p>
+        </div>
+      </div>
+      </nav>
+      </div>
+
+      <div class="card">
+        <header class="card-header">
+            <p class="card-header-title">Resumen mensual</p>
+        </header>
+
+         <div class="card-content">
+      <div class="columns is-multiline">
+        
+        <div class="column is-6">Ingresos</div>
+        <div class="column is-6 has-text-right has-text-success" id="ingreso-mensual">
+          $0
+        </div>
+
+        <div class="column is-6">Saldo fijo</div>
+        <div class="column is-6 has-text-right has-text-success" id="saldo-fijo">
+          $0
+        </div>
+
+        <div class="column is-6">Ahorros</div>
+        <div class="column is-6 has-text-right" id="ahorro-mensual">
+          $0
+        </div>
+
+        <div class="column is-6">Gastos</div>
+        <div class="column is-6 has-text-right has-text-danger" id="gasto-mensual">
+          $0
+        </div>
+
+        <div class="column is-6">Gasto de ahorros</div>
+        <div class="column is-6 has-text-right has-text-danger" id="gasto-ahorro-mensual">
+          $0
+        </div>
+
+
+        <div class="column is-6"><strong>Saldo disponible</strong></div>
+        <div class="column is-6 has-text-right" id="saldo-mensual">
+          <strong>$0</strong>
+        </div>
+
+      </div>
+    </div>
+      </div>
+     
+      <div class="message-resumen" id="nota-porcentaje">
+        <article class="message is-success">
+            <div class="message-body">
+              ¡Excelente! Te queda el 100% de tu ingreso disponible este mes. 
+            </div>
+        </article>
+      </div>
+
+    </main>
+    <script src="../javascript/inicio.js"></script>
+    
+</body>
+</html>

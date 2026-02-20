@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <link rel="stylesheet" href="../styles/main.css">
+        <link rel="icon" href="../assets/favicon.ico">
+        <title>Iniciar Sesion - UpFinance</title>
+    </head>
+    <body class="pag-iniciar-sesion">
+        <div class="container" id="contenedor-login">
+            <div class="box">
+                <form id="formulario">
+                    <h1 id="titulo"><b>Iniciar sesión</b></h1>
+                    <div class="field">
+                        <label class="label">Email</label>
+                        <div class="control">
+                            <input class="input" type="text" name="email" placeholder="Ingresá tu email" required>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Contraseña</label>
+                        <div class="control has-icons-right">
+                            <input class="input" type="password" name="contrasena" placeholder="Ingresá tu contraseña" required>
+                            <span class="icon is-small is-right is-clickable" id="toggle-password">
+                                <i class="fas fa-eye" id="eye-icon"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="field is-grouped is-grouped-centered">
+                        <a href="./inicio.html">
+                            <button class="button">Iniciar Sesión</button>
+                        </a>                 
+                    </div>
+                    <p class="has-text-centered">
+                        <a href="./registro.html">No tenés cuenta? Registrate</a>
+                    </p>
+                </form>
+                <div class="notification is-danger is-hidden">
+                    <p class="error" id="errorLogin" >Error al iniciar sesión</p>
+                </div>
+            </div>
+        </div>
+
+        <footer></footer>
+        <script src="../javascript/login.js"></script>
+    </body>
+</html>
